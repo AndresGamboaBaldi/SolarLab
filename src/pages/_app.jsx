@@ -11,7 +11,7 @@ const lato = Lato({
 
 export default function App({ Component, pageProps }) {
 	return (
-		<ThemeProvider theme={theme} classname={lato.className}>
+		<ThemeProvider theme={theme}>
 			<CssBaseline />
 			<Component {...pageProps} />
 		</ThemeProvider>

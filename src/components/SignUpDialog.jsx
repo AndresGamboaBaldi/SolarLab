@@ -38,12 +38,12 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 			onClose={handleClose}
 			PaperProps={{
 				sx: {
-					borderRadius: '28px',
+					borderRadius: '24px',
 				},
 			}}
 		>
 			<Box
-				m={{ xxs: 2, xs: 3, sm: 6 }}
+				m={{ xxs: 3, xs: 4, sm: 5 }}
 				sx={{
 					alignItems: 'center',
 				}}
@@ -79,7 +79,13 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								onChange={(e) => setEmail(e.target.value)}
 								inputProps={{
 									style: {
-										height: '2.2rem',
+										height: '1.8rem',
+										'@media (min-width:350px)': {
+											height: '1.6rem',
+										},
+										'@media (min-width:600px)': {
+											height: '2.3rem',
+										},
 										padding: '8px',
 										fontFamily: 'Lato',
 										fontSize: '1.2rem',
@@ -107,7 +113,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								onChange={(e) => setPassword(e.target.value)}
 								InputProps={{
 									style: {
-										height: '3.2rem',
+										height: '2.8rem',
 										padding: '0',
 										fontFamily: 'Lato',
 										fontSize: '1.2rem',
@@ -148,7 +154,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								error={!!passwordError}
 								InputProps={{
 									style: {
-										height: '3.2rem',
+										height: '2.8rem',
 										padding: '0',
 										fontFamily: 'Lato',
 										fontSize: '1.2rem',
@@ -174,8 +180,8 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 						item
 						xxs={12}
 						xs={12}
-						mb={{ xxs: 1, xs: 1, sm: 3 }}
-						mt={{ xxs: 2, xs: 2, sm: 4 }}
+						mb={{ xxs: 2, xs: 2, sm: 3 }}
+						mt={{ xxs: 2, xs: 3, sm: 4 }}
 					>
 						<Button
 							fullWidth
@@ -183,7 +189,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 							sx={{
 								color: 'white',
 								textTransform: 'none',
-								padding: '2px',
+								padding: '1px',
 							}}
 						>
 							<Typography variant='header2'>Sign In</Typography>
@@ -223,7 +229,13 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 						<Typography variant='body1'>or</Typography>
 					</Divider>
 					<Grid container>
-						<Grid item xxs={12} xs={12} my={{ xxs: 1, xs: 1, sm: 3 }}>
+						<Grid
+							item
+							xxs={12}
+							xs={12}
+							mt={{ xxs: 2, xs: 2, sm: 3 }}
+							mb={{ xxs: 1, xs: 1, sm: 3 }}
+						>
 							<Button
 								fullWidth
 								variant='outlined'

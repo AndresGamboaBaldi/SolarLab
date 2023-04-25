@@ -38,12 +38,12 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 			onClose={handleClose}
 			PaperProps={{
 				sx: {
-					borderRadius: '28px',
+					borderRadius: '24px',
 				},
 			}}
 		>
 			<Box
-				m={{ xxs: 2, xs: 3, sm: 6 }}
+				m={{ xxs: 3, xs: 4, sm: 5 }}
 				sx={{
 					alignItems: 'center',
 				}}
@@ -81,7 +81,7 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 								size='small'
 								inputProps={{
 									style: {
-										height: '2.2rem',
+										height: '1.8rem',
 										padding: '8px',
 										fontFamily: 'Lato',
 										fontSize: '1.2rem',
@@ -111,7 +111,7 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 								onChange={(e) => setLogPass(e.target.value)}
 								InputProps={{
 									style: {
-										height: '3.2rem',
+										height: '2.8rem',
 										padding: '0',
 										fontFamily: 'Lato',
 										fontSize: '1.2rem',
@@ -152,7 +152,7 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 							sx={{
 								color: 'white',
 								textTransform: 'none',
-								padding: '2px',
+								padding: '1px',
 							}}
 						>
 							<Typography variant='header2'>Sign In</Typography>
@@ -210,7 +210,7 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 						</Grid>
 					</Grid>
 					<Grid container spacing={1} justifyContent='center'>
-						<Grid item mt={{ xxs: 0, xs: 0, sm: 1 }}>
+						<Grid item mt={{ xxs: 1, xs: 1, sm: 1 }}>
 							<Typography variant='header3'>
 								Don't have an account?{' '}
 								<Link

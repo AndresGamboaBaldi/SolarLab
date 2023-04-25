@@ -45,7 +45,7 @@ const theme = createTheme({
 			fontSize: '1.5rem',
 
 			'@media (min-width:350px)': {
-				fontSize: '1.9rem',
+				fontSize: '1.6rem',
 			},
 			'@media (min-width:600px)': {
 				fontSize: '2.3rem',
@@ -57,7 +57,7 @@ const theme = createTheme({
 			fontSize: '1.1rem',
 
 			'@media (min-width:350px)': {
-				fontSize: '1.3rem',
+				fontSize: '1.1rem',
 			},
 			'@media (min-width:600px)': {
 				fontSize: '1.6rem',
@@ -65,7 +65,7 @@ const theme = createTheme({
 		},
 		body1: {
 			fontFamily: 'Lato',
-			fontSize: '0.6rem',
+			fontSize: '0.4rem',
 
 			'@media (min-width:350px)': {
 				fontSize: '0.8rem',
@@ -79,7 +79,7 @@ const theme = createTheme({
 			fontSize: '0.8rem',
 
 			'@media (min-width:350px)': {
-				fontSize: '1.0rem',
+				fontSize: '0.9rem',
 			},
 			'@media (min-width:600px)': {
 				fontSize: '1.2rem',
