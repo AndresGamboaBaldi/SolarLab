@@ -218,14 +218,6 @@ const theme = createTheme({
 				},
 			},
 		},
-		MuiMenu: {
-			styleOverrides: {
-				root: {
-					fontFamily: 'Lato',
-					fontSize: '2.0rem',
-				},
-			},
-		},
 	},
 });
 

@@ -34,8 +34,16 @@ export default function Home() {
 					}}
 				>
 					<CardContent sx={{ p: 0, m: 0, borderRadius: 0 }}>
-						<div style={{ position: 'relative' }}>
+						<div
+							style={{
+								position: 'relative',
+							}}
+						>
 							<CardMedia
+								sx={{
+									height: '100vh',
+									width: '100%',
+								}}
 								component='img'
 								image='/solarpanelwp.jpeg'
 								alt='solar panel wps'
@@ -44,7 +52,7 @@ export default function Home() {
 								style={{
 									position: 'absolute',
 									color: 'white',
-									top: '42%',
+									top: '50%',
 									left: '50%',
 									transform: 'translate(-50%, -50%)',
 									width: 'max-content',
