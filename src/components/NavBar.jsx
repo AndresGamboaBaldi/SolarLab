@@ -16,6 +16,7 @@ import {
 	Avatar,
 	Divider,
 } from '@mui/material';
+import Image from 'next/image';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import React, { useState, useContext } from 'react';
@@ -57,13 +58,7 @@ export default function NavBar() {
 		<Box>
 			<AppBar position='fixed' sx={{ bgcolor: 'primary.700' }}>
 				<Toolbar>
-					<WifiProtectedSetupIcon
-						sx={{
-							ml: { xxs: 0, xs: 0, sm: 4 },
-							fontSize: { xxs: '24px', xs: '32px', sm: '40px' },
-						}}
-						color='white.main'
-					/>
+					<Image src='/logo.png' alt='Upb Logo White' width={32} height={32} />
 					<Typography
 						ml={{ xxs: 1, xs: 1, sm: 3 }}
 						variant='header2'
@@ -80,6 +75,7 @@ export default function NavBar() {
 						<Box mr={{ xxs: 0, xs: 0, sm: 1 }} sx={{ flexGrow: 0 }}>
 							<Tooltip
 								title='Tutorial'
+								enterTouchDelay={0}
 								arrow
 								sx={{
 									mr: { xxs: 0, xs: 0, sm: 1 },
@@ -96,6 +92,7 @@ export default function NavBar() {
 							</Tooltip>
 							<Tooltip
 								title='My Experiments'
+								enterTouchDelay={0}
 								arrow
 								sx={{
 									mr: { xxs: 0, xs: 0, sm: 1 },
@@ -110,7 +107,7 @@ export default function NavBar() {
 									/>
 								</IconButton>
 							</Tooltip>
-							<IconButton>
+							<IconButton onClick={handleOpenUserMenu}>
 								<AccountCircle
 									sx={{
 										fontSize: { xxs: '20px', xs: '24px', sm: '32px' },
@@ -126,24 +123,24 @@ export default function NavBar() {
 									'@media (min-width:446px)': {
 										display: 'inline-flex',
 									},
+									mr: { xxs: 0, xs: 0, sm: 4 },
 								}}
 							>
 								<Typography variant='body1'>{user.name}</Typography>
+								<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+									<KeyboardArrowDownIcon
+										sx={{
+											fontSize: { xxs: '16px', xs: '20px', sm: '24px' },
+											display: 'none',
+
+											'@media (min-width:446px)': {
+												display: 'inline-flex',
+											},
+										}}
+										color='white'
+									/>
+								</IconButton>
 							</Box>
-
-							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-								<KeyboardArrowDownIcon
-									sx={{
-										fontSize: { xxs: '16px', xs: '20px', sm: '24px' },
-										display: 'none',
-
-										'@media (min-width:446px)': {
-											display: 'inline-flex',
-										},
-									}}
-									color='white'
-								/>
-							</IconButton>
 
 							<Menu
 								sx={{ mt: '45px' }}

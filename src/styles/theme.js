@@ -82,12 +82,12 @@ const theme = createTheme({
 		},
 		body2: {
 			fontFamily: 'Lato',
-			fontSize: '0.4rem',
+			fontSize: '0.5rem',
 			'@media (min-width:200px)': {
-				fontSize: '0.7rem',
+				fontSize: '0.6rem',
 			},
 			'@media (min-width:372px)': {
-				fontSize: '0.8rem',
+				fontSize: '0.7rem',
 			},
 			'@media (min-width:664px)': {
 				fontSize: '0.9rem',

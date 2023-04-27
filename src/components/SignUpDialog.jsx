@@ -205,7 +205,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 						container
 						justifyContent='center'
 						sx={{
-							mb: 2,
+							mb: { xxs: 1, xs: 1, sm: 2 },
 						}}
 					>
 						<Grid item>
