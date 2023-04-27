@@ -15,7 +15,9 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
+import { login } from '../utils/login.js';
 
 export default function SignInDialog({ open, handleClose, onClickSignup }) {
 	const [logEmail, setLogEmail] = useState('');
@@ -24,12 +26,11 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 	const handleClickShowPassword = () => setShowPassword(!showPassword);
 	const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
-	const handleEmailSignIn = async () => {
-		try {
-			await firebaseAuth.signWithEmail(logEmail, logPass);
-		} catch (error) {
-			console.log(error);
-		}
+	const { user, setUser } = useContext(UserContext);
+
+	const handleSignIn = async (event) => {
+		const newUser = await login();
+		setUser(newUser);
 	};
 
 	return (
@@ -53,7 +54,7 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 						<Typography variant='header1' color='secondary'>
 							Solar{' '}
 						</Typography>
-						<Typography variant='header1' color='primary.500'>
+						<Typography variant='header1' color='primary.700'>
 							Remote Lab
 						</Typography>
 					</Grid>
@@ -81,7 +82,7 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 								size='small'
 								inputProps={{
 									style: {
-										height: '1.8rem',
+										height: '1.6rem',
 										padding: '8px',
 										fontFamily: 'Lato',
 										fontSize: '1.2rem',
@@ -111,7 +112,7 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 								onChange={(e) => setLogPass(e.target.value)}
 								InputProps={{
 									style: {
-										height: '2.8rem',
+										height: '2.6rem',
 										padding: '0',
 										fontFamily: 'Lato',
 										fontSize: '1.2rem',
@@ -153,9 +154,11 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 								color: 'white',
 								textTransform: 'none',
 								padding: '1px',
+								bgcolor: 'primary.700',
 							}}
+							onClick={handleSignIn}
 						>
-							<Typography variant='header2'>Sign In</Typography>
+							<Typography variant='buttons4'>Sign In</Typography>
 						</Button>
 					</Grid>
 					<Divider
@@ -211,16 +214,15 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 					</Grid>
 					<Grid container spacing={1} justifyContent='center'>
 						<Grid item mt={{ xxs: 1, xs: 1, sm: 1 }}>
-							<Typography variant='header3'>
-								Don't have an account?{' '}
-								<Link
-									component='button'
-									onClick={onClickSignup}
-									variant='header3'
-								>
-									Register
-								</Link>
-							</Typography>
+							<Typography variant='header3'>Don't have an account? </Typography>
+							<Link
+								mb={{ xxs: 1, xs: 1, sm: 1 }}
+								component='button'
+								onClick={onClickSignup}
+								variant='header3'
+							>
+								Register
+							</Link>
 						</Grid>
 					</Grid>
 				</Box>

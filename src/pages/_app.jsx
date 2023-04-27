@@ -3,6 +3,9 @@ import theme from '../styles/theme';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import { Lato } from 'next/font/google';
+import NavBar from '../components/NavBar';
+import React, { useState, useMemo } from 'react';
+import { UserContext } from '../contexts/UserContext.js';
 
 const lato = Lato({
 	subsets: ['latin'],
@@ -10,10 +13,17 @@ const lato = Lato({
 });
 
 export default function App({ Component, pageProps }) {
+	const [user, setUser] = useState(null);
+
+	const value = useMemo(() => ({ user, setUser }), [user, setUser]);
+
 	return (
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
-			<Component {...pageProps} />
+			<UserContext.Provider value={value}>
+				<NavBar />
+				<Component {...pageProps} />
+			</UserContext.Provider>
 		</ThemeProvider>
 	);
 }

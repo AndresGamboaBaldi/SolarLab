@@ -2,10 +2,8 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {
 	Box,
-	Checkbox,
 	Dialog,
 	Divider,
-	FormControlLabel,
 	Grid,
 	IconButton,
 	InputAdornment,
@@ -14,8 +12,10 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
 import Button from '@mui/material/Button';
+import { login } from '../utils/login.js';
 
 export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const [regEmail, setEmail] = useState('');
@@ -25,6 +25,13 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const [showPassword, setShowPassword] = useState(false);
 	const handleClickShowPassword = () => setShowPassword(!showPassword);
 	const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
+	const { user, setUser } = useContext(UserContext);
+
+	const handleSignIn = async (event) => {
+		const newUser = await login();
+		setUser(newUser);
+	};
 
 	const passwordErrorMessage = (
 		<Typography variant='caption' color='error' gutterBottom>
@@ -53,7 +60,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 						<Typography variant='header1' color='secondary'>
 							Solar{' '}
 						</Typography>
-						<Typography variant='header1' color='primary.500'>
+						<Typography variant='header1' color='primary.700'>
 							Remote Lab
 						</Typography>
 					</Grid>
@@ -79,13 +86,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								onChange={(e) => setEmail(e.target.value)}
 								inputProps={{
 									style: {
-										height: '1.8rem',
-										'@media (min-width:350px)': {
-											height: '1.6rem',
-										},
-										'@media (min-width:600px)': {
-											height: '2.3rem',
-										},
+										height: '1.6rem',
 										padding: '8px',
 										fontFamily: 'Lato',
 										fontSize: '1.2rem',
@@ -113,7 +114,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								onChange={(e) => setPassword(e.target.value)}
 								InputProps={{
 									style: {
-										height: '2.8rem',
+										height: '2.6rem',
 										padding: '0',
 										fontFamily: 'Lato',
 										fontSize: '1.2rem',
@@ -154,7 +155,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								error={!!passwordError}
 								InputProps={{
 									style: {
-										height: '2.8rem',
+										height: '2.6rem',
 										padding: '0',
 										fontFamily: 'Lato',
 										fontSize: '1.2rem',
@@ -190,9 +191,11 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								color: 'white',
 								textTransform: 'none',
 								padding: '1px',
+								bgcolor: 'primary.700',
 							}}
+							onClick={handleSignIn}
 						>
-							<Typography variant='header2'>Sign In</Typography>
+							<Typography variant='buttons4'>Sign Up</Typography>
 						</Button>
 					</Grid>
 					<Grid
@@ -208,14 +211,15 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 						<Grid item>
 							<Typography variant='header3'>
 								Already Have an Account?{' '}
-								<Link
-									component='button'
-									onClick={onClickSignIn}
-									variant='header3'
-								>
-									Sign In
-								</Link>
 							</Typography>
+							<Link
+								component='button'
+								onClick={onClickSignIn}
+								variant='header3'
+								mb={{ xxs: 1, xs: 1, sm: 1 }}
+							>
+								Sign In
+							</Link>
 						</Grid>
 					</Grid>
 

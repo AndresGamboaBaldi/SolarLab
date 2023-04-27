@@ -31,7 +31,7 @@ const theme = createTheme({
 		success: {
 			main: '#51E25E',
 		},
-		whity: {
+		white: {
 			main: '#FFFFFF',
 		},
 		blacky: {
@@ -43,71 +43,148 @@ const theme = createTheme({
 			fontFamily: 'Lato',
 			fontWeight: 700,
 			fontSize: '1.5rem',
-
-			'@media (min-width:350px)': {
+			'@media (min-width:200px)': {
+				fontSize: '1.3rem',
+			},
+			'@media (min-width:372px)': {
 				fontSize: '1.6rem',
 			},
-			'@media (min-width:600px)': {
+			'@media (min-width:664px)': {
 				fontSize: '2.3rem',
 			},
 		},
 		header2: {
 			fontFamily: 'Lato',
 			fontWeight: 700,
-			fontSize: '1.1rem',
-
-			'@media (min-width:350px)': {
+			fontSize: '0.6rem',
+			'@media (min-width:296px)': {
+				fontSize: '0.8rem',
+			},
+			'@media (min-width:388px)': {
 				fontSize: '1.1rem',
 			},
-			'@media (min-width:600px)': {
+			'@media (min-width:664px)': {
 				fontSize: '1.6rem',
 			},
 		},
 		body1: {
 			fontFamily: 'Lato',
 			fontSize: '0.4rem',
-
-			'@media (min-width:350px)': {
+			'@media (min-width:200px)': {
+				fontSize: '0.6rem',
+			},
+			'@media (min-width:372px)': {
 				fontSize: '0.8rem',
 			},
-			'@media (min-width:600px)': {
+			'@media (min-width:664px)': {
 				fontSize: '1.0rem',
+			},
+		},
+		body2: {
+			fontFamily: 'Lato',
+			fontSize: '0.4rem',
+			'@media (min-width:200px)': {
+				fontSize: '0.7rem',
+			},
+			'@media (min-width:372px)': {
+				fontSize: '0.8rem',
+			},
+			'@media (min-width:664px)': {
+				fontSize: '0.9rem',
 			},
 		},
 		header3: {
 			fontFamily: 'Lato',
-			fontSize: '0.8rem',
-
-			'@media (min-width:350px)': {
-				fontSize: '0.9rem',
+			fontSize: '0.7rem',
+			'@media (min-width:303px)': {
+				fontSize: '0.8rem',
 			},
-			'@media (min-width:600px)': {
+			'@media (min-width:318px)': {
+				fontSize: '0.8rem',
+			},
+			'@media (min-width:664px)': {
 				fontSize: '1.2rem',
 			},
 		},
+
+		buttons1: {
+			fontFamily: 'Lato',
+			fontSize: '0.5rem',
+			fontWeight: '700',
+			'@media (min-width:281px)': {
+				fontSize: '0.6rem',
+			},
+			'@media (min-width:298px)': {
+				fontSize: '0.7rem',
+			},
+			'@media (min-width:314px)': {
+				fontSize: '0.8rem',
+			},
+			'@media (min-width:664px)': {
+				fontSize: '1.2rem',
+			},
+		},
+
 		buttons2: {
 			fontSize: '0.6rem',
 
-			'@media (min-width:350px)': {
+			'@media (min-width:372px)': {
 				fontSize: '0.8rem',
 			},
-			'@media (min-width:600px)': {
+			'@media (min-width:664px)': {
 				fontSize: '1rem',
+			},
+		},
+
+		buttons4: {
+			fontFamily: 'Lato',
+			fontWeight: 700,
+			fontSize: '1.0rem',
+
+			'@media (min-width:372px)': {
+				fontSize: '1.1rem',
+			},
+			'@media (min-width:664px)': {
+				fontSize: '1.6rem',
 			},
 		},
 	},
 	breakpoints: {
 		values: {
 			xxs: 0,
-			xs: 350,
-			sm: 600,
+			xs: 372,
+			sm: 664,
 			md: 900,
 			lg: 1200,
 			xl: 1536,
 		},
 	},
 	shape: {
-		borderRadius: 16,
+		borderRadius: 8,
+	},
+	components: {
+		MuiTooltip: {
+			styleOverrides: {
+				tooltip: {
+					backgroundColor: 'white',
+					color: 'black',
+					border: '1px solid #dadde9',
+					'& .MuiTooltip-arrow': {
+						color: 'white',
+					},
+					fontFamily: 'Lato',
+					fontSize: '1.0rem',
+				},
+			},
+		},
+		MuiMenu: {
+			styleOverrides: {
+				root: {
+					fontFamily: 'Lato',
+					fontSize: '2.0rem',
+				},
+			},
+		},
 	},
 });
 
