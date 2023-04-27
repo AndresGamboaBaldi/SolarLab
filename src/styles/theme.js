@@ -57,7 +57,7 @@ const theme = createTheme({
 			fontFamily: 'Lato',
 			fontWeight: 700,
 			fontSize: '0.6rem',
-			'@media (min-width:296px)': {
+			'@media (min-width:306px)': {
 				fontSize: '0.8rem',
 			},
 			'@media (min-width:388px)': {
@@ -109,7 +109,7 @@ const theme = createTheme({
 
 		buttons1: {
 			fontFamily: 'Lato',
-			fontSize: '0.5rem',
+			fontSize: '0.6rem',
 			fontWeight: '700',
 			'@media (min-width:281px)': {
 				fontSize: '0.6rem',
@@ -148,6 +148,47 @@ const theme = createTheme({
 				fontSize: '1.6rem',
 			},
 		},
+		headerHome: {
+			fontFamily: 'Lato',
+			fontWeight: 700,
+			fontSize: '1.8rem',
+			'@media (min-width:200px)': {
+				fontSize: '1.0rem',
+			},
+			'@media (min-width:372px)': {
+				fontSize: '1.4rem',
+			},
+			'@media (min-width:664px)': {
+				fontSize: '2.2rem',
+			},
+			'@media (min-width:900px)': {
+				fontSize: '2.5rem',
+			},
+			'@media (min-width:1100px)': {
+				fontSize: '3.0rem',
+			},
+		},
+		buttonsHome: {
+			fontFamily: 'Lato',
+			fontWeight: 700,
+			fontSize: '1.0rem',
+
+			'@media (min-width:200px)': {
+				fontSize: '0.6rem',
+			},
+			'@media (min-width:372px)': {
+				fontSize: '0.8rem',
+			},
+			'@media (min-width:664px)': {
+				fontSize: '1.1rem',
+			},
+			'@media (min-width:900px)': {
+				fontSize: '1.3rem',
+			},
+			'@media (min-width:1100px)': {
+				fontSize: '1.6rem',
+			},
+		},
 	},
 	breakpoints: {
 		values: {
@@ -155,7 +196,7 @@ const theme = createTheme({
 			xs: 372,
 			sm: 664,
 			md: 900,
-			lg: 1200,
+			lg: 1100,
 			xl: 1536,
 		},
 	},
