@@ -15,6 +15,7 @@ import {
 	Toolbar,
 	Avatar,
 	Divider,
+	Link,
 } from '@mui/material';
 import Image from 'next/image';
 import IconButton from '@mui/material/IconButton';
@@ -59,17 +60,19 @@ export default function NavBar() {
 			<AppBar position='fixed' sx={{ bgcolor: 'primary.700' }}>
 				<Toolbar>
 					<Image src='/logo.png' alt='Upb Logo White' width={32} height={32} />
-					<Typography
-						ml={{ xxs: 1, xs: 1, sm: 3 }}
-						variant='header2'
+
+					<Link
 						color='white.main'
-						href=''
+						variant='header2'
+						underline='none'
 						sx={{
 							flexGrow: 1,
 						}}
+						ml={{ xxs: 1, xs: 1, sm: 3 }}
+						href='/'
 					>
 						Solar Remote Lab
-					</Typography>
+					</Link>
 
 					{user ? (
 						<Box mr={{ xxs: 0, xs: 0, sm: 1 }} sx={{ flexGrow: 0 }}>
@@ -163,24 +166,6 @@ export default function NavBar() {
 										overflow: 'visible',
 										filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
 										mt: 1.5,
-										'& .MuiAvatar-root': {
-											width: 32,
-											height: 32,
-											ml: -0.5,
-											mr: 1,
-										},
-										'&:before': {
-											content: '""',
-											display: 'block',
-											position: 'absolute',
-											top: 0,
-											right: 14,
-											width: 10,
-											height: 10,
-											bgcolor: 'background.paper',
-											transform: 'translateY(-50%) rotate(45deg)',
-											zIndex: 0,
-										},
 									},
 								}}
 							>

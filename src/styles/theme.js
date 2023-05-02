@@ -67,6 +67,52 @@ const theme = createTheme({
 				fontSize: '1.6rem',
 			},
 		},
+		titleDialog: {
+			fontFamily: 'Lato',
+			fontWeight: 700,
+			fontSize: '0.7rem',
+			'@media (min-width:318px)': {
+				fontSize: '0.9rem',
+			},
+			'@media (min-width:360px)': {
+				fontSize: '1.0rem',
+			},
+			'@media (min-width:472px)': {
+				fontSize: '1.2rem',
+			},
+			'@media (min-width:538px)': {
+				fontSize: '1.0rem',
+			},
+			'@media (min-width:573px)': {
+				fontSize: '1.2rem',
+			},
+			'@media (min-width:664px)': {
+				fontSize: '1.4rem',
+			},
+			'@media (min-width:712px)': {
+				fontSize: '1.6rem',
+			},
+		},
+		dataDialog: {
+			fontFamily: 'Lato',
+			fontSize: '0.6rem',
+			'@media (min-width:318px)': {
+				fontSize: '0.8rem',
+			},
+			'@media (min-width:360px)': {
+				fontSize: '0.9rem',
+			},
+			'@media (min-width:472px)': {
+				fontSize: '1.1rem',
+			},
+			'@media (min-width:538px)': {
+				fontSize: '1.0rem',
+			},
+			'@media (min-width:664px)': {
+				fontSize: '1.2rem',
+			},
+		},
+
 		body1: {
 			fontFamily: 'Lato',
 			fontSize: '0.4rem',
@@ -127,9 +173,14 @@ const theme = createTheme({
 
 		buttons2: {
 			fontSize: '0.6rem',
-
-			'@media (min-width:372px)': {
+			'@media (min-width:325px)': {
+				fontSize: '0.7rem',
+			},
+			'@media (min-width:373px)': {
 				fontSize: '0.8rem',
+			},
+			'@media (min-width:428px)': {
+				fontSize: '0.9rem',
 			},
 			'@media (min-width:664px)': {
 				fontSize: '1rem',
@@ -194,6 +245,7 @@ const theme = createTheme({
 		values: {
 			xxs: 0,
 			xs: 372,
+			s: 538,
 			sm: 664,
 			md: 900,
 			lg: 1100,

@@ -13,66 +13,64 @@ import {
 import HomeButtons from '../components/HomeButtons.jsx';
 export default function Home() {
 	return (
-		<>
-			<main className={styles.main}>
-				<div className={styles.container}>
-					<Head>
-						<title>UPB Solar Remote Lab</title>
-						<meta
-							name='description'
-							content='Remote Laboratory for Solar Energy'
-						/>
-						<link rel='icon' href='/upb.ico' />
-					</Head>
-				</div>
+		<main className={styles.main}>
+			<div className={styles.container}>
+				<Head>
+					<title>UPB Solar Remote Lab</title>
+					<meta
+						name='description'
+						content='Remote Laboratory for Solar Energy'
+					/>
+					<link rel='icon' href='/upb.ico' />
+				</Head>
+			</div>
 
-				<Card
-					sx={{
-						height: '100vh',
-						width: '100%',
-						borderRadius: 0,
-					}}
-				>
-					<CardContent sx={{ p: 0, m: 0, borderRadius: 0 }}>
+			<Card
+				sx={{
+					height: '100vh',
+					width: '100%',
+					borderRadius: 0,
+				}}
+			>
+				<CardContent sx={{ p: 0, m: 0, borderRadius: 0 }}>
+					<div
+						style={{
+							position: 'relative',
+						}}
+					>
+						<CardMedia
+							sx={{
+								height: '100vh',
+								width: '100%',
+							}}
+							component='img'
+							image='/solarpanelwp.jpeg'
+							alt='solar panel wps'
+						/>
 						<div
 							style={{
-								position: 'relative',
+								position: 'absolute',
+								color: 'white',
+								top: '50%',
+								left: '50%',
+								transform: 'translate(-50%, -50%)',
+								width: 'max-content',
 							}}
 						>
-							<CardMedia
-								sx={{
-									height: '100vh',
-									width: '100%',
-								}}
-								component='img'
-								image='/solarpanelwp.jpeg'
-								alt='solar panel wps'
-							/>
-							<div
-								style={{
-									position: 'absolute',
-									color: 'white',
-									top: '50%',
-									left: '50%',
-									transform: 'translate(-50%, -50%)',
-									width: 'max-content',
-								}}
-							>
-								<Typography variant='headerHome' color='primary.800'>
-									Welcome to{' '}
-								</Typography>
-								<Typography variant='headerHome' color='secondary.main'>
-									UPB{' '}
-								</Typography>
-								<Typography variant='headerHome'>Solar Remote Lab</Typography>
+							<Typography variant='headerHome' color='primary.800'>
+								Welcome to{' '}
+							</Typography>
+							<Typography variant='headerHome' color='secondary.main'>
+								UPB{' '}
+							</Typography>
+							<Typography variant='headerHome'>Solar Remote Lab</Typography>
 
-								<HomeButtons></HomeButtons>
-							</div>
+							<HomeButtons></HomeButtons>
 						</div>
-					</CardContent>
-				</Card>
-			</main>
-		</>
+					</div>
+				</CardContent>
+			</Card>
+		</main>
 	);
 }
 
