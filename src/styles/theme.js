@@ -72,9 +72,15 @@ const theme = createTheme({
 			fontWeight: 700,
 			fontSize: '0.7rem',
 			'@media (min-width:318px)': {
+				fontSize: '0.8rem',
+			},
+			'@media (min-width:341px)': {
 				fontSize: '0.9rem',
 			},
 			'@media (min-width:360px)': {
+				fontSize: '0.9rem',
+			},
+			'@media (min-width:386px)': {
 				fontSize: '1.0rem',
 			},
 			'@media (min-width:472px)': {
@@ -173,7 +179,7 @@ const theme = createTheme({
 
 		buttons2: {
 			fontSize: '0.6rem',
-			'@media (min-width:325px)': {
+			'@media (min-width:326px)': {
 				fontSize: '0.7rem',
 			},
 			'@media (min-width:373px)': {

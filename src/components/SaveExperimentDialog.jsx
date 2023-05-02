@@ -26,7 +26,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 				},
 			}}
 		>
-			<Box m={{ xxs: 2, xs: 3, s: 4 }}>
+			<Box m={{ xxs: 3, xs: 4, s: 4 }}>
 				<Grid container>
 					<Grid item xxs={12} xs={12}>
 						<Typography variant='header1' color='secondary'>
