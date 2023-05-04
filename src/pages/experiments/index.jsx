@@ -1,9 +1,11 @@
 import SaveExperimentDialog from '../../components/SaveExperimentDialog';
+import ExperimentsListDialog from '../../components/ExperimentsList';
 import { Box, Typography, Button, Stack } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 export default function Experiments() {
 	const [openSaveExperiment, setOpenSaveExperiment] = useState(false);
+	const [openExperimentsList, setOpenExperimentsList] = useState(false);
 	return (
 		<Box
 			sx={{
@@ -40,7 +42,7 @@ export default function Experiments() {
 						textTransform: 'none',
 						borderColor: 'primary.700',
 					}}
-					onClick={() => setOpenSaveExperiment(true)}
+					onClick={() => setOpenExperimentsList(true)}
 				>
 					<Typography
 						color='primary.700'
@@ -55,6 +57,10 @@ export default function Experiments() {
 				<SaveExperimentDialog
 					open={openSaveExperiment}
 					handleClose={() => setOpenSaveExperiment(false)}
+				/>
+				<ExperimentsListDialog
+					open={openExperimentsList}
+					handleClose={() => setOpenExperimentsList(false)}
 				/>
 			</Stack>
 		</Box>

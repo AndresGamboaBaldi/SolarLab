@@ -41,6 +41,7 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 			PaperProps={{
 				sx: {
 					borderRadius: '24px',
+					maxWidth: '660px',
 				},
 			}}
 		>

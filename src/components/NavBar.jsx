@@ -1,7 +1,7 @@
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ScienceIcon from '@mui/icons-material/Science';
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
-import WifiProtectedSetupIcon from '@mui/icons-material/WifiProtectedSetup';
+import ExperimentsListDialog from '../components/ExperimentsList';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -31,6 +31,8 @@ export default function NavBar() {
 	const [openSignup, setOpenSignUp] = useState(false);
 	const [anchorElUser, setAnchorElUser] = useState(null);
 	const { user, setUser } = useContext(UserContext);
+
+	const [openExperimentsList, setOpenExperimentsList] = useState(false);
 
 	const handleOpenUserMenu = (event) => {
 		setAnchorElUser(event.currentTarget);
@@ -101,7 +103,7 @@ export default function NavBar() {
 									mr: { xxs: 0, xs: 0, sm: 1 },
 								}}
 							>
-								<IconButton>
+								<IconButton onClick={() => setOpenExperimentsList(true)}>
 									<ScienceIcon
 										sx={{
 											fontSize: { xxs: '20px', xs: '24px', sm: '32px' },
@@ -200,6 +202,10 @@ export default function NavBar() {
 									/>
 									<Typography variant='body2'>Logout</Typography>
 								</MenuItem>
+								<ExperimentsListDialog
+									open={openExperimentsList}
+									handleClose={() => setOpenExperimentsList(false)}
+								/>
 							</Menu>
 						</Box>
 					) : (

@@ -23,6 +23,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 			PaperProps={{
 				sx: {
 					borderRadius: '24px',
+					maxWidth: '660px',
 				},
 			}}
 		>
@@ -346,6 +347,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 							textTransform: 'none',
 							borderColor: 'primary.700',
 						}}
+						onClick={handleClose}
 					>
 						<Typography
 							mx={{ xxs: 0, xs: 0, sm: 1 }}
