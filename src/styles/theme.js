@@ -64,10 +64,10 @@ const theme = createTheme({
 				fontSize: '0.8rem',
 			},
 			'@media (min-width:326px)': {
-				fontSize: '1.0rem',
+				fontSize: '0.9rem',
 			},
 			'@media (min-width:388px)': {
-				fontSize: '1.1rem',
+				fontSize: '1.0rem',
 			},
 			'@media (min-width:538px)': {
 				fontSize: '1.4rem',
