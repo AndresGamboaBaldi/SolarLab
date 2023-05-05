@@ -87,10 +87,8 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								onChange={(e) => setEmail(e.target.value)}
 								inputProps={{
 									style: {
-										height: '1.6rem',
 										padding: '8px',
 										fontFamily: 'Lato',
-										fontSize: '1.2rem',
 									},
 								}}
 							/>
@@ -115,10 +113,8 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								onChange={(e) => setPassword(e.target.value)}
 								InputProps={{
 									style: {
-										height: '2.6rem',
 										padding: '0',
 										fontFamily: 'Lato',
-										fontSize: '1.2rem',
 									},
 									endAdornment: (
 										<InputAdornment position='end'>
@@ -156,10 +152,8 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								error={!!passwordError}
 								InputProps={{
 									style: {
-										height: '2.6rem',
 										padding: '0',
 										fontFamily: 'Lato',
-										fontSize: '1.2rem',
 									},
 									endAdornment: (
 										<InputAdornment position='end'>

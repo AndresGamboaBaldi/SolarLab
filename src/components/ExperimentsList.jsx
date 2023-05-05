@@ -123,7 +123,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 		>
 			<Box
 				my={{ xxs: 3, xs: 3, s: 4, sm: 5 }}
-				mx={{ xxs: 3, xs: 4, s: 5, sm: 7 }}
+				mx={{ xxs: 3, xs: 4, s: 5, sm: 6 }}
 				sx={{
 					height: '100%',
 					width: 'auto',
@@ -173,12 +173,6 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 								color: 'blacky.main',
 								fontFamily: 'Lato',
 								fontSize: '0.7rem',
-								'@media (min-width:306px)': {
-									fontSize: '0.8rem',
-								},
-								'@media (min-width:412px)': {
-									fontSize: '0.9rem',
-								},
 								'@media (min-width:644px)': {
 									fontSize: '1.0rem',
 								},
@@ -194,12 +188,6 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 								fontFamily: 'Lato',
 								fontWeight: 700,
 								fontSize: '0.7rem',
-								'@media (min-width:306px)': {
-									fontSize: '1.0rem',
-								},
-								'@media (min-width:412px)': {
-									fontSize: '1.1rem',
-								},
 								'@media (min-width:644px)': {
 									fontSize: '1.2rem',
 								},
@@ -247,9 +235,12 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 								fontFamily: 'Lato',
 								fontSize: '0.7rem',
 								'@media (min-width:306px)': {
-									fontSize: '0.8rem',
+									fontSize: '0.7rem',
 								},
 								'@media (min-width:412px)': {
+									fontSize: '0.8rem',
+								},
+								'@media (min-width:512px)': {
 									fontSize: '0.9rem',
 								},
 							},

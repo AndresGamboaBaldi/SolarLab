@@ -60,7 +60,7 @@ export default function NavBar() {
 	return (
 		<Box>
 			<AppBar position='fixed' sx={{ bgcolor: 'primary.700' }}>
-				<Toolbar>
+				<Toolbar sx={{ px: { xxs: 2, xs: 2, s: 4, sm: 6 } }}>
 					<Image src='/logo.png' alt='Upb Logo White' width={32} height={32} />
 
 					<Link
@@ -77,7 +77,7 @@ export default function NavBar() {
 					</Link>
 
 					{user ? (
-						<Box mr={{ xxs: 0, xs: 0, sm: 1 }} sx={{ flexGrow: 0 }}>
+						<Box sx={{ flexGrow: 0 }}>
 							<Tooltip
 								title='Tutorial'
 								enterTouchDelay={0}
@@ -128,7 +128,6 @@ export default function NavBar() {
 									'@media (min-width:446px)': {
 										display: 'inline-flex',
 									},
-									mr: { xxs: 0, xs: 0, sm: 4 },
 								}}
 							>
 								<Typography variant='body1'>{user.name}</Typography>
@@ -239,7 +238,6 @@ export default function NavBar() {
 								variant='contained'
 								sx={{
 									py: 0,
-									mr: { xxs: 0, xs: 0, sm: 4 },
 									textTransform: 'none',
 								}}
 								onClick={() => setOpenSignIn(true)}

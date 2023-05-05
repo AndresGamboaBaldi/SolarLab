@@ -84,10 +84,8 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 								size='small'
 								inputProps={{
 									style: {
-										height: '1.6rem',
 										padding: '8px',
 										fontFamily: 'Lato',
-										fontSize: '1.2rem',
 									},
 								}}
 							/>
@@ -114,10 +112,8 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 								onChange={(e) => setLogPass(e.target.value)}
 								InputProps={{
 									style: {
-										height: '2.6rem',
 										padding: '0',
 										fontFamily: 'Lato',
-										fontSize: '1.2rem',
 									},
 									endAdornment: (
 										<InputAdornment position='end'>

@@ -49,6 +49,9 @@ const theme = createTheme({
 			'@media (min-width:372px)': {
 				fontSize: '1.6rem',
 			},
+			'@media (min-width:538px)': {
+				fontSize: '1.8rem',
+			},
 			'@media (min-width:664px)': {
 				fontSize: '2.3rem',
 			},
@@ -60,8 +63,14 @@ const theme = createTheme({
 			'@media (min-width:306px)': {
 				fontSize: '0.8rem',
 			},
+			'@media (min-width:326px)': {
+				fontSize: '1.0rem',
+			},
 			'@media (min-width:388px)': {
 				fontSize: '1.1rem',
+			},
+			'@media (min-width:538px)': {
+				fontSize: '1.4rem',
 			},
 			'@media (min-width:664px)': {
 				fontSize: '1.6rem',
@@ -154,6 +163,9 @@ const theme = createTheme({
 			'@media (min-width:318px)': {
 				fontSize: '0.8rem',
 			},
+			'@media (min-width:538px)': {
+				fontSize: '0.9rem',
+			},
 			'@media (min-width:664px)': {
 				fontSize: '1.2rem',
 			},
@@ -170,7 +182,42 @@ const theme = createTheme({
 				fontSize: '0.7rem',
 			},
 			'@media (min-width:314px)': {
+				fontSize: '0.7rem',
+			},
+			'@media (min-width:454px)': {
 				fontSize: '0.8rem',
+			},
+			'@media (min-width:496px)': {
+				fontSize: '0.8rem',
+			},
+			'@media (min-width:538px)': {
+				fontSize: '1.0rem',
+			},
+			'@media (min-width:664px)': {
+				fontSize: '1.2rem',
+			},
+		},
+		buttonsExperiments: {
+			fontFamily: 'Lato',
+			fontSize: '0.6rem',
+			fontWeight: '700',
+			'@media (min-width:281px)': {
+				fontSize: '0.6rem',
+			},
+			'@media (min-width:298px)': {
+				fontSize: '0.7rem',
+			},
+			'@media (min-width:314px)': {
+				fontSize: '0.8rem',
+			},
+			'@media (min-width:380px)': {
+				fontSize: '0.9rem',
+			},
+			'@media (min-width:496px)': {
+				fontSize: '0.9rem',
+			},
+			'@media (min-width:538px)': {
+				fontSize: '1.0rem',
 			},
 			'@media (min-width:664px)': {
 				fontSize: '1.2rem',
@@ -201,6 +248,7 @@ const theme = createTheme({
 			'@media (min-width:372px)': {
 				fontSize: '1.1rem',
 			},
+
 			'@media (min-width:664px)': {
 				fontSize: '1.6rem',
 			},
@@ -214,6 +262,9 @@ const theme = createTheme({
 			},
 			'@media (min-width:372px)': {
 				fontSize: '1.4rem',
+			},
+			'@media (min-width:538px)': {
+				fontSize: '1.7rem',
 			},
 			'@media (min-width:664px)': {
 				fontSize: '2.2rem',
