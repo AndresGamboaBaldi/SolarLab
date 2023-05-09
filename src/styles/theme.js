@@ -224,19 +224,70 @@ const theme = createTheme({
 			},
 		},
 
-		buttons2: {
+		body3: {
+			fontFamily: 'Lato',
 			fontSize: '0.6rem',
 			'@media (min-width:326px)': {
 				fontSize: '0.7rem',
 			},
 			'@media (min-width:373px)': {
-				fontSize: '0.8rem',
+				fontSize: '0.7rem',
 			},
 			'@media (min-width:428px)': {
-				fontSize: '0.9rem',
+				fontSize: '0.8rem',
 			},
 			'@media (min-width:664px)': {
-				fontSize: '1rem',
+				fontSize: '0.9rem',
+			},
+			'@media (min-width:800px)': {
+				fontSize: '1.0rem',
+			},
+		},
+		titleDepartment: {
+			fontFamily: 'Lato',
+			fontSize: '0.6rem',
+			fontWeight: '700',
+			fontSize: '0.8rem',
+			'@media (min-width:326px)': {
+				fontSize: '0.9rem',
+			},
+			'@media (min-width:373px)': {
+				fontSize: '1.0rem',
+			},
+
+			'@media (min-width:496px)': {
+				fontSize: '1.2rem',
+			},
+		},
+
+		dataDepartment: {
+			fontFamily: 'Lato',
+			fontSize: '0.8rem',
+			'@media (min-width:326px)': {
+				fontSize: '0.9rem',
+			},
+			'@media (min-width:373px)': {
+				fontSize: '1.0rem',
+			},
+			'@media (min-width:998px)': {
+				fontSize: '1.1rem',
+			},
+		},
+		buttons2: {
+			fontFamily: 'Lato',
+			fontSize: '0.6rem',
+			fontWeight: 700,
+			'@media (min-width:326px)': {
+				fontSize: '0.7rem',
+			},
+			'@media (min-width:373px)': {
+				fontSize: '0.7rem',
+			},
+			'@media (min-width:428px)': {
+				fontSize: '0.8rem',
+			},
+			'@media (min-width:664px)': {
+				fontSize: '0.9rem',
 			},
 		},
 

@@ -10,7 +10,7 @@ export default function ExperimentButtons() {
 			<Stack
 				direction='row'
 				justifyContent='end'
-				mt={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
+				my={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
 				sx={{
 					display: 'none',
 
@@ -63,7 +63,7 @@ export default function ExperimentButtons() {
 			<Stack
 				direction='row'
 				justifyContent='end'
-				mt={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
+				my={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
 				sx={{
 					display: 'flex',
 

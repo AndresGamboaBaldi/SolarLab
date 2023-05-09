@@ -25,7 +25,7 @@ export default function CitiesCheckboxes() {
 		>
 			<FormGroup row>
 				<FormControlLabel
-					control={<Checkbox sx={checkBoxStyle} />}
+					control={<Checkbox defaultChecked sx={checkBoxStyle} />}
 					label={<Typography variant='buttons1'>Cochabamba</Typography>}
 				/>
 				<FormControlLabel

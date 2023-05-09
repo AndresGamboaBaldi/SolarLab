@@ -3,6 +3,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import React, { useState, useContext } from 'react';
 import ExperimentActions from '../components/ExperimentActions';
 
+const dataGridStyle = {};
+
 const columns = [
 	{ field: 'id', headerName: 'ID', width: 70 },
 	{
@@ -165,10 +167,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 								display: 'flex',
 							},
 							boxShadow: 0,
-							borderTop: 0,
-							borderLeft: 0,
-							borderRight: 0,
-							borderColor: 'blacky.main',
+							border: 'none',
 							'& .MuiDataGrid-cell': {
 								color: 'blacky.main',
 								fontFamily: 'Lato',
@@ -182,7 +181,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 							},
 							'& .MuiDataGrid-columnHeader': {
 								color: 'blacky.main',
-								borderBottom: 2,
+								borderBottom: 3,
 							},
 							'& .MuiDataGrid-columnHeaderTitle': {
 								fontFamily: 'Lato',
@@ -195,9 +194,12 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 									fontSize: '1.3rem',
 								},
 							},
+							'& .MuiDataGrid-virtualScroller': {
+								color: 'primary.700',
+							},
 							'& .MuiDataGrid-footerContainer': {
-								color: 'blacky.main',
 								boxShadow: 0,
+								borderBottom: 'none',
 							},
 						}}
 					/>
@@ -225,11 +227,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 							'@media (min-width:644px)': {
 								display: 'none',
 							},
-							boxShadow: 0,
-							borderTop: 0,
-							borderLeft: 0,
-							borderRight: 0,
-							borderColor: 'blacky.main',
+							border: 'none',
 							'& .MuiDataGrid-cell': {
 								color: 'blacky.main',
 								fontFamily: 'Lato',
@@ -246,7 +244,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 							},
 							'& .MuiDataGrid-columnHeader': {
 								color: 'blacky.main',
-								borderBottom: 2,
+								borderBottom: 3,
 							},
 							'& .MuiDataGrid-columnHeaderTitle': {
 								fontFamily: 'Lato',
@@ -260,8 +258,8 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 								},
 							},
 							'& .MuiDataGrid-footerContainer': {
-								color: 'blacky.main',
 								boxShadow: 0,
+								borderBottom: 'none',
 							},
 						}}
 					/>

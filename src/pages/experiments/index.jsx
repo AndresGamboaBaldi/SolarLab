@@ -2,8 +2,9 @@ import CitiesTypography from '../../components/CitiesTypography';
 import CitiesCheckboxes from '../../components/CitiesCheckboxes';
 import CitiesSelect from '../../components/CitiesSelect';
 import ExperimentButtons from '../../components/ExperimentButtons';
+import DepartamentExperiment from '../../components/DepartamentExperiment';
 import { Box, Typography, Grid } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 export default function Experiments() {
 	return (
@@ -54,6 +55,7 @@ export default function Experiments() {
 					<CitiesSelect></CitiesSelect>
 				</Grid>
 			</Grid>
+			<DepartamentExperiment></DepartamentExperiment>
 			<ExperimentButtons></ExperimentButtons>
 		</Box>
 	);

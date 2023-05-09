@@ -66,7 +66,7 @@ export default function CitiesSelect() {
 					renderValue={(selected) => {
 						if (selected.length === 0) {
 							return (
-								<Typography variant='buttons2'>
+								<Typography variant='body3'>
 									Select the Cities to Display
 								</Typography>
 							);
