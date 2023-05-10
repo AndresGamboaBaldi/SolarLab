@@ -7,6 +7,7 @@ import {
 	Card,
 	TextField,
 } from '@mui/material';
+import { server } from '../utils/config';
 import { styled } from '@mui/material/styles';
 import LineChart from './LineChart';
 import { ChartData } from '@/data/mockData';
@@ -20,6 +21,19 @@ export default function DepartamentExperiment() {
 		maxWidth: '100%',
 		maxHeight: '100%',
 	});
+
+	const sendMqttMessage = async (action) => {
+		const message = { action: action };
+		const response = await fetch(`${server}/api/mqtt`, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+			body: JSON.stringify(message),
+		});
+		const data = await response.json();
+		console.log(data);
+	};
 
 	const [data, setData] = useState({
 		labels: ChartData.map((data) => data.voltage),
@@ -147,6 +161,9 @@ export default function DepartamentExperiment() {
 										}}
 										variant='buttons2'
 										color='white'
+										onClick={() => {
+											sendMqttMessage('UP');
+										}}
 									>
 										0°
 									</Typography>
@@ -158,6 +175,9 @@ export default function DepartamentExperiment() {
 										py: 0,
 										textTransform: 'none',
 										mx: { xxs: 0, xs: 1, s: 1, sm: 2, md: 1, lg: 1 },
+									}}
+									onClick={() => {
+										sendMqttMessage('DOWN');
 									}}
 								>
 									<Typography
@@ -176,6 +196,9 @@ export default function DepartamentExperiment() {
 										bgcolor: 'primary.700',
 										py: 0,
 										textTransform: 'none',
+									}}
+									onClick={() => {
+										sendMqttMessage('OFF');
 									}}
 								>
 									<Typography
@@ -203,7 +226,7 @@ export default function DepartamentExperiment() {
 							<Grid item xs mb={{ xxs: 1, xs: 2, s: 3, sm: 2 }}>
 								<Box
 									sx={{
-										width: '80vw',
+										width: '79vw',
 										'@media (min-width:900px)': {
 											width: '55vw',
 											height: '35vh',
@@ -212,7 +235,7 @@ export default function DepartamentExperiment() {
 											width: '65vw',
 											height: '35vh',
 										},
-										height: '25vh',
+										height: '23vh',
 									}}
 								>
 									<LineChart chartData={data}></LineChart>
