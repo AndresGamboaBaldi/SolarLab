@@ -378,6 +378,49 @@ const theme = createTheme({
 				},
 			},
 		},
+		MuiSlider: {
+			styleOverrides: {
+				root: {
+					'& .MuiSlider-thumb': {
+						height: 28,
+						width: 28,
+						backgroundColor: '#fff',
+						boxShadow:
+							'0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)',
+						'&:focus, &:hover, &.Mui-active': {
+							boxShadow:
+								'0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.02)',
+							// Reset on touch devices, it doesn't add specificity
+							'@media (hover: none)': {
+								boxShadow:
+									'0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)',
+							},
+						},
+					},
+					'& .MuiSlider-valueLabel': {
+						fontSize: 12,
+						fontWeight: 'normal',
+						top: -6,
+						backgroundColor: '#000',
+						color: '#203587',
+						'&:before': {
+							display: 'none',
+						},
+						'& *': {
+							background: 'transparent',
+							color: '#FFF',
+						},
+					},
+					'& .MuiSlider-track': {
+						border: 'none',
+					},
+					'& .MuiSlider-rail': {
+						opacity: 0.5,
+						backgroundColor: '#bfbfbf',
+					},
+				},
+			},
+		},
 	},
 });
 

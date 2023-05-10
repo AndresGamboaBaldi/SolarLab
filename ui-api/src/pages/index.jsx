@@ -13,7 +13,7 @@ export default function Home() {
 						name='description'
 						content='Remote Laboratory for Solar Energy'
 					/>
-					<link rel='icon' href='/upb.ico' />
+					<link rel='icon' href='/logoYellow.png' />
 				</Head>
 			</div>
 

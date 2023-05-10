@@ -6,6 +6,7 @@ import {
 	Button,
 	Card,
 	TextField,
+	Slider,
 } from '@mui/material';
 import { server } from '../utils/config';
 import { styled } from '@mui/material/styles';
@@ -32,7 +33,6 @@ export default function DepartamentExperiment() {
 			body: JSON.stringify(message),
 		});
 		const data = await response.json();
-		console.log(data);
 	};
 
 	const [data, setData] = useState({
@@ -105,7 +105,7 @@ export default function DepartamentExperiment() {
 									}}
 								/>
 							</Grid>
-							<Grid item mb={2} textAlign='center'>
+							<Grid item mb={1} textAlign='center'>
 								<Typography
 									mr={1}
 									variant='titleDepartment'
@@ -117,31 +117,22 @@ export default function DepartamentExperiment() {
 								>
 									Panel Angle:
 								</Typography>
-								<TextField
-									sx={{
-										display: 'inline-block',
-										verticalAlign: 'middle',
-										width: '10vw',
-										'@media (min-width:900px)': {
-											width: '10vh',
-										},
-									}}
-									inputProps={{
-										inputMode: 'numeric',
-										pattern: '[0-9]*',
-										style: {
-											padding: '6px',
-											fontFamily: 'Lato',
-											textAlign: 'center',
-										},
-									}}
-									variant='outlined'
-									size='small'
-									color='secondary'
-									focused
-									value='45'
-								/>
 							</Grid>
+							<Grid
+								item
+								mb={1}
+								sx={{ display: 'flex' }}
+								justifyContent='center'
+							>
+								<Box width='80%'>
+									<Slider
+										size='medium'
+										defaultValue={45}
+										valueLabelDisplay='auto'
+									/>
+								</Box>
+							</Grid>
+
 							<Grid
 								item
 								textAlign='center'

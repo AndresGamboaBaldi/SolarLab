@@ -13,7 +13,12 @@ export default function NavBar() {
 		<Box>
 			<AppBar position='fixed' sx={{ bgcolor: 'primary.700' }}>
 				<Toolbar sx={{ px: { xxs: 2, xs: 2, s: 4, sm: 6 } }}>
-					<Image src='/logo.png' alt='Upb Logo White' width={32} height={32} />
+					<Image
+						src='/logoYellow.png'
+						alt='Upb Logo White'
+						width={32}
+						height={32}
+					/>
 
 					<Link
 						color='white.main'
