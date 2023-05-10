@@ -1,14 +1,23 @@
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS } from 'chart.js/auto';
-import { Typography, Box } from '@mui/material';
+import { useState, useEffect } from 'react';
 
 export default function LineChart({ chartData }) {
+	const [isMobile, setIsMobile] = useState(false);
+	//choose the screen size
+	const handleResize = () => {
+		if (window.innerWidth < 720) {
+			setIsMobile(true);
+		} else {
+			setIsMobile(false);
+		}
+	};
 	const options = {
 		responsive: true,
 		maintainAspectRatio: false,
 		plugins: {
 			legend: {
-				position: 'bottom',
+				position: 'right',
 			},
 		},
 		scales: {
@@ -18,7 +27,7 @@ export default function LineChart({ chartData }) {
 					text: 'Voltage (V)',
 					font: {
 						family: 'Lato',
-						size: 10,
+						size: 20,
 						style: 'normal',
 						lineHeight: 1.2,
 						weight: 'bold',
@@ -32,7 +41,7 @@ export default function LineChart({ chartData }) {
 					text: 'Current (A)',
 					font: {
 						family: 'Lato',
-						size: 10,
+						size: 20,
 						style: 'normal',
 						lineHeight: 1.2,
 						weight: 'bold',
@@ -44,6 +53,29 @@ export default function LineChart({ chartData }) {
 			},
 		},
 	};
+	const mobileOptions = {
+		responsive: true,
+		maintainAspectRatio: false,
+		plugins: {
+			legend: {
+				position: 'bottom',
+			},
+		},
+		scales: {
+			y: {
+				min: 0,
+				max: 12,
+			},
+		},
+	};
 
-	return <Line data={chartData} options={options}></Line>;
+	// create an event listener
+	useEffect(() => {
+		window.addEventListener('resize', handleResize);
+	});
+	if (isMobile) {
+		return <Line data={chartData} options={mobileOptions}></Line>;
+	} else {
+		return <Line data={chartData} options={options}></Line>;
+	}
 }
