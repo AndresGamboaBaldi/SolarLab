@@ -3,6 +3,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import React, { useState, useContext } from 'react';
 import ExperimentActions from '../components/ExperimentActions';
 
+const dataGridStyle = {};
+
 const columns = [
 	{ field: 'id', headerName: 'ID', width: 70 },
 	{
@@ -123,7 +125,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 		>
 			<Box
 				my={{ xxs: 3, xs: 3, s: 4, sm: 5 }}
-				mx={{ xxs: 3, xs: 4, s: 5, sm: 7 }}
+				mx={{ xxs: 3, xs: 4, s: 5, sm: 6 }}
 				sx={{
 					height: '100%',
 					width: 'auto',
@@ -165,20 +167,11 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 								display: 'flex',
 							},
 							boxShadow: 0,
-							borderTop: 0,
-							borderLeft: 0,
-							borderRight: 0,
-							borderColor: 'blacky.main',
+							border: 'none',
 							'& .MuiDataGrid-cell': {
 								color: 'blacky.main',
 								fontFamily: 'Lato',
 								fontSize: '0.7rem',
-								'@media (min-width:306px)': {
-									fontSize: '0.8rem',
-								},
-								'@media (min-width:412px)': {
-									fontSize: '0.9rem',
-								},
 								'@media (min-width:644px)': {
 									fontSize: '1.0rem',
 								},
@@ -188,18 +181,12 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 							},
 							'& .MuiDataGrid-columnHeader': {
 								color: 'blacky.main',
-								borderBottom: 2,
+								borderBottom: 3,
 							},
 							'& .MuiDataGrid-columnHeaderTitle': {
 								fontFamily: 'Lato',
 								fontWeight: 700,
 								fontSize: '0.7rem',
-								'@media (min-width:306px)': {
-									fontSize: '1.0rem',
-								},
-								'@media (min-width:412px)': {
-									fontSize: '1.1rem',
-								},
 								'@media (min-width:644px)': {
 									fontSize: '1.2rem',
 								},
@@ -207,9 +194,12 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 									fontSize: '1.3rem',
 								},
 							},
+							'& .MuiDataGrid-virtualScroller': {
+								color: 'primary.700',
+							},
 							'& .MuiDataGrid-footerContainer': {
-								color: 'blacky.main',
 								boxShadow: 0,
+								borderBottom: 'none',
 							},
 						}}
 					/>
@@ -237,25 +227,24 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 							'@media (min-width:644px)': {
 								display: 'none',
 							},
-							boxShadow: 0,
-							borderTop: 0,
-							borderLeft: 0,
-							borderRight: 0,
-							borderColor: 'blacky.main',
+							border: 'none',
 							'& .MuiDataGrid-cell': {
 								color: 'blacky.main',
 								fontFamily: 'Lato',
 								fontSize: '0.7rem',
 								'@media (min-width:306px)': {
-									fontSize: '0.8rem',
+									fontSize: '0.7rem',
 								},
 								'@media (min-width:412px)': {
+									fontSize: '0.8rem',
+								},
+								'@media (min-width:512px)': {
 									fontSize: '0.9rem',
 								},
 							},
 							'& .MuiDataGrid-columnHeader': {
 								color: 'blacky.main',
-								borderBottom: 2,
+								borderBottom: 3,
 							},
 							'& .MuiDataGrid-columnHeaderTitle': {
 								fontFamily: 'Lato',
@@ -269,8 +258,8 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 								},
 							},
 							'& .MuiDataGrid-footerContainer': {
-								color: 'blacky.main',
 								boxShadow: 0,
+								borderBottom: 'none',
 							},
 						}}
 					/>

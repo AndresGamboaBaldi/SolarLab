@@ -27,7 +27,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 				},
 			}}
 		>
-			<Box m={{ xxs: 3, xs: 4, s: 4 }}>
+			<Box m={{ xxs: 3, xs: 4, s: 4, sm: 5 }}>
 				<Grid container>
 					<Grid item xxs={12} xs={12}>
 						<Typography variant='header1' color='secondary'>
@@ -191,7 +191,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 						</Typography>
 						<Typography
 							ml={{ xxs: 1, xs: 1, sm: 1 }}
-							variant='buttons2'
+							variant='body3'
 							color='blacky.main'
 						>
 							2 W/m2
@@ -310,7 +310,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 						</Typography>
 						<Typography
 							ml={{ xxs: 1, xs: 1, sm: 1 }}
-							variant='buttons2'
+							variant='body3'
 							color='blacky.main'
 						>
 							2 W/m2

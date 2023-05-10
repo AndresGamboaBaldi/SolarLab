@@ -15,7 +15,7 @@ export default function HomeButtons() {
 	return (
 		<Box
 			sx={{
-				mt: { xxs: 2, xs: 3, sm: 4, md: 6, lg: 7 },
+				mt: { xxs: 2, xs: 3, s: 3, sm: 4, md: 6, lg: 7 },
 			}}
 		>
 			<Button
@@ -23,7 +23,7 @@ export default function HomeButtons() {
 				sx={{
 					textTransform: 'none',
 					bgcolor: 'primary.700',
-					mr: { xxs: 1, xs: 2, sm: 9, md: 7, lg: 7 },
+					mr: { xxs: 1, xs: 2, s: 3, sm: 5, md: 7, lg: 7 },
 				}}
 			>
 				<Link
@@ -31,7 +31,7 @@ export default function HomeButtons() {
 					variant='buttonsHome'
 					underline='none'
 					sx={{
-						mx: { xxs: 0, xs: 1, sm: 3, md: 4, lg: 5 },
+						mx: { xxs: 0, xs: 1, s: 3, sm: 4, md: 4, lg: 5 },
 					}}
 					href='/experiments'
 				>
@@ -49,7 +49,7 @@ export default function HomeButtons() {
 			>
 				<Typography
 					sx={{
-						mx: { xxs: 0, xs: 1, sm: 3, md: 4, lg: 5 },
+						mx: { xxs: 0, xs: 1, s: 3, sm: 4, md: 4, lg: 5 },
 					}}
 					variant='buttonsHome'
 					color='primary.700'

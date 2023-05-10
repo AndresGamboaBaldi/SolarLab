@@ -1,15 +1,7 @@
 import Head from 'next/head';
 import styles from '@/styles/Home.module.scss';
 import React, { useEffect, useState } from 'react';
-import {
-	Box,
-	Card,
-	CardContent,
-	CardMedia,
-	CardActions,
-	Typography,
-	Button,
-} from '@mui/material';
+import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 import HomeButtons from '../components/HomeButtons.jsx';
 export default function Home() {
 	return (
