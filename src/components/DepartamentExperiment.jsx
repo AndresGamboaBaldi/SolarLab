@@ -71,22 +71,21 @@ export default function DepartamentExperiment() {
 							xs={12}
 							s={12}
 							sm={12}
-							md='auto'
-							lg='auto'
+							md={4}
+							lg={3}
 							mb={{ xxs: 1, xs: 2, s: 2, sm: 1, md: 0 }}
-							mr={{ xxs: 0, xs: 0, s: 0, sm: 0, md: 3 }}
 						>
 							<Grid item mb={{ xxs: 1, xs: 1, s: 2, sm: 2 }}>
 								<Img
 									alt='complex'
 									src='/solarpanelarm.jpeg'
 									sx={{
-										width: '50vw',
+										width: '40vw',
 										'@media (min-width:900px)': {
-											width: '35vh',
-											height: '35vh',
+											width: '30vh',
+											height: '30vh',
 										},
-										height: '50vw',
+										height: '40vw',
 										borderRadius: '16px',
 										overflow: 'hidden',
 									}}
@@ -144,12 +143,12 @@ export default function DepartamentExperiment() {
 								>
 									<Typography
 										sx={{
-											mx: { xxs: 0, xs: 0, s: 1, sm: 2, md: 3 },
+											mx: { xxs: 0, xs: 0, s: 1, sm: 2, md: 2, lg: 1 },
 										}}
 										variant='buttons2'
 										color='white'
 									>
-										UP
+										0°
 									</Typography>
 								</Button>
 								<Button
@@ -158,17 +157,17 @@ export default function DepartamentExperiment() {
 										bgcolor: 'primary.700',
 										py: 0,
 										textTransform: 'none',
-										mx: { xxs: 0, xs: 1, s: 1, sm: 2, md: 2 },
+										mx: { xxs: 0, xs: 1, s: 1, sm: 2, md: 1, lg: 1 },
 									}}
 								>
 									<Typography
 										sx={{
-											mx: { xxs: 0, xs: 0, s: 1, sm: 1, md: 2 },
+											mx: { xxs: 0, xs: 0, s: 1, sm: 1, md: 1, lg: 1 },
 										}}
 										variant='buttons2'
 										color='white'
 									>
-										DOWN
+										45°
 									</Typography>
 								</Button>
 								<Button
@@ -181,12 +180,12 @@ export default function DepartamentExperiment() {
 								>
 									<Typography
 										sx={{
-											mx: { xxs: 0, xs: 0, s: 1, sm: 1, md: 2 },
+											mx: { xxs: 0, xs: 0, s: 1, sm: 1, md: 1, lg: 1 },
 										}}
 										variant='buttons2'
 										color='white'
 									>
-										OFF
+										90°
 									</Typography>
 								</Button>
 							</Grid>
@@ -198,14 +197,22 @@ export default function DepartamentExperiment() {
 							xs={12}
 							s={12}
 							sm={12}
-							md
-							lg
+							md={8}
+							lg={9}
 						>
 							<Grid item xs mb={{ xxs: 1, xs: 2, s: 3, sm: 2 }}>
 								<Box
 									sx={{
-										height: '35vh',
-										width: '95%',
+										width: '80vw',
+										'@media (min-width:900px)': {
+											width: '55vw',
+											height: '35vh',
+										},
+										'@media (min-width:1100px)': {
+											width: '65vw',
+											height: '35vh',
+										},
+										height: '25vh',
 									}}
 								>
 									<LineChart chartData={data}></LineChart>

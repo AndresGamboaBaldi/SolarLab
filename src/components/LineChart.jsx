@@ -6,7 +6,7 @@ export default function LineChart({ chartData }) {
 	const [isMobile, setIsMobile] = useState(false);
 	//choose the screen size
 	const handleResize = () => {
-		if (window.innerWidth < 720) {
+		if (window.innerWidth < 900) {
 			setIsMobile(true);
 		} else {
 			setIsMobile(false);
