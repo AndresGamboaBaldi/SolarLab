@@ -7,34 +7,42 @@ import { Box, Typography, Grid } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { server } from '../../utils/config';
+import RingLoader from 'react-spinners/RingLoader';
 
 export default function Experiments() {
 	const [canAccess, setCanAccess] = useState(false);
-
+	const [loading, setLoading] = useState(true);
+	const [message, setMessage] = useState('Loading Session Info...');
+	const [initialState, setInitialState] = useState('first');
 	useEffect(() => {
 		console.log('EXECUTING');
 		reviewAccess();
-	});
+	}, [initialState]);
 	const reviewAccess = async () => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const accessKey = urlParams.get('access_key');
-		if (accessKey === 'admin') {
-			setCanAccess(true);
-		} else {
-			const pwd = urlParams.get('pwd');
-			const message = { access_key: accessKey, pwd: pwd };
-			const response = await fetch(`${server}/api/booking`, {
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				method: 'POST',
-				body: JSON.stringify(message),
-			});
-			const data = await response.json();
-			if (data.status) {
+		if (accessKey != null) {
+			if (accessKey === 'admin') {
 				setCanAccess(true);
 			} else {
-				setCanAccess(false);
+				const pwd = urlParams.get('pwd');
+				const message = { access_key: accessKey, pwd: pwd };
+				const response = await fetch(`${server}/api/booking`, {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					method: 'POST',
+					body: JSON.stringify(message),
+				});
+				const data = await response.json();
+				if (data.status) {
+					setLoading(false);
+					setCanAccess(true);
+				} else {
+					setCanAccess(false);
+					setLoading(false);
+					setMessage('Oops... Your Session not started, come back later');
+				}
 			}
 		}
 	};
@@ -104,19 +112,24 @@ export default function Experiments() {
 				</Box>
 			) : (
 				<Box
-					mt={{ xxs: 10, xs: 10, s: 10, sm: 12 }}
-					px={{ xxs: 2, xs: 2, s: 4, sm: 6 }}
+					sx={{
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						width: '100%',
+						height: '100vh',
+					}}
 				>
-					<Typography variant='buttonsExperiments' color='primary.700'>
-						Remaining Time:
-					</Typography>
-					<Typography
-						ml={{ xxs: 1, xs: 1, s: 2, sm: 1 }}
-						variant='buttonsExperiments'
-						color='blacky.main'
-					>
-						10:32
-					</Typography>
+					<Grid container rowSpacing={3}>
+						<Grid item xxs={12} align='center'>
+							<RingLoader size={96} color={'#F6BD2B'} loading={loading} />
+						</Grid>
+						<Grid item xxs={12} align='center'>
+							<Typography variant='buttonsExperiments' color='black'>
+								{message}
+							</Typography>
+						</Grid>
+					</Grid>
 				</Box>
 			)}
 		</main>
