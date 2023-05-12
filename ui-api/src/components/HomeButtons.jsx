@@ -5,13 +5,6 @@ import { login } from '../utils/login.js';
 import Link from '@mui/material/Link';
 
 export default function HomeButtons() {
-	const { user, setUser } = useContext(UserContext);
-
-	const handleSignIn = async (event) => {
-		const newUser = await login();
-		setUser(newUser);
-	};
-
 	return (
 		<Box
 			sx={{

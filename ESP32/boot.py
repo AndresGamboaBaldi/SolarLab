@@ -5,6 +5,7 @@ from umqttsimple import MQTTClient
 import ubinascii
 import esp
 import json
+from time import sleep
 
 esp.osdebug(None)
 import gc
@@ -49,4 +50,5 @@ oled.text(ssid, 0, 10)
 oled.show()
 while station.isconnected() == False:
     pass
+
 #print(station.ifconfig()[0]);

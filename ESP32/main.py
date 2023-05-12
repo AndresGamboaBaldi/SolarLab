@@ -109,7 +109,7 @@ def restart_and_reconnect():
   oled.text('Connect to MQTT', 0, 10)
   oled.text('Restarting....', 0, 20)
   oled.show()
-  sleep(5)
+  sleep(3)
   machine.reset()
 
 # MQTT Connection
