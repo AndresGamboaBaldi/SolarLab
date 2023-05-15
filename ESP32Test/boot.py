@@ -1,4 +1,5 @@
 import machine
+from machine import ADC
 import ssd1306
 import network
 from umqttsimple import MQTTClient
@@ -7,6 +8,15 @@ import esp
 import json
 from time import sleep
 
+#36 current
+#39 voltage
+voltage_pin = machine.Pin(39, mode=machine.Pin.IN)
+voltage = ADC(voltage_pin)
+voltage.atten(ADC.ATTN_11DB)
+
+current_pin = machine.Pin(36, mode=machine.Pin.IN)
+current = ADC(current_pin)
+current.atten(ADC.ATTN_11DB)
 
 esp.osdebug(None)
 import gc

@@ -1,6 +1,7 @@
 import * as mqtt from 'mqtt'; // import everything inside the mqtt module and give it the namespace "mqtt"
 
-const hostMQTT = 'research.upb.edu';
+//const hostMQTT = '192.168.100.7';
+const hostMQTT = '192.168.18.64';
 
 //MQTT methods
 var client = mqtt.connect(`mqtt://${hostMQTT}`);

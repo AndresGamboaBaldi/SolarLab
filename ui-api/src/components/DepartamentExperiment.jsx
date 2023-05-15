@@ -25,7 +25,7 @@ export default function DepartamentExperiment() {
 
 	const sendMqttMessage = async (action) => {
 		const message = { action: action };
-		const response = await fetch(`${server}/api/mqtt`, {
+		const response = await fetch(`/api/mqtt`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},

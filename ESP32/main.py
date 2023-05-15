@@ -1,10 +1,9 @@
+
+
 import machine
 from time import sleep
-from boot import oled
 import ubinascii
-
 client = MQTTClient(client_id, mqtt_server, port)
-
 
 #States
 OFF = 0

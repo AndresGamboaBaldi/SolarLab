@@ -39,8 +39,9 @@ export default function Experiments() {
 					setLoading(false);
 					setCanAccess(true);
 				} else {
-					setCanAccess(false);
 					setLoading(false);
+					setCanAccess(false);
+
 					setMessage('Oops... Your Session not started, come back later');
 				}
 			}
