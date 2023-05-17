@@ -27,7 +27,7 @@ export default function Experiments() {
 			} else {
 				const pwd = urlParams.get('pwd');
 				const message = { access_key: accessKey, pwd: pwd };
-				const response = await fetch(`${server}/api/booking`, {
+				const response = await fetch(`/api/booking`, {
 					headers: {
 						'Content-Type': 'application/json',
 					},
@@ -41,10 +41,14 @@ export default function Experiments() {
 				} else {
 					setLoading(false);
 					setCanAccess(false);
-
 					setMessage('Oops... Your Session not started, come back later');
 				}
 			}
+		} else {
+			setLoading(false);
+			setMessage(
+				'Oops... Invalid Sesion, Click the link provided by Booking UPB'
+			);
 		}
 	};
 

@@ -9,6 +9,7 @@ DISCONNECTED = 1
 CHARGING = 2
 DISCHARGING = 3
 state = CONNECTED
+reading = False
 
 relayDisconnect = machine.Pin(21, machine.Pin.OUT)
 relayDisconnect2= machine.Pin(22, machine.Pin.OUT)
@@ -53,6 +54,7 @@ def setState(newState):
   oled.show()
 
 def sub_cb(topic, msg):
+  global reading
   try:
     received_msg = json.loads(msg)
   except Exception:
@@ -60,11 +62,12 @@ def sub_cb(topic, msg):
   else:
     action = received_msg['action']
     print(action)
-    if topic == b'test/upb' and action == 'UP':
+    if topic == b'test/upb' and action == 'START':
       if state == CONNECTED:
         time.sleep(1)
         relayDisconnect.value(0)
         relayDisconnect2.value(0)
+        reading = True
         setState(DISCONNECTED)  
       elif state == DISCONNECTED:
         time.sleep(1)
@@ -81,9 +84,51 @@ def sub_cb(topic, msg):
         relayCharge.value(1)
         relayDischarge.value(1)
         time.sleep(1)
+        reading = False
         setState(CONNECTED) 
 
+def getVPP():
+  result = 0
+  readValue= 0            # value read from the sensor
+  maxValue = 0             # store max value here
+  minValue = 4096         # store min value here ESP32 ADC resolution
+  
+  readValue = current.read()
+  print(round(readValue, 2), "Readed Current Sensor")
+  # see if you have a new maxValue
+  #if (readValue > maxValue):
+    #record the maximum sensor value*/
+    #maxValue = readValue
+  #if (readValue < minValue):
+    #record the minimum sensor value*/
+   # minValue = readValue
+  
+  # Subtract min from max
+  result = ((maxValue - minValue) * 5)/4096.0; #ESP32 ADC resolution 4096
     
+  return result
+
+def readSensors():  
+  mVperAmp = 66          #this the 5A version of the ACS712 -use 100 for 20A Module and 66 for 30A Module
+  Voltage = 0
+  vrms = 0
+  AmpsRMS = 0 
+
+  #VOLTAGE TEST
+  val = voltage.read()
+  print(round(val, 2), "Readed Voltage Sensor")
+  #val = val * (3.3 / 4095)
+  #print(round(val, 2), "V")
+
+  #VOLTAGE
+  Voltage = getVPP()
+  #print(round(Voltage, 2), "TEST V")
+
+  #CURRENT
+  #vrms = (Voltage/2.0) *0.707;   #root 2 is 0.707
+  #AmpsRMS = ((vrms * 1000)/mVperAmp)-0.3; #0.3 is the error I got for my sensor
+  #print(round(AmpsRMS, 2), "A") 
+  #time.sleep_ms(2000)
   
 
 def connect_and_subscribe():
@@ -123,13 +168,9 @@ except OSError as e:
 while True:
   try:
     client.check_msg()
-    val = voltage.read()
-    val = val * (3.3 / 4095)
-    print(round(val, 2), "V") # Keep only 2 digits
-
-    val2 = current.read()
-    print(round(val2, 2), "A") # Keep only 2 digits
-    time.sleep_ms(500)
+    #if reading:
+    readSensors()
+   
     
   except OSError as e:
     restart_and_reconnect()

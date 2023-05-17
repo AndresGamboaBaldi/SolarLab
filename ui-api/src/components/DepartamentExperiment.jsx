@@ -156,7 +156,7 @@ export default function DepartamentExperiment() {
 											sendMqttMessage('UP');
 										}}
 									>
-										0°
+										UP
 									</Typography>
 								</Button>
 								<Button
@@ -178,7 +178,7 @@ export default function DepartamentExperiment() {
 										variant='buttons2'
 										color='white'
 									>
-										45°
+										DOWN
 									</Typography>
 								</Button>
 								<Button
@@ -199,7 +199,30 @@ export default function DepartamentExperiment() {
 										variant='buttons2'
 										color='white'
 									>
-										90°
+										OFF
+									</Typography>
+								</Button>
+								<Button
+									variant='contained'
+									sx={{
+										bgcolor: 'primary.700',
+										py: 0,
+										textTransform: 'none',
+										mx: { xxs: 0, xs: 1, s: 1, sm: 2, md: 1, lg: 1 },
+										mt: 1,
+									}}
+									onClick={() => {
+										sendMqttMessage('START');
+									}}
+								>
+									<Typography
+										sx={{
+											mx: { xxs: 0, xs: 0, s: 1, sm: 1, md: 1, lg: 1 },
+										}}
+										variant='buttons2'
+										color='white'
+									>
+										START EXPERIMENT
 									</Typography>
 								</Button>
 							</Grid>

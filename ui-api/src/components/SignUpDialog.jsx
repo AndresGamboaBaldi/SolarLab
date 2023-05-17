@@ -16,6 +16,7 @@ import {
 import React, { useState, useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import { login } from '../utils/login.js';
+import { ImportantDevicesOutlined } from '@mui/icons-material';
 
 export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const [regEmail, setEmail] = useState('');
@@ -67,14 +68,15 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 					</Grid>
 				</Grid>
 				<Box>
-					<Grid container>
-						<Typography
-							variant='header3'
-							mb={{ xxs: 1, xs: 1, sm: 2 }}
-							sx={{ mt: 2 }}
-						>
-							Email
-						</Typography>
+					<Grid
+						container
+						rowSpacing={{ xxs: 1, xs: 1, sm: 2 }}
+						columnSpacing={2}
+					>
+						<Grid item xxs={12} xs={12}>
+							<Typography variant='header3'>Email</Typography>{' '}
+						</Grid>
+
 						<Grid item xxs={12} xs={12}>
 							<TextField
 								required
@@ -93,13 +95,54 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								}}
 							/>
 						</Grid>
-						<Typography
-							variant='header3'
-							mb={{ xxs: 1, xs: 1, sm: 2 }}
-							sx={{ mt: 2 }}
-						>
-							Password
-						</Typography>
+						<Grid item xxs={8} xs={8}>
+							<Typography variant='header3' mb={2}>
+								Full Name
+							</Typography>
+						</Grid>
+						<Grid item xxs={4} xs={4}>
+							<Typography variant='header3' sx={{ marginBottom: '2' }}>
+								Code
+							</Typography>
+						</Grid>
+						<Grid item xxs={8} xs={8}>
+							<TextField
+								required
+								fullWidth
+								size='small'
+								variant='outlined'
+								id='fullname'
+								name='fullname'
+								autoComplete='fullname'
+								inputProps={{
+									style: {
+										padding: '8px',
+										fontFamily: 'Lato',
+									},
+								}}
+							/>
+						</Grid>
+
+						<Grid item xxs={4} xs={4}>
+							<TextField
+								required
+								fullWidth
+								size='small'
+								variant='outlined'
+								id='code'
+								name='code'
+								autoComplete='code'
+								inputProps={{
+									style: {
+										padding: '8px',
+										fontFamily: 'Lato',
+									},
+								}}
+							/>
+						</Grid>
+						<Grid item xxs={12} xs={12}>
+							<Typography variant='header3'>Password</Typography>
+						</Grid>
 						<Grid item xxs={12} xs={12}>
 							<TextField
 								required
@@ -131,13 +174,9 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								}}
 							/>
 						</Grid>
-						<Typography
-							variant='header3'
-							mb={{ xxs: 1, xs: 1, sm: 2 }}
-							sx={{ mt: 2 }}
-						>
-							Confirm Password
-						</Typography>
+						<Grid item xxs={12} xs={12}>
+							<Typography variant='header3'>Confirm Password</Typography>
+						</Grid>
 						<Grid item xxs={12} xs={12}>
 							<TextField
 								required

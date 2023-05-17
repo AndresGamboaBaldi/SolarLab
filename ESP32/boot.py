@@ -17,7 +17,7 @@ global oled
 #MQTT 
 #mqtt_server = '192.168.100.30'
 #mqtt_server = '192.168.100.7'
-mqtt_server = '192.168.18.64'
+mqtt_server = '192.168.44.102'
 client_id = ubinascii.hexlify(machine.unique_id())
 port = 1883
 
@@ -25,11 +25,12 @@ port = 1883
 topic_sub = b'test/upb'
 
 #Wifi
-ssid = 'GAMBOA BALDI'
-password = 'Andres14213009'
+#ssid = 'GAMBOA BALDI'
+#password = 'Andres14213009'
 
-#ssid = 'UPB'
-#password = ''
+
+ssid = 'UPB'
+password = ''
 
 station = network.WLAN(network.STA_IF)
 station.active(True)
