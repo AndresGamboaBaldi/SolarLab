@@ -1,3 +1,4 @@
-const dev = process.env.NODE_ENV !== 'production';
-
-export const server = '192.168.100.30:3000';
+export const host = '192.168.100.30';
+//export const host = '192.168.100.7';
+//export const host = '192.168.18.64';
+//export const host = '192.168.44.102';

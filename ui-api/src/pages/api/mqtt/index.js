@@ -1,11 +1,9 @@
 import * as mqtt from 'mqtt'; // import everything inside the mqtt module and give it the namespace "mqtt"
 
-const hostMQTT = '192.168.100.7';
-//const hostMQTT = '192.168.18.64';
-//const hostMQTT = '192.168.44.102';
+import { host } from '../../../utils/config';
 
 //MQTT methods
-var client = mqtt.connect(`mqtt://${hostMQTT}`);
+var client = mqtt.connect(`mqtt://${host}`);
 
 client.on('error', function (error) {
 	console.log("Can't connect" + error);

@@ -15,7 +15,6 @@ export default function Experiments() {
 	const [message, setMessage] = useState('Loading Session Info...');
 	const [initialState, setInitialState] = useState('first');
 	useEffect(() => {
-		console.log('EXECUTING');
 		reviewAccess();
 	}, [initialState]);
 	const reviewAccess = async () => {

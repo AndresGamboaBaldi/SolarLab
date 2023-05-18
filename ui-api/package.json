@@ -19,6 +19,7 @@
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "mqtt": "^4.3.7",
+    "mysql2": "^3.3.1",
     "next": "13.3.0",
     "node-rtsp-stream": "^0.0.9",
     "react": "18.2.0",
