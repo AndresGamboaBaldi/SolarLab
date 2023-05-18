@@ -8,7 +8,10 @@ services:
       - ./Broker/mosquitto.conf:/mosquitto/config/mosquitto.conf
     restart: always
   database:
-    image: mysql_db
+    image: mysql
     ports:
       - 3307:3306
     restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: solar_lab_db

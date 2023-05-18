@@ -6,7 +6,6 @@ import DepartamentExperiment from '../../components/DepartamentExperiment';
 import { Box, Typography, Grid } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { server } from '../../utils/config';
 import RingLoader from 'react-spinners/RingLoader';
 
 export default function Experiments() {

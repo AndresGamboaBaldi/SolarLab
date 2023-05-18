@@ -8,7 +8,6 @@ import {
 	TextField,
 	Slider,
 } from '@mui/material';
-import { server } from '../utils/config';
 import { styled } from '@mui/material/styles';
 import LineChart from './LineChart';
 import { ChartData } from '@/data/mockData';

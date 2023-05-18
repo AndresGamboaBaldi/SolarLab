@@ -1,11 +1,9 @@
-const hostBooking = 'https://eubbc-digital.upb.edu/booking/api/reservation/';
-
 export default async function handler(req, res) {
 	if (req.method === 'POST') {
 		const access_key = req.body.access_key;
 		const pwd = req.body.pwd;
 		const response = await fetch(
-			`${hostBooking}?access_key=${access_key}&pwd=${pwd}`,
+			`${process.env.HOST_BOOKING}?access_key=${access_key}&pwd=${pwd}`,
 			{
 				method: 'GET',
 			}
