@@ -38,7 +38,6 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 			redirect: false,
 		})
 			.then((response) => {
-				console.log(response);
 				if (response.ok) {
 					console.log('Signed in');
 					handleClose();

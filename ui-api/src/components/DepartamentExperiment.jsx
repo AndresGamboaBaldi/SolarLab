@@ -32,6 +32,11 @@ export default function DepartamentExperiment() {
 			body: JSON.stringify(message),
 		});
 		const data = await response.json();
+		if (data.status) {
+			console.log('Action Sended');
+		} else {
+			console.log(data.error);
+		}
 	};
 
 	const [data, setData] = useState({

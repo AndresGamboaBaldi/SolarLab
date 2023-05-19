@@ -14,18 +14,76 @@ import {
 	Button,
 } from '@mui/material';
 import React, { useState } from 'react';
+import { signIn } from 'next-auth/react';
 
 export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
-	const [regEmail, setEmail] = useState('');
-	const [regPassword, setPassword] = useState('');
-	const [regConfirmPassword, setConfirmPassword] = useState('');
-	const [passwordError, setPasswordError] = useState('');
+	const [passwordError, setPasswordError] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const handleClickShowPassword = () => setShowPassword(!showPassword);
 	const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
+	const [authState, setAuthState] = useState({
+		email: '',
+		password: '',
+		confirmPassword: '',
+		fullname: '',
+		studentCode: '',
+	});
+
+	const handleOnChange = (e) => {
+		setAuthState((old) => ({ ...old, [e.target.id]: e.target.value }));
+	};
+
+	const handleAuth = async () => {
+		if (validateFields()) {
+			if (authState.password === authState.confirmPassword) {
+				setPasswordError(false);
+				const response = await fetch(`/api/signUp`, {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					method: 'POST',
+					body: JSON.stringify(authState),
+				});
+				const data = await response.json();
+				if (data.status) {
+					await createSessionAuth();
+				} else {
+					console.log(data.error);
+				}
+			} else {
+				setPasswordError(true);
+			}
+		} else {
+			console.log('Missing Fields');
+		}
+	};
+	const createSessionAuth = async () => {
+		signIn('credentials', {
+			...authState,
+			redirect: false,
+		})
+			.then((response) => {
+				if (response.ok) {
+					console.log('Signed in');
+					handleClose();
+				}
+			})
+			.catch((error) => {
+				console.log('Account Created, You can now login on the Page');
+			});
+	};
+	const validateFields = () => {
+		return (
+			authState.password &&
+			authState.email &&
+			authState.fullname &&
+			authState.studentCode
+		);
+	};
+
 	const passwordErrorMessage = (
-		<Typography variant='caption' color='error' gutterBottom>
+		<Typography variant='body2' color='error' gutterBottom>
 			Las contraseñas no coinciden
 		</Typography>
 	);
@@ -57,7 +115,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 						</Typography>
 					</Grid>
 				</Grid>
-				<Box>
+				<Box component='form'>
 					<Grid
 						container
 						rowSpacing={{ xxs: 1, xs: 1, sm: 2 }}
@@ -76,7 +134,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								id='email'
 								name='email'
 								autoComplete='email'
-								onChange={(e) => setEmail(e.target.value)}
+								onChange={handleOnChange}
 								inputProps={{
 									style: {
 										padding: '8px',
@@ -104,6 +162,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								id='fullname'
 								name='fullname'
 								autoComplete='fullname'
+								onChange={handleOnChange}
 								inputProps={{
 									style: {
 										padding: '8px',
@@ -119,9 +178,9 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								fullWidth
 								size='small'
 								variant='outlined'
-								id='code'
-								name='code'
-								autoComplete='code'
+								id='studentCode'
+								name='studentCode'
+								onChange={handleOnChange}
 								inputProps={{
 									style: {
 										padding: '8px',
@@ -143,7 +202,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								type={showPassword ? 'text' : 'password'}
 								id='password'
 								autoComplete='new-password'
-								onChange={(e) => setPassword(e.target.value)}
+								onChange={handleOnChange}
 								InputProps={{
 									style: {
 										padding: '0',
@@ -177,8 +236,8 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								type={showPassword ? 'text' : 'password'}
 								id='confirmPassword'
 								autoComplete='new-password'
-								onChange={(e) => setConfirmPassword(e.target.value)}
-								error={!!passwordError}
+								onChange={handleOnChange}
+								error={passwordError}
 								InputProps={{
 									style: {
 										padding: '0',
@@ -217,6 +276,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								padding: '1px',
 								bgcolor: 'primary.700',
 							}}
+							onClick={handleAuth}
 						>
 							<Typography variant='buttons4'>Sign Up</Typography>
 						</Button>

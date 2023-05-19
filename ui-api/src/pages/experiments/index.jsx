@@ -45,7 +45,7 @@ export default function Experiments() {
 		} else {
 			setLoading(false);
 			setMessage(
-				'Oops... Invalid Session, Click the link provided by Booking UPB'
+				'Oops... Invalid Sesion, Click the link provided by Booking UPB'
 			);
 		}
 	};
