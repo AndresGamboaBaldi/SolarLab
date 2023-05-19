@@ -18,9 +18,6 @@ import { signIn } from 'next-auth/react';
 
 export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const [passwordError, setPasswordError] = useState(false);
-	const [showPassword, setShowPassword] = useState(false);
-	const handleClickShowPassword = () => setShowPassword(!showPassword);
-	const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
 	const [authState, setAuthState] = useState({
 		email: '',
@@ -199,8 +196,8 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								size='small'
 								variant='outlined'
 								name='password'
-								type={showPassword ? 'text' : 'password'}
 								id='password'
+								type='password'
 								autoComplete='new-password'
 								onChange={handleOnChange}
 								InputProps={{
@@ -208,18 +205,6 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 										padding: '0',
 										fontFamily: 'Lato',
 									},
-									endAdornment: (
-										<InputAdornment position='end'>
-											<IconButton
-												color='secondary'
-												aria-label='toggle password visibility'
-												onClick={handleClickShowPassword}
-												onMouseDown={handleMouseDownPassword}
-											>
-												{showPassword ? <Visibility /> : <VisibilityOff />}
-											</IconButton>
-										</InputAdornment>
-									),
 								}}
 							/>
 						</Grid>
@@ -233,7 +218,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								size='small'
 								variant='outlined'
 								name='confirmPassword'
-								type={showPassword ? 'text' : 'password'}
+								type='password'
 								id='confirmPassword'
 								autoComplete='new-password'
 								onChange={handleOnChange}
@@ -243,18 +228,6 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 										padding: '0',
 										fontFamily: 'Lato',
 									},
-									endAdornment: (
-										<InputAdornment position='end'>
-											<IconButton
-												color='secondary'
-												aria-label='toggle password visibility'
-												onClick={handleClickShowPassword}
-												onMouseDown={handleMouseDownPassword}
-											>
-												{showPassword ? <Visibility /> : <VisibilityOff />}
-											</IconButton>
-										</InputAdornment>
-									),
 								}}
 							/>
 							{passwordError && passwordErrorMessage}

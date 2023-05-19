@@ -28,7 +28,7 @@ export default function HomeButtons() {
 					}}
 					onClick={(e) => router.push('/experiments')}
 				>
-					I Have a Session Now
+					Enter to Remote Lab
 				</Link>
 			</Button>
 			<Button
@@ -46,6 +46,10 @@ export default function HomeButtons() {
 					}}
 					variant='buttonsHome'
 					color='primary.700'
+					onClick={(e) =>
+						(window.location.href =
+							'https://eubbc-digital.upb.edu/booking/booking/24')
+					}
 				>
 					Schedule a Session
 				</Typography>

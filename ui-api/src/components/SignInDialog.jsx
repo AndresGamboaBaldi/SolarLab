@@ -19,10 +19,6 @@ import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 
 export default function SignInDialog({ open, handleClose, onClickSignup }) {
-	const [showPassword, setShowPassword] = useState(false);
-	const handleClickShowPassword = () => setShowPassword(!showPassword);
-	const handleMouseDownPassword = () => setShowPassword(!showPassword);
-
 	const [authState, setAuthState] = useState({
 		email: '',
 		password: '',
@@ -122,7 +118,7 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 								size='small'
 								variant='outlined'
 								name='password'
-								type={showPassword ? 'text' : 'password'}
+								type='password'
 								id='password'
 								autoComplete='new-password'
 								onChange={handleOnChange}
@@ -131,18 +127,6 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 										padding: '0',
 										fontFamily: 'Lato',
 									},
-									endAdornment: (
-										<InputAdornment position='end'>
-											<IconButton
-												aria-label='toggle password visibility'
-												onClick={handleClickShowPassword}
-												onMouseDown={handleMouseDownPassword}
-												color='secondary'
-											>
-												{showPassword ? <Visibility /> : <VisibilityOff />}
-											</IconButton>
-										</InputAdornment>
-									),
 								}}
 							/>
 						</Grid>
