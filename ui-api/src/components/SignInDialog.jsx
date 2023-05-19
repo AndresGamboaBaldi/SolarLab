@@ -15,22 +15,40 @@ import {
 	Typography,
 	Button,
 } from '@mui/material';
-import React, { useState, useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
-import { login } from '../utils/login.js';
+import React, { useState } from 'react';
+import { signIn } from 'next-auth/react';
 
 export default function SignInDialog({ open, handleClose, onClickSignup }) {
-	const [logEmail, setLogEmail] = useState('');
-	const [logPass, setLogPass] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
 	const handleClickShowPassword = () => setShowPassword(!showPassword);
 	const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
-	const { user, setUser } = useContext(UserContext);
+	const [authState, setAuthState] = useState({
+		email: '',
+		password: '',
+	});
 
-	const handleSignIn = async (event) => {
-		const newUser = await login();
-		setUser(newUser);
+	const handleOnChange = (e) => {
+		setAuthState((old) => ({ ...old, [e.target.id]: e.target.value }));
+	};
+
+	const handleAuth = async () => {
+		signIn('credentials', {
+			...authState,
+			redirect: false,
+		})
+			.then((response) => {
+				console.log(response);
+				if (response.ok) {
+					console.log('Signed in');
+					handleClose();
+				} else {
+					console.log('Wrong');
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	};
 
 	return (
@@ -78,7 +96,7 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 								id='email'
 								name='email'
 								autoComplete='email'
-								onChange={(e) => setLogEmail(e.target.value)}
+								onChange={handleOnChange}
 								variant='outlined'
 								size='small'
 								inputProps={{
@@ -108,7 +126,7 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 								type={showPassword ? 'text' : 'password'}
 								id='password'
 								autoComplete='new-password'
-								onChange={(e) => setLogPass(e.target.value)}
+								onChange={handleOnChange}
 								InputProps={{
 									style: {
 										padding: '0',
@@ -153,7 +171,7 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 								padding: '1px',
 								bgcolor: 'primary.700',
 							}}
-							onClick={handleSignIn}
+							onClick={handleAuth}
 						>
 							<Typography variant='buttons4'>Sign In</Typography>
 						</Button>

@@ -7,20 +7,21 @@ import {
 	IconButton,
 	Tooltip,
 } from '@mui/material';
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 
 import ScienceIcon from '@mui/icons-material/Science';
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
-import { UserContext } from '../contexts/UserContext';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ExperimentsListDialog from '../components/ExperimentsList';
+import { signOut, useSession } from 'next-auth/react';
 export default function UserMenu() {
+	const { data: session, status } = useSession();
+
 	const [openExperimentsList, setOpenExperimentsList] = useState(false);
 	const [anchorElUser, setAnchorElUser] = useState(null);
-	const { user, setUser } = useContext(UserContext);
 
 	const handleOpenUserMenu = (event) => {
 		setAnchorElUser(event.currentTarget);
@@ -32,7 +33,7 @@ export default function UserMenu() {
 
 	const handleSignOut = () => {
 		setAnchorElUser(null);
-		setUser(null);
+		signOut({ callbackUrl: '/' });
 	};
 	return (
 		<Box>
@@ -93,7 +94,7 @@ export default function UserMenu() {
 					},
 				}}
 			>
-				<Typography variant='body1'>{user.name}</Typography>
+				<Typography variant='body1'>{session.user.email}</Typography>
 				<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 					<KeyboardArrowDownIcon
 						sx={{

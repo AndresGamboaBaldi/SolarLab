@@ -1,10 +1,10 @@
 import { Box, Typography, Button } from '@mui/material';
-import React, { useState, useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
-import { login } from '../utils/login.js';
+import React from 'react';
+import { useRouter } from 'next/router';
 import Link from '@mui/material/Link';
 
 export default function HomeButtons() {
+	const router = useRouter();
 	return (
 		<Box
 			sx={{
@@ -26,7 +26,7 @@ export default function HomeButtons() {
 					sx={{
 						mx: { xxs: 0, xs: 1, s: 3, sm: 4, md: 4, lg: 5 },
 					}}
-					href='/experiments'
+					onClick={(e) => router.push('/experiments')}
 				>
 					I Have a Session Now
 				</Link>

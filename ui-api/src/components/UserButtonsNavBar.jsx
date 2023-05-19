@@ -1,6 +1,6 @@
 import { Typography, Button, Box } from '@mui/material';
 
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 
 import SignInDialog from '../components/SignInDialog';
 import SignUpDialog from '../components/SignUpDialog';

@@ -13,10 +13,7 @@ import {
 	Typography,
 	Button,
 } from '@mui/material';
-import React, { useState, useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
-import { login } from '../utils/login.js';
-import { ImportantDevicesOutlined } from '@mui/icons-material';
+import React, { useState } from 'react';
 
 export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const [regEmail, setEmail] = useState('');
@@ -26,13 +23,6 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const [showPassword, setShowPassword] = useState(false);
 	const handleClickShowPassword = () => setShowPassword(!showPassword);
 	const handleMouseDownPassword = () => setShowPassword(!showPassword);
-
-	const { user, setUser } = useContext(UserContext);
-
-	const handleSignIn = async (event) => {
-		const newUser = await login();
-		setUser(newUser);
-	};
 
 	const passwordErrorMessage = (
 		<Typography variant='caption' color='error' gutterBottom>
@@ -227,7 +217,6 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								padding: '1px',
 								bgcolor: 'primary.700',
 							}}
-							onClick={handleSignIn}
 						>
 							<Typography variant='buttons4'>Sign Up</Typography>
 						</Button>

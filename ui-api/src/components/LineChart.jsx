@@ -71,6 +71,7 @@ export default function LineChart({ chartData }) {
 
 	// create an event listener
 	useEffect(() => {
+		handleResize();
 		window.addEventListener('resize', handleResize);
 	});
 	if (isMobile) {

@@ -7,7 +7,7 @@ import {
 	Typography,
 	Stack,
 } from '@mui/material';
-import React, { useState, useContext } from 'react';
+import React from 'react';
 
 const gridDataStyle = {
 	display: 'inline-block',

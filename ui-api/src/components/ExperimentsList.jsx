@@ -1,9 +1,7 @@
 import { Box, Button, Dialog, Grid, Typography, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import React, { useState, useContext } from 'react';
+import React from 'react';
 import ExperimentActions from '../components/ExperimentActions';
-
-const dataGridStyle = {};
 
 const columns = [
 	{ field: 'id', headerName: 'ID', width: 70 },

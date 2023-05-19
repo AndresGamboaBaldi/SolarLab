@@ -1,13 +1,13 @@
 import { AppBar, Box, Toolbar, Link } from '@mui/material';
 import Image from 'next/image';
-import React, { useState, useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
+import React from 'react';
 
 import UserButtons from '../components/UserButtonsNavBar';
 import UserMenu from '../components/UserMenu';
+import { useSession } from 'next-auth/react';
 
 export default function NavBar() {
-	const { user, setUser } = useContext(UserContext);
+	const { data: session, status } = useSession();
 
 	return (
 		<Box>
@@ -33,7 +33,7 @@ export default function NavBar() {
 						Solar Remote Lab
 					</Link>
 
-					{user ? (
+					{session ? (
 						<Box sx={{ flexGrow: 0 }}>
 							<UserMenu></UserMenu>
 						</Box>
