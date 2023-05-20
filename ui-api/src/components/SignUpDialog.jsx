@@ -1,23 +1,27 @@
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import GoogleButton from './GoogleButton';
 import {
 	Box,
 	Dialog,
 	Divider,
 	Grid,
-	IconButton,
-	InputAdornment,
 	Link,
 	TextField,
 	Typography,
 	Button,
 } from '@mui/material';
+import Alert from './Alert';
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 
 export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const [passwordError, setPasswordError] = useState(false);
+	const [showAlert, setShowAlert] = useState(false);
+	const [statusAlert, setStatusAlert] = useState('success');
+	const [messageAlert, setMessageAlert] = useState('');
+
+	const handleCloseAlert = (event, reason) => {
+		setShowAlert(false);
+	};
 
 	const [authState, setAuthState] = useState({
 		email: '',
@@ -46,13 +50,17 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 				if (data.status) {
 					await createSessionAuth();
 				} else {
-					console.log(data.error);
+					setStatusAlert('error');
+					setMessageAlert(data.error);
+					setShowAlert(true);
 				}
 			} else {
 				setPasswordError(true);
 			}
 		} else {
-			console.log('Missing Fields');
+			setStatusAlert('error');
+			setMessageAlert('Missing Fields, Verify and Retry');
+			setShowAlert(true);
 		}
 	};
 	const createSessionAuth = async () => {
@@ -62,12 +70,16 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 		})
 			.then((response) => {
 				if (response.ok) {
-					console.log('Signed in');
+					setStatusAlert('success');
+					setMessageAlert('Successfully Signed In');
+					setShowAlert(true);
 					handleClose();
 				}
 			})
 			.catch((error) => {
-				console.log('Account Created, You can now login on the Page');
+				setStatusAlert('info');
+				setMessageAlert('Account Created, you can now Log In');
+				setShowAlert(true);
 			});
 	};
 	const validateFields = () => {
@@ -299,6 +311,12 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 							<GoogleButton></GoogleButton>
 						</Grid>
 					</Grid>
+					<Alert
+						open={showAlert}
+						handleClose={handleCloseAlert}
+						status={statusAlert}
+						message={messageAlert}
+					/>
 				</Box>
 			</Box>
 		</Dialog>

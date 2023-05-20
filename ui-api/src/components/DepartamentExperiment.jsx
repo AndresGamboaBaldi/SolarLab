@@ -33,9 +33,12 @@ export default function DepartamentExperiment() {
 		});
 		const data = await response.json();
 		if (data.status) {
-			console.log('Action Sended');
+			//console.log('Action Sended');
 		} else {
-			console.log(data.error);
+			//console.log(data.error);
+			setStatusAlert('error');
+			setMessageAlert('Something Went Wrong, Please Retry');
+			setShowAlert(true);
 		}
 	};
 

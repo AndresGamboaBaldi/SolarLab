@@ -1,6 +1,5 @@
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import GoogleButton from './GoogleButton';
+import Alert from './Alert';
 import {
 	Box,
 	Checkbox,
@@ -8,8 +7,6 @@ import {
 	Divider,
 	FormControlLabel,
 	Grid,
-	IconButton,
-	InputAdornment,
 	Link,
 	TextField,
 	Typography,
@@ -24,6 +21,14 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 		password: '',
 	});
 
+	const [showAlert, setShowAlert] = useState(false);
+	const [statusAlert, setStatusAlert] = useState('success');
+	const [messageAlert, setMessageAlert] = useState('');
+
+	const handleCloseAlert = (event, reason) => {
+		setShowAlert(false);
+	};
+
 	const handleOnChange = (e) => {
 		setAuthState((old) => ({ ...old, [e.target.id]: e.target.value }));
 	};
@@ -35,14 +40,21 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 		})
 			.then((response) => {
 				if (response.ok) {
-					console.log('Signed in');
+					setStatusAlert('success');
+					setMessageAlert('Successfully Logged In');
+					setShowAlert(true);
 					handleClose();
 				} else {
-					console.log('Wrong');
+					setStatusAlert('error');
+					setMessageAlert('Incorrect Email or Password, Verify and Retry');
+					setShowAlert(true);
 				}
 			})
 			.catch((error) => {
-				console.log(error);
+				//console.log(error);
+				setStatusAlert('error');
+				setMessageAlert('Something Went Wrong, Please Retry');
+				setShowAlert(true);
 			});
 	};
 
@@ -192,6 +204,12 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 							</Link>
 						</Grid>
 					</Grid>
+					<Alert
+						open={showAlert}
+						handleClose={handleCloseAlert}
+						status={statusAlert}
+						message={messageAlert}
+					/>
 				</Box>
 			</Box>
 		</Dialog>

@@ -20,16 +20,16 @@ const theme = createTheme({
 			main: '#F6BD2B',
 		},
 		error: {
-			main: '#FF6961',
+			main: '#DF2E21',
 		},
 		info: {
-			main: '#3080ED',
+			main: '#006DD3',
 		},
 		warning: {
-			main: '#F0922B',
+			main: '#F6D015',
 		},
 		success: {
-			main: '#51E25E',
+			main: '#05BD00',
 		},
 		white: {
 			main: '#FFFFFF',
