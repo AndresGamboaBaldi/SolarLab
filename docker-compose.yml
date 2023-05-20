@@ -15,3 +15,5 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: solar_lab_db
+    volumes:
+      - ./Database/data:/var/lib/mysql
