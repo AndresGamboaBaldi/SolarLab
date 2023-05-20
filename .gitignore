@@ -12,6 +12,7 @@
 *.db-wal
 *.mdf
 *.ldf
+*.sock
 
 ### NextJS ###
 # dependencies
