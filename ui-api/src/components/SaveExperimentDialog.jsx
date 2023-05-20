@@ -353,6 +353,11 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 							mx={{ xxs: 0, xs: 0, sm: 1 }}
 							variant='buttons1'
 							color='primary.700'
+							sx={{
+								'&:hover': {
+									color: '#fff',
+								},
+							}}
 						>
 							Cancel
 						</Typography>

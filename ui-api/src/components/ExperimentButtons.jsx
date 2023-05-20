@@ -40,8 +40,7 @@ export default function ExperimentButtons() {
 					</Typography>
 				</Button>
 				<Button
-					variant='contained'
-					color='white'
+					variant='outlined'
 					sx={{
 						textTransform: 'none',
 						border: 1,
@@ -55,6 +54,9 @@ export default function ExperimentButtons() {
 						variant='buttonsHome'
 						sx={{
 							mx: { xxs: 0, xs: 0, s: 1, sm: 1 },
+							'&:hover': {
+								color: '#fff',
+							},
 						}}
 					>
 						Load Previous Experiment

@@ -421,6 +421,18 @@ const theme = createTheme({
 				},
 			},
 		},
+		MuiButton: {
+			styleOverrides: {
+				root: {
+					'&:hover': {
+						backgroundColor: '#637BBC',
+					},
+					'.MuiTypography:hover': {
+						color: '#FFFFFF',
+					},
+				},
+			},
+		},
 	},
 });
 

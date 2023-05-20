@@ -43,6 +43,9 @@ export default function HomeButtons() {
 				<Typography
 					sx={{
 						mx: { xxs: 0, xs: 1, s: 3, sm: 4, md: 4, lg: 5 },
+						'&:hover': {
+							color: '#fff',
+						},
 					}}
 					variant='buttonsHome'
 					color='primary.700'

@@ -152,6 +152,9 @@ export default function DepartamentExperiment() {
 										py: 0,
 										textTransform: 'none',
 									}}
+									onClick={() => {
+										sendMqttMessage('UP');
+									}}
 								>
 									<Typography
 										sx={{
@@ -159,9 +162,6 @@ export default function DepartamentExperiment() {
 										}}
 										variant='buttons2'
 										color='white'
-										onClick={() => {
-											sendMqttMessage('UP');
-										}}
 									>
 										UP
 									</Typography>

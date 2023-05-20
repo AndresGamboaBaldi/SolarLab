@@ -17,6 +17,5 @@ export default function handler(req, res) {
 }
 
 function responseESP(action) {
-	//client.publish('test/upb', JSON.stringify({ action: action }));
-	client.publish('test/upb', JSON.stringify(action));
+	client.publish('test/upb', JSON.stringify(action), { qos: 2 });
 }

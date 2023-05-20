@@ -51,6 +51,9 @@ export default function UserButtonsNavBar() {
 				<Typography
 					sx={{
 						mx: { xxs: 0, xs: 0, sm: 3 },
+						'&:hover': {
+							color: '#fff',
+						},
 					}}
 					variant='buttons1'
 					color='primary.700'

@@ -13,6 +13,7 @@
 *.mdf
 *.ldf
 *.sock
+/data
 
 ### NextJS ###
 # dependencies
