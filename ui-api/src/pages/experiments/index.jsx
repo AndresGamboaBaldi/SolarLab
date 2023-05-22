@@ -8,7 +8,6 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 
 export default function Experiments() {
-	const [canAccess, setCanAccess] = useState(false);
 	return (
 		<main>
 			<div>

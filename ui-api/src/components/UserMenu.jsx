@@ -17,7 +17,10 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ExperimentsListDialog from '../components/ExperimentsList';
 import { signOut, useSession } from 'next-auth/react';
+import SignUpDialog from '../components/SignUpDialog';
+
 export default function UserMenu() {
+	const [openSignup, setOpenSignUp] = useState(false);
 	const { data: session, status } = useSession();
 
 	const [openExperimentsList, setOpenExperimentsList] = useState(false);
@@ -29,6 +32,11 @@ export default function UserMenu() {
 
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
+	};
+
+	const handleOpenUpdate = () => {
+		handleCloseUserMenu();
+		setOpenSignUp(true);
 	};
 
 	const handleSignOut = () => {
@@ -76,7 +84,7 @@ export default function UserMenu() {
 				open={openExperimentsList}
 				handleClose={() => setOpenExperimentsList(false)}
 			/>
-			<IconButton onClick={handleOpenUserMenu}>
+			<IconButton onClick={() => setOpenSignUp(true)}>
 				<AccountCircle
 					sx={{
 						fontSize: { xxs: '20px', xs: '24px', sm: '32px' },
@@ -134,14 +142,14 @@ export default function UserMenu() {
 					},
 				}}
 			>
-				<MenuItem onClick={handleCloseUserMenu}>
+				<MenuItem onClick={handleOpenUpdate}>
 					<AccountCircle
 						sx={{
 							fontSize: { xxs: '20px', xs: '24px', sm: '32px' },
 							mr: 1,
 							color: 'primary.700',
 						}}
-					/>{' '}
+					/>
 					<Typography variant='body1'>My Account</Typography>
 				</MenuItem>
 				<Divider />
@@ -165,6 +173,11 @@ export default function UserMenu() {
 					/>
 					<Typography variant='body2'>Logout</Typography>
 				</MenuItem>
+
+				<SignUpDialog
+					open={openSignup}
+					handleClose={() => setOpenSignUp(false)}
+				/>
 			</Menu>
 		</Box>
 	);

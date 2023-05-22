@@ -73,7 +73,7 @@ export default function LineChart({ chartData }) {
 	useEffect(() => {
 		handleResize();
 		window.addEventListener('resize', handleResize);
-	});
+	}, []);
 	if (isMobile) {
 		return <Line data={chartData} options={mobileOptions}></Line>;
 	} else {

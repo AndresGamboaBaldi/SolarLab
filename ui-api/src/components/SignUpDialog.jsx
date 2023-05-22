@@ -10,10 +10,21 @@ import {
 	Button,
 } from '@mui/material';
 import Alert from './Alert';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
+	const { data: session, status } = useSession();
+
+	const [emailDisable, setEmailDisable] = useState(false);
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
+	const [fullname, setFullname] = useState('');
+	const [studentCode, setStudentCode] = useState('');
+	const [newStudent, setNewStudent] = useState({});
+
 	const [passwordError, setPasswordError] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 	const [statusAlert, setStatusAlert] = useState('success');
@@ -23,28 +34,28 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 		setShowAlert(false);
 	};
 
-	const [authState, setAuthState] = useState({
-		email: '',
-		password: '',
-		confirmPassword: '',
-		fullname: '',
-		studentCode: '',
-	});
-
-	const handleOnChange = (e) => {
-		setAuthState((old) => ({ ...old, [e.target.id]: e.target.value }));
-	};
+	useEffect(() => {
+		if (session) {
+			loadData();
+		}
+	}, []);
 
 	const handleAuth = async () => {
 		if (validateFields()) {
-			if (authState.password === authState.confirmPassword) {
+			if (password === confirmPassword) {
+				setNewStudent({
+					email: email,
+					password: password,
+					studentCode: studentCode,
+					fullname: fullname,
+				});
 				setPasswordError(false);
 				const response = await fetch(`/api/signUp`, {
 					headers: {
 						'Content-Type': 'application/json',
 					},
 					method: 'POST',
-					body: JSON.stringify(authState),
+					body: JSON.stringify(newStudent),
 				});
 				const data = await response.json();
 				if (data.status) {
@@ -63,11 +74,55 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 			setShowAlert(true);
 		}
 	};
+	const loadData = async () => {
+		const response = await fetch(`/api/students/read`, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+			body: JSON.stringify(session.email),
+		});
+		const student = await response.json();
+		setEmailDisable(true);
+		setEmail(student.email);
+		setFullname(student.fullname);
+		setStudentCode(student.studentCode);
+	};
+
+	const handleUpdate = async () => {
+		const updateStudent = {
+			email: email,
+			studentCode: studentCode,
+			fullname: fullname,
+		};
+		try {
+			const response = await fetch(`/api/students/update`, {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				method: 'POST',
+				body: JSON.stringify(updateStudent),
+			});
+			const student = await response.json();
+			if (student.email) {
+				setFullname(student.fullname);
+				setStudentCode(student.studentCode);
+				setStatusAlert('success');
+				setMessageAlert('Updated Successfully');
+				setShowAlert(true);
+			} else {
+				setStatusAlert('error');
+				setMessageAlert('Update Failed, Please Try Again Later');
+				setShowAlert(true);
+			}
+		} catch (error) {
+			setStatusAlert('error');
+			setMessageAlert('Update Failed, Please Try Again Later');
+			setShowAlert(true);
+		}
+	};
 	const createSessionAuth = async () => {
-		signIn('credentials', {
-			...authState,
-			redirect: false,
-		})
+		signIn('credentials', { email: email, password: password, redirect: false })
 			.then((response) => {
 				if (response.ok) {
 					setStatusAlert('success');
@@ -83,12 +138,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 			});
 	};
 	const validateFields = () => {
-		return (
-			authState.password &&
-			authState.email &&
-			authState.fullname &&
-			authState.studentCode
-		);
+		return password && email && fullname && studentCode;
 	};
 
 	const passwordErrorMessage = (
@@ -140,10 +190,10 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								fullWidth
 								size='small'
 								variant='outlined'
-								id='email'
-								name='email'
 								autoComplete='email'
-								onChange={handleOnChange}
+								value={email}
+								disabled={emailDisable}
+								onChange={(e) => setEmail(e.target.value)}
 								inputProps={{
 									style: {
 										padding: '8px',
@@ -168,10 +218,9 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								fullWidth
 								size='small'
 								variant='outlined'
-								id='fullname'
-								name='fullname'
 								autoComplete='fullname'
-								onChange={handleOnChange}
+								value={fullname}
+								onChange={(e) => setFullname(e.target.value)}
 								inputProps={{
 									style: {
 										padding: '8px',
@@ -187,9 +236,8 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								fullWidth
 								size='small'
 								variant='outlined'
-								id='studentCode'
-								name='studentCode'
-								onChange={handleOnChange}
+								value={studentCode}
+								onChange={(e) => setStudentCode(e.target.value)}
 								inputProps={{
 									style: {
 										padding: '8px',
@@ -207,11 +255,10 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								fullWidth
 								size='small'
 								variant='outlined'
-								name='password'
-								id='password'
 								type='password'
 								autoComplete='new-password'
-								onChange={handleOnChange}
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
 								InputProps={{
 									style: {
 										padding: '0',
@@ -229,11 +276,10 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								fullWidth
 								size='small'
 								variant='outlined'
-								name='confirmPassword'
 								type='password'
-								id='confirmPassword'
 								autoComplete='new-password'
-								onChange={handleOnChange}
+								value={confirmPassword}
+								onChange={(e) => setConfirmPassword(e.target.value)}
 								error={passwordError}
 								InputProps={{
 									style: {
@@ -245,72 +291,98 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 							{passwordError && passwordErrorMessage}
 						</Grid>
 					</Grid>
-					<Grid
-						item
-						xxs={12}
-						xs={12}
-						mb={{ xxs: 2, xs: 2, sm: 3 }}
-						mt={{ xxs: 2, xs: 3, sm: 4 }}
-					>
-						<Button
-							fullWidth
-							variant='contained'
-							sx={{
-								color: 'white',
-								textTransform: 'none',
-								padding: '1px',
-								bgcolor: 'primary.700',
-							}}
-							onClick={handleAuth}
-						>
-							<Typography variant='buttons4'>Sign Up</Typography>
-						</Button>
-					</Grid>
-					<Grid
-						item
-						xxs={12}
-						xs={12}
-						container
-						justifyContent='center'
-						sx={{
-							mb: { xxs: 1, xs: 1, sm: 2 },
-						}}
-					>
-						<Grid item>
-							<Typography variant='header3'>
-								Already Have an Account?{' '}
-							</Typography>
-							<Link
-								component='button'
-								onClick={onClickSignIn}
-								variant='header3'
-								mb={{ xxs: 1, xs: 1, sm: 1 }}
+					{!session ? (
+						<Box>
+							{' '}
+							<Grid
+								item
+								xxs={12}
+								xs={12}
+								mb={{ xxs: 2, xs: 2, sm: 3 }}
+								mt={{ xxs: 2, xs: 3, sm: 4 }}
 							>
-								Sign In
-							</Link>
-						</Grid>
-					</Grid>
-
-					<Divider
-						sx={{
-							'&::before, &::after': {
-								borderColor: 'blacky.main',
-							},
-						}}
-					>
-						<Typography variant='body1'>or</Typography>
-					</Divider>
-					<Grid container>
+								<Button
+									fullWidth
+									variant='contained'
+									sx={{
+										color: 'white',
+										textTransform: 'none',
+										padding: '1px',
+										bgcolor: 'primary.700',
+									}}
+									onClick={handleAuth}
+								>
+									<Typography variant='buttons4'>Sign Up</Typography>
+								</Button>
+							</Grid>
+							<Grid
+								item
+								xxs={12}
+								xs={12}
+								container
+								justifyContent='center'
+								sx={{
+									mb: { xxs: 1, xs: 1, sm: 2 },
+								}}
+							>
+								<Grid item>
+									<Typography variant='header3'>
+										Already Have an Account?{' '}
+									</Typography>
+									<Link
+										component='button'
+										onClick={onClickSignIn}
+										variant='header3'
+										mb={{ xxs: 1, xs: 1, sm: 1 }}
+									>
+										Sign In
+									</Link>
+								</Grid>
+							</Grid>
+							<Divider
+								sx={{
+									'&::before, &::after': {
+										borderColor: 'blacky.main',
+									},
+								}}
+							>
+								<Typography variant='body1'>or</Typography>
+							</Divider>
+							<Grid container>
+								<Grid
+									item
+									xxs={12}
+									xs={12}
+									mt={{ xxs: 2, xs: 2, sm: 3 }}
+									mb={{ xxs: 1, xs: 1, sm: 3 }}
+								>
+									<GoogleButton></GoogleButton>
+								</Grid>
+							</Grid>{' '}
+						</Box>
+					) : (
 						<Grid
 							item
 							xxs={12}
 							xs={12}
-							mt={{ xxs: 2, xs: 2, sm: 3 }}
-							mb={{ xxs: 1, xs: 1, sm: 3 }}
+							mb={{ xxs: 2, xs: 2, sm: 3 }}
+							mt={{ xxs: 2, xs: 3, s: 4, sm: 5 }}
 						>
-							<GoogleButton></GoogleButton>
+							<Button
+								fullWidth
+								variant='contained'
+								sx={{
+									color: 'white',
+									textTransform: 'none',
+									padding: '1px',
+									bgcolor: 'primary.700',
+								}}
+								onClick={handleUpdate}
+							>
+								<Typography variant='buttons4'>Update</Typography>
+							</Button>
 						</Grid>
-					</Grid>
+					)}
 					<Alert
 						open={showAlert}
 						handleClose={handleCloseAlert}
