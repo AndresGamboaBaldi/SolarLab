@@ -35,7 +35,7 @@ export default function Home() {
 				if (data.status) {
 					setStatusAlert('info');
 					setMessageAlert(
-						'Your Session Has Started, Click the Button to Enter the UPB Remote Solar Lab'
+						'Your Session Has Started, Click the Button to Enter to the UPB Remote Solar Lab'
 					);
 					setShowAlert(true);
 					setCanAccess(true);
@@ -50,7 +50,7 @@ export default function Home() {
 			}
 		} else {
 			setMessageAlert(
-				'Oops... You dont have a Session, Book one and Click the Link to the Enter UPB Solar Remote Lab'
+				'Oops... You dont have a Session, Book one and Click the Link to the Enter to the UPB Solar Remote Lab'
 			);
 			setShowAlert(true);
 			setStatusAlert('warning');

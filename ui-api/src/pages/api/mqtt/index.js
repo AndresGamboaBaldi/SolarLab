@@ -4,7 +4,7 @@ import * as mqtt from 'mqtt'; // import everything inside the mqtt module and gi
 var client = mqtt.connect(`mqtt://${process.env.HOST}`);
 
 client.on('error', function (error) {
-	return res.status(400).json({ error: 'MQTT Broker not Reachable' });
+	console.log('Connection Error to Broker MQTT');
 });
 
 export default function handler(req, res) {

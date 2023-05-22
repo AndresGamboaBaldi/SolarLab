@@ -6,8 +6,8 @@ import ubinascii
 import esp
 import json
 from time import sleep
-
-
+import time
+from umodbus.tcp import TCP as ModbusTCPMaster
 esp.osdebug(None)
 import gc
 gc.collect()
@@ -15,22 +15,21 @@ gc.collect()
 global oled 
 
 #MQTT 
-#mqtt_server = '192.168.100.30'
-#mqtt_server = '192.168.100.7'
-mqtt_server = '192.168.44.102'
+mqtt_server = '192.168.100.7'
+#mqtt_server = '192.168.44.102'
 client_id = ubinascii.hexlify(machine.unique_id())
 port = 1883
+client = MQTTClient(client_id, mqtt_server, port)
 
 #Topics
 topic_sub = b'test/upb'
 
 #Wifi
-#ssid = 'GAMBOA BALDI'
-#password = 'Andres14213009'
+ssid = 'FLI GAMBOA BALDI'
+password = 'Andres14213009'
 
-
-ssid = 'UPB'
-password = ''
+#ssid = 'UPB'
+#password = ''
 
 station = network.WLAN(network.STA_IF)
 station.active(True)
@@ -56,3 +55,12 @@ while station.isconnected() == False:
     pass
 
 #print(station.ifconfig()[0]);
+oled.fill(0)
+oled.text('Connected to', 0, 0)
+oled.text(ssid, 0, 10)
+oled.text(station.ifconfig()[0], 0, 20)
+oled.show()
+
+
+
+

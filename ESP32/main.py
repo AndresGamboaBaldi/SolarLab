@@ -1,10 +1,4 @@
 
-
-import machine
-from time import sleep
-import ubinascii
-client = MQTTClient(client_id, mqtt_server, port)
-
 #States
 OFF = 0
 UP = 1
@@ -21,7 +15,6 @@ relayPowerA.value(1)
 relayPowerB.value(1)
 relayMoveA.value(1)
 relayMoveB.value(1)
-
 
 def setState(newState):
   global state, oled
@@ -47,6 +40,62 @@ def setState(newState):
 
   oled.show()
 
+def get_datalogger_angle():
+    # TCP Slave setup
+    slave_tcp_port = 502            # port to listen to
+    slave_addr = 0                 # bus address of client
+    slave_ip = '192.168.100.7' 
+    try:
+      host = ModbusTCPMaster(
+          slave_ip=slave_ip,
+          slave_port=slave_tcp_port,
+          timeout=1)   
+      hreg_address = 0
+      register_qty = 1
+      register_value = host.read_holding_registers(
+        slave_addr=slave_addr,
+        starting_addr=hreg_address,
+        register_qty=register_qty,
+        signed=False)
+      return register_value[0]
+    except Exception:
+      return "-1"
+
+def moveUp():
+  relayPowerA.value(1)
+  relayPowerB.value(1)
+  sleep(1)
+  relayMoveA.value(0)
+  relayMoveB.value(0)
+  sleep(1)
+  relayPowerA.value(0)
+  relayPowerB.value(0)
+
+def moveDown():
+  relayPowerA.value(1)
+  relayPowerB.value(1)
+  sleep(1)
+  relayMoveA.value(1)
+  relayMoveB.value(1)
+  sleep(1)
+  relayPowerA.value(0)
+  relayPowerB.value(0)
+
+def turnOff():
+  relayPowerA.value(1)
+  relayPowerB.value(1)
+  relayMoveA.value(1)
+  relayMoveB.value(1)
+
+def messageAngle(currentAngle, newAngle):
+  oled.fill(0)
+  oled.text('MOVING MOTOR', 0, 0)
+  oled.text('Current angle:', 0, 20)
+  oled.text(str(currentAngle), 0, 30)
+  oled.text('New Angle:', 0, 40)
+  oled.text(str(newAngle), 0, 50)
+  oled.show()
+
 def sub_cb(topic, msg):
   try:
     received_msg = json.loads(msg)
@@ -56,32 +105,43 @@ def sub_cb(topic, msg):
     action = received_msg['action']
     print(action)
     if topic == b'test/upb' and action == 'UP':
-      relayPowerA.value(1)
-      relayPowerB.value(1)
-      sleep(1)
-      relayMoveA.value(0)
-      relayMoveB.value(0)
-      sleep(1)
-      relayPowerA.value(0)
-      relayPowerB.value(0)
-      setState(UP)  
+      moveUp()
+      setState(UP) 
     elif topic == b'test/upb' and action == 'DOWN':
-      relayPowerA.value(1)
-      relayPowerB.value(1)
-      sleep(1)
-      relayMoveA.value(1)
-      relayMoveB.value(1)
-      sleep(1)
-      relayPowerA.value(0)
-      relayPowerB.value(0)
+      moveDown()
       setState(DOWN)  
     elif topic == b'test/upb' and action == 'OFF':
-      relayPowerA.value(1)
-      relayPowerB.value(1)
-      relayMoveA.value(1)
-      relayMoveB.value(1)
-      setState(DOWN)  
-  
+      turnOff()
+      setState(OFF)
+    elif topic == b'test/upb' and action == "ANGLE":
+      newAngle = received_msg['angle']
+      currentAngle = get_datalogger_angle() 
+      print("New Requested Angle: ", newAngle)
+      print('Current Panel Angle: {}'.format(currentAngle))
+      messageAngle(currentAngle, newAngle)
+      movingUp = False
+      movingDown = False
+      while abs(int(newAngle) - int(currentAngle)) > 1:
+        print(abs(int(newAngle) - int(currentAngle)))
+        if int(newAngle) > int(currentAngle):
+          movingDown = False
+          if(not movingUp):
+            moveUp()
+            movingUp = True
+        else:
+          movingUp = False
+          if(not movingDown):
+            moveDown()
+            movingDown = True
+        sleep(1)
+        currentAngle = get_datalogger_angle() 
+        print("Current: ", str(currentAngle))
+        print("New: ", str(newAngle))
+        messageAngle(currentAngle, newAngle)
+      turnOff()
+
+      
+
 
 def connect_and_subscribe():
   global client_id, mqtt_server, topic_sub
@@ -118,10 +178,10 @@ except OSError as e:
   restart_and_reconnect()
 
 while True:
-  try:
+  #try:
     client.check_msg()
     
-  except OSError as e:
-    restart_and_reconnect()
+  #except OSError as e:
+   # restart_and_reconnect()
 
 

@@ -15,6 +15,8 @@ import { ChartData2 } from '@/data/mockData2';
 import React, { useState } from 'react';
 
 export default function DepartamentExperiment() {
+	const [angle, setAngle] = useState(45);
+
 	const Img = styled('img')({
 		margin: 'auto',
 		display: 'block',
@@ -23,7 +25,7 @@ export default function DepartamentExperiment() {
 	});
 
 	const sendMqttMessage = async (action) => {
-		const message = { action: action };
+		const message = { action: action, angle: angle };
 		const response = await fetch(`/api/mqtt`, {
 			headers: {
 				'Content-Type': 'application/json',
@@ -136,8 +138,25 @@ export default function DepartamentExperiment() {
 										size='medium'
 										defaultValue={45}
 										valueLabelDisplay='auto'
+										onChange={(_, value) => setAngle(value)}
 									/>
 								</Box>
+								<Button
+									variant='contained'
+									sx={{
+										bgcolor: 'primary.700',
+										py: 0,
+										textTransform: 'none',
+										mx: { xxs: 0, xs: 1, s: 1, sm: 2, md: 1, lg: 1 },
+									}}
+									onClick={() => {
+										sendMqttMessage('ANGLE');
+									}}
+								>
+									<Typography variant='buttons2' color='white'>
+										MOVE
+									</Typography>
+								</Button>
 							</Grid>
 
 							<Grid
