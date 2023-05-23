@@ -7,7 +7,7 @@ import {
 	IconButton,
 	Tooltip,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import ScienceIcon from '@mui/icons-material/Science';
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
@@ -22,6 +22,8 @@ import SignUpDialog from '../components/SignUpDialog';
 export default function UserMenu() {
 	const [openSignup, setOpenSignUp] = useState(false);
 	const { data: session, status } = useSession();
+
+	const [fullname, setFullname] = useState('');
 
 	const [openExperimentsList, setOpenExperimentsList] = useState(false);
 	const [anchorElUser, setAnchorElUser] = useState(null);
@@ -43,6 +45,25 @@ export default function UserMenu() {
 		setAnchorElUser(null);
 		signOut({ callbackUrl: '/' });
 	};
+
+	const loadData = async () => {
+		const response = await fetch(`/api/students/read`, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+			body: JSON.stringify(session.email),
+		});
+		const student = await response.json();
+		setFullname(student.fullname);
+	};
+
+	useEffect(() => {
+		if (session) {
+			loadData();
+		}
+	}, []);
+
 	return (
 		<Box>
 			<Tooltip
@@ -102,7 +123,7 @@ export default function UserMenu() {
 					},
 				}}
 			>
-				<Typography variant='body1'>{session.user.email}</Typography>
+				<Typography variant='body1'>{fullname}</Typography>
 				<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 					<KeyboardArrowDownIcon
 						sx={{
