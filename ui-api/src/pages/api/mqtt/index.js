@@ -1,7 +1,7 @@
 import * as mqtt from 'mqtt'; // import everything inside the mqtt module and give it the namespace "mqtt"
 
 //MQTT methods
-var client = mqtt.connect(`mqtt://192.168.1.1`);
+var client = mqtt.connect(`mqtt://${process.env.HOST}`);
 
 client.on('error', function (error) {
 	console.log('Connection Error to Broker MQTT');

@@ -1,6 +1,6 @@
 import { Box, Button, Dialog, Grid, Typography, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ExperimentActions from '../components/ExperimentActions';
 
 const columns = [
@@ -110,6 +110,22 @@ const rows = [
 ];
 
 export default function SaveExperimentDialog({ open, handleClose }) {
+	const [isMobile, setIsMobile] = useState(false);
+	//choose the screen size
+	const handleResize = () => {
+		if (window.innerWidth < 644) {
+			console.log;
+			setIsMobile(true);
+		} else {
+			setIsMobile(false);
+		}
+	};
+
+	useEffect(() => {
+		handleResize();
+		window.addEventListener('resize', handleResize);
+	}, []);
+
 	return (
 		<Dialog
 			open={open}
@@ -139,128 +155,124 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 						</Typography>
 					</Grid>
 				</Grid>
-				<Box>
-					<DataGrid
-						columnVisibilityModel={{
-							id: false,
-						}}
-						rows={rows}
-						columns={columns}
-						initialState={{
-							pagination: {
-								paginationModel: { page: 0, pageSize: 5 },
-							},
-						}}
-						pageSizeOptions={[5, 10]}
-						getRowSpacing={(params) => ({
-							top: params.isFirstVisible ? 0 : 5,
-							bottom: params.isLastVisible ? 0 : 5,
-						})}
-						getRowId={(row) => row.id}
-						rowsPerPageOptions={[5, 10, 20]}
-						sx={{
-							display: 'none',
-
-							'@media (min-width:644px)': {
+				<Box height='80%'>
+					{isMobile ? (
+						<DataGrid
+							columnVisibilityModel={{
+								id: false,
+							}}
+							rows={rows}
+							columns={columnsMobile}
+							initialState={{
+								pagination: {
+									paginationModel: { page: 0, pageSize: 5 },
+								},
+							}}
+							pageSizeOptions={[5, 10]}
+							getRowSpacing={(params) => ({
+								top: params.isFirstVisible ? 0 : 5,
+								bottom: params.isLastVisible ? 0 : 5,
+							})}
+							getRowId={(row) => row.id}
+							rowsPerPageOptions={[5, 10, 20]}
+							sx={{
 								display: 'flex',
-							},
-							boxShadow: 0,
-							border: 'none',
-							'& .MuiDataGrid-cell': {
-								color: 'blacky.main',
-								fontFamily: 'Lato',
-								fontSize: '0.7rem',
-								'@media (min-width:644px)': {
-									fontSize: '1.0rem',
-								},
-								'@media (min-width:900px)': {
-									fontSize: '1.1rem',
-								},
-							},
-							'& .MuiDataGrid-columnHeader': {
-								color: 'blacky.main',
-								borderBottom: 3,
-							},
-							'& .MuiDataGrid-columnHeaderTitle': {
-								fontFamily: 'Lato',
-								fontWeight: 700,
-								fontSize: '0.7rem',
-								'@media (min-width:644px)': {
-									fontSize: '1.2rem',
-								},
-								'@media (min-width:900px)': {
-									fontSize: '1.3rem',
-								},
-							},
-							'& .MuiDataGrid-virtualScroller': {
-								color: 'primary.700',
-							},
-							'& .MuiDataGrid-footerContainer': {
-								boxShadow: 0,
-								borderBottom: 'none',
-							},
-						}}
-					/>
-					<DataGrid
-						columnVisibilityModel={{
-							id: false,
-						}}
-						rows={rows}
-						columns={columnsMobile}
-						initialState={{
-							pagination: {
-								paginationModel: { page: 0, pageSize: 5 },
-							},
-						}}
-						pageSizeOptions={[5, 10]}
-						getRowSpacing={(params) => ({
-							top: params.isFirstVisible ? 0 : 5,
-							bottom: params.isLastVisible ? 0 : 5,
-						})}
-						getRowId={(row) => row.id}
-						rowsPerPageOptions={[5, 10, 20]}
-						sx={{
-							display: 'flex',
-
-							'@media (min-width:644px)': {
-								display: 'none',
-							},
-							border: 'none',
-							'& .MuiDataGrid-cell': {
-								color: 'blacky.main',
-								fontFamily: 'Lato',
-								fontSize: '0.7rem',
-								'@media (min-width:306px)': {
+								border: 'none',
+								'& .MuiDataGrid-cell': {
+									color: 'blacky.main',
+									fontFamily: 'Lato',
 									fontSize: '0.7rem',
+									'@media (min-width:306px)': {
+										fontSize: '0.7rem',
+									},
+									'@media (min-width:412px)': {
+										fontSize: '0.8rem',
+									},
+									'@media (min-width:512px)': {
+										fontSize: '0.9rem',
+									},
 								},
-								'@media (min-width:412px)': {
-									fontSize: '0.8rem',
+								'& .MuiDataGrid-columnHeader': {
+									color: 'blacky.main',
+									borderBottom: 3,
 								},
-								'@media (min-width:512px)': {
-									fontSize: '0.9rem',
+								'& .MuiDataGrid-columnHeaderTitle': {
+									fontFamily: 'Lato',
+									fontWeight: 700,
+									fontSize: '0.7rem',
+									'@media (min-width:306px)': {
+										fontSize: '1.0rem',
+									},
+									'@media (min-width:412px)': {
+										fontSize: '1.1rem',
+									},
 								},
-							},
-							'& .MuiDataGrid-columnHeader': {
-								color: 'blacky.main',
-								borderBottom: 3,
-							},
-							'& .MuiDataGrid-columnHeaderTitle': {
-								fontFamily: 'Lato',
-								fontWeight: 700,
-								fontSize: '0.7rem',
-								'@media (min-width:306px)': {
-									fontSize: '1.0rem',
+								'& .MuiDataGrid-footerContainer': {
+									boxShadow: 0,
+									borderBottom: 'none',
 								},
-								'@media (min-width:412px)': {
-									fontSize: '1.1rem',
+							}}
+						/>
+					) : (
+						<DataGrid
+							columnVisibilityModel={{
+								id: false,
+							}}
+							rows={rows}
+							columns={columns}
+							initialState={{
+								pagination: {
+									paginationModel: { page: 0, pageSize: 5 },
 								},
-							},
-							'& .MuiDataGrid-footerContainer': {
+							}}
+							pageSizeOptions={[5, 10]}
+							getRowSpacing={(params) => ({
+								top: params.isFirstVisible ? 0 : 5,
+								bottom: params.isLastVisible ? 0 : 5,
+							})}
+							getRowId={(row) => row.id}
+							rowsPerPageOptions={[5, 10, 20]}
+							sx={{
+								display: 'flex',
+
 								boxShadow: 0,
-								borderBottom: 'none',
-							},
-						}}
-					/>
+								border: 'none',
+								'& .MuiDataGrid-cell': {
+									color: 'blacky.main',
+									fontFamily: 'Lato',
+									fontSize: '0.7rem',
+									'@media (min-width:644px)': {
+										fontSize: '1.0rem',
+									},
+									'@media (min-width:900px)': {
+										fontSize: '1.1rem',
+									},
+								},
+								'& .MuiDataGrid-columnHeader': {
+									color: 'blacky.main',
+									borderBottom: 3,
+								},
+								'& .MuiDataGrid-columnHeaderTitle': {
+									fontFamily: 'Lato',
+									fontWeight: 700,
+									fontSize: '0.7rem',
+									'@media (min-width:644px)': {
+										fontSize: '1.2rem',
+									},
+									'@media (min-width:900px)': {
+										fontSize: '1.3rem',
+									},
+								},
+								'& .MuiDataGrid-virtualScroller': {
+									color: 'primary.700',
+								},
+								'& .MuiDataGrid-footerContainer': {
+									boxShadow: 0,
+									borderBottom: 'none',
+								},
+							}}
+						/>
+					)}
 				</Box>
 				<Stack
 					direction='row'
