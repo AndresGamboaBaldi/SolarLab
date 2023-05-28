@@ -100,7 +100,6 @@ export default function ExperimentButtons() {
 					sx={{
 						textTransform: 'none',
 						border: 1,
-						textTransform: 'none',
 						borderColor: 'primary.700',
 					}}
 					onClick={() => setOpenExperimentsList(true)}
@@ -110,6 +109,9 @@ export default function ExperimentButtons() {
 						variant='buttonsExperiments'
 						sx={{
 							mx: { xxs: 0, xs: 0, s: 1, sm: 1 },
+							'&:hover': {
+								color: '#fff',
+							},
 						}}
 					>
 						Load Experiment

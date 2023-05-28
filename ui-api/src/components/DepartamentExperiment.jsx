@@ -1,29 +1,17 @@
-import {
-	Typography,
-	Box,
-	Paper,
-	Grid,
-	Button,
-	Card,
-	TextField,
-	Slider,
-} from '@mui/material';
+import { Typography, Box, Grid, Button, Card, Slider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LineChart from './LineChart';
 import { ChartData } from '@/data/mockData';
 import { ChartData2 } from '@/data/mockData2';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import CameraPlayer from '../components/CameraPlayer';
 
 export default function DepartamentExperiment() {
 	const [angle, setAngle] = useState(45);
 
-	const Img = styled('img')({
-		margin: 'auto',
-		display: 'block',
-		maxWidth: '100%',
-		maxHeight: '100%',
-	});
-
+	const handleCloseAlert = (event, reason) => {
+		setShowAlert(false);
+	};
 	const sendMqttMessage = async (action) => {
 		const message = { action: action, angle: angle };
 		const response = await fetch(`/api/mqtt`, {
@@ -34,14 +22,6 @@ export default function DepartamentExperiment() {
 			body: JSON.stringify(message),
 		});
 		const data = await response.json();
-		if (data.status) {
-			//console.log('Action Sended');
-		} else {
-			//console.log(data.error);
-			setStatusAlert('error');
-			setMessageAlert('Something Went Wrong, Please Retry');
-			setShowAlert(true);
-		}
 	};
 
 	const [data, setData] = useState({
@@ -65,7 +45,6 @@ export default function DepartamentExperiment() {
 			},
 		],
 	});
-
 	return (
 		<Box my={{ xxs: 2, xs: 2, s: 2, sm: 3 }}>
 			<Card
@@ -96,31 +75,33 @@ export default function DepartamentExperiment() {
 							sm={12}
 							md={4}
 							lg={3}
-							mb={{ xxs: 1, xs: 2, s: 2, sm: 1, md: 0 }}
+							mb={{ xxs: 1, xs: 2, s: 2, sm: 2, md: 0 }}
 						>
-							<Grid item mb={{ xxs: 1, xs: 1, s: 2, sm: 2 }}>
-								<Img
-									alt='complex'
-									src='/solarpanelarm.jpeg'
+							<Grid
+								item
+								mb={{ xxs: 2, xs: 2, s: 2, sm: 2, md: 2 }}
+								sx={{ display: 'flex' }}
+								justifyContent='center'
+							>
+								<Box
 									sx={{
-										width: '40vw',
-										'@media (min-width:900px)': {
-											width: '30vh',
-											height: '30vh',
-										},
-										height: '40vw',
-										borderRadius: '16px',
-										overflow: 'hidden',
+										width: '216px',
+										height: '216px',
+										backgroundColor: 'black',
 									}}
-								/>
+								>
+									<CameraPlayer></CameraPlayer>
+								</Box>
 							</Grid>
-							<Grid item mb={1} textAlign='center'>
+							<Grid
+								item
+								textAlign='center'
+								mb={{ xxs: 0, xs: 0, s: 0, sm: 1, md: 1 }}
+							>
 								<Typography
-									mr={1}
 									variant='titleDepartment'
 									color='primary.700'
 									sx={{
-										display: 'inline-block',
 										verticalAlign: 'middle',
 									}}
 								>
@@ -129,11 +110,11 @@ export default function DepartamentExperiment() {
 							</Grid>
 							<Grid
 								item
-								mb={1}
 								sx={{ display: 'flex' }}
 								justifyContent='center'
+								mb={{ xxs: 0, xs: 0, s: 0, sm: 1, md: 1 }}
 							>
-								<Box width='80%'>
+								<Box width='70%'>
 									<Slider
 										size='medium'
 										defaultValue={45}
@@ -141,101 +122,39 @@ export default function DepartamentExperiment() {
 										onChange={(_, value) => setAngle(value)}
 									/>
 								</Box>
+							</Grid>
+
+							<Grid item textAlign='center'>
 								<Button
 									variant='contained'
+									color='white'
 									sx={{
-										bgcolor: 'primary.700',
-										py: 0,
 										textTransform: 'none',
-										mx: { xxs: 0, xs: 1, s: 1, sm: 2, md: 1, lg: 1 },
+										border: 1,
+										borderColor: 'primary.700',
+										mr: 1,
 									}}
 									onClick={() => {
 										sendMqttMessage('ANGLE');
 									}}
 								>
-									<Typography variant='buttons2' color='white'>
-										MOVE
-									</Typography>
-								</Button>
-							</Grid>
-
-							<Grid
-								item
-								textAlign='center'
-								mb={{ xxs: 1, xs: 1, s: 1, sm: 1, md: 0 }}
-							>
-								<Button
-									variant='contained'
-									sx={{
-										bgcolor: 'primary.700',
-										py: 0,
-										textTransform: 'none',
-									}}
-									onClick={() => {
-										sendMqttMessage('UP');
-									}}
-								>
 									<Typography
+										variant='titleDepartment'
+										color='primary.700'
 										sx={{
-											mx: { xxs: 0, xs: 0, s: 1, sm: 2, md: 2, lg: 1 },
+											'&:hover': {
+												color: '#fff',
+											},
 										}}
-										variant='buttons2'
-										color='white'
 									>
-										UP
+										Move
 									</Typography>
 								</Button>
 								<Button
 									variant='contained'
 									sx={{
 										bgcolor: 'primary.700',
-										py: 0,
 										textTransform: 'none',
-										mx: { xxs: 0, xs: 1, s: 1, sm: 2, md: 1, lg: 1 },
-									}}
-									onClick={() => {
-										sendMqttMessage('DOWN');
-									}}
-								>
-									<Typography
-										sx={{
-											mx: { xxs: 0, xs: 0, s: 1, sm: 1, md: 1, lg: 1 },
-										}}
-										variant='buttons2'
-										color='white'
-									>
-										DOWN
-									</Typography>
-								</Button>
-								<Button
-									variant='contained'
-									sx={{
-										bgcolor: 'primary.700',
-										py: 0,
-										textTransform: 'none',
-									}}
-									onClick={() => {
-										sendMqttMessage('OFF');
-									}}
-								>
-									<Typography
-										sx={{
-											mx: { xxs: 0, xs: 0, s: 1, sm: 1, md: 1, lg: 1 },
-										}}
-										variant='buttons2'
-										color='white'
-									>
-										OFF
-									</Typography>
-								</Button>
-								<Button
-									variant='contained'
-									sx={{
-										bgcolor: 'primary.700',
-										py: 0,
-										textTransform: 'none',
-										mx: { xxs: 0, xs: 1, s: 1, sm: 2, md: 1, lg: 1 },
-										mt: 1,
 									}}
 									onClick={() => {
 										sendMqttMessage('START');
@@ -245,10 +164,10 @@ export default function DepartamentExperiment() {
 										sx={{
 											mx: { xxs: 0, xs: 0, s: 1, sm: 1, md: 1, lg: 1 },
 										}}
-										variant='buttons2'
+										variant='titleDepartment'
 										color='white'
 									>
-										START EXPERIMENT
+										Start
 									</Typography>
 								</Button>
 							</Grid>
