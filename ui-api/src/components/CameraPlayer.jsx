@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { Box } from '@mui/material';
-import Alert from './Alert';
 
-export default function StreamPlayer() {
-	const [first, setFirst] = useState(true);
-	const wakeUpStream = async (action) => {
+export default function StreamPlayer({ name }) {
+	const wakeUpStream = async () => {
+		const message = { name: name };
 		const response = await fetch(`/api/camera`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			method: 'GET',
+			method: 'POST',
+			body: JSON.stringify(message),
 		});
 		if (response.status) {
 		} else {
@@ -23,14 +23,12 @@ export default function StreamPlayer() {
 	const streamRef = useRef(null);
 
 	useEffect(() => {
-		if (first) {
-			wakeUpStream();
-		}
+		wakeUpStream();
+
 		const { JSMpeg } = require('../scripts/jsmpeg.min.js');
-		new JSMpeg.Player('ws://localhost:9999', {
+		new JSMpeg.Player('ws://localhost:8888', {
 			canvas: streamRef.current,
 		});
-		setFirst(false);
 	}, []);
 
 	return (

@@ -1,17 +1,16 @@
 import { Typography, Box, Grid, Button, Card, Slider } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import LineChart from './LineChart';
 import { ChartData } from '@/data/mockData';
 import { ChartData2 } from '@/data/mockData2';
 import React, { useState, useEffect } from 'react';
 import CameraPlayer from '../components/CameraPlayer';
 
-export default function DepartamentExperiment() {
-	const [angle, setAngle] = useState(45);
+export default function DepartamentExperiment({ name, departmentData }) {
+	const [angle, setAngle] = useState(0);
+	const [voltage, setVoltage] = useState('');
+	const [current, setCurrent] = useState('');
+	const [radiation, setRadiation] = useState('');
 
-	const handleCloseAlert = (event, reason) => {
-		setShowAlert(false);
-	};
 	const sendMqttMessage = async (action) => {
 		const message = { action: action, angle: angle };
 		const response = await fetch(`/api/mqtt`, {
@@ -23,6 +22,17 @@ export default function DepartamentExperiment() {
 		});
 		const data = await response.json();
 	};
+
+	useEffect(() => {
+		departmentData.forEach((department) => {
+			if (department.departmentName === name) {
+				setAngle(department.panelangle);
+				setCurrent(department.current);
+				setVoltage(department.voltage);
+				setRadiation(department.radiation);
+			}
+		});
+	}, []);
 
 	const [data, setData] = useState({
 		labels: ChartData.map((data) => data.voltage),
@@ -63,7 +73,7 @@ export default function DepartamentExperiment() {
 					<Grid container>
 						<Grid item xxs={12} xs={12} mb={{ xxs: 1, xs: 2, s: 3, sm: 3 }}>
 							<Typography variant='header1' color='blacky.main'>
-								Cochabamba
+								{name}
 							</Typography>
 						</Grid>
 						<Grid
@@ -90,7 +100,7 @@ export default function DepartamentExperiment() {
 										backgroundColor: 'black',
 									}}
 								>
-									<CameraPlayer></CameraPlayer>
+									<CameraPlayer name={name}></CameraPlayer>
 								</Box>
 							</Grid>
 							<Grid
@@ -117,7 +127,7 @@ export default function DepartamentExperiment() {
 								<Box width='70%'>
 									<Slider
 										size='medium'
-										defaultValue={45}
+										value={angle}
 										valueLabelDisplay='auto'
 										onChange={(_, value) => setAngle(value)}
 									/>
@@ -211,7 +221,7 @@ export default function DepartamentExperiment() {
 											variant='dataDepartment'
 											color='blacky.main'
 										>
-											15 V
+											{voltage} V
 										</Typography>
 									</Grid>
 									<Grid item xxs={6} sm={4}>
@@ -223,7 +233,7 @@ export default function DepartamentExperiment() {
 											variant='dataDepartment'
 											color='blacky.main'
 										>
-											10 A
+											{current} A
 										</Typography>
 									</Grid>
 									<Grid item xxs={12} sm={4}>
@@ -235,7 +245,7 @@ export default function DepartamentExperiment() {
 											variant='dataDepartment'
 											color='blacky.main'
 										>
-											2 W/m2
+											{radiation} W/m2
 										</Typography>
 									</Grid>
 								</Grid>

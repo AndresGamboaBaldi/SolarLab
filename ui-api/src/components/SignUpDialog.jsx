@@ -128,7 +128,11 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 					setStatusAlert('success');
 					setMessageAlert('Successfully Signed In');
 					setShowAlert(true);
-					handleClose();
+					setEmail('');
+					setPassword('');
+					setConfirmPassword('');
+					setFullname('');
+					setStudentCode('');
 				}
 			})
 			.catch((error) => {

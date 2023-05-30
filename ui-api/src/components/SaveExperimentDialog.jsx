@@ -7,15 +7,73 @@ import {
 	Typography,
 	Stack,
 } from '@mui/material';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import Alert from './Alert';
+import DepartmentDataDialog from './DepartmentDataDialog';
+import { useSession } from 'next-auth/react';
 
-const gridDataStyle = {
-	display: 'inline-block',
-	verticalAlign: 'middle',
-	lineHeight: 'normal',
-};
+export default function SaveExperimentDialog({
+	open,
+	handleClose,
+	departmentData,
+	selectedCities,
+}) {
+	const { data: session, status } = useSession();
+	const [experimentName, setExperimentName] = useState('');
 
-export default function SaveExperimentDialog({ open, handleClose }) {
+	const [showAlert, setShowAlert] = useState(false);
+	const [statusAlert, setStatusAlert] = useState('success');
+	const [messageAlert, setMessageAlert] = useState('');
+
+	const [departmentsToSave, setDepartmentsToSave] = useState([]);
+	useEffect(() => {
+		setDepartmentsToSave(
+			departmentData.filter((department) =>
+				selectedCities.includes(department.departmentName)
+			)
+		);
+	}, [selectedCities]);
+
+	const handleCloseAlert = (event, reason) => {
+		setShowAlert(false);
+	};
+
+	const saveExperiment = async () => {
+		if (validateFields()) {
+			const experimentToSave = {
+				experimentName: experimentName,
+				email: session.user.email,
+				departments: departmentsToSave,
+			};
+			const response = await fetch(`/api/experiments/create`, {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				method: 'POST',
+				body: JSON.stringify(experimentToSave),
+			});
+			const newExperiment = await response.json();
+			if (newExperiment.name) {
+				setExperimentName('');
+				setStatusAlert('success');
+				setMessageAlert('Saved Successfully!');
+				setShowAlert(true);
+			} else {
+				setStatusAlert('error');
+				setMessageAlert('Error Saving, Please Try Again Later');
+				setShowAlert(true);
+			}
+		} else {
+			setStatusAlert('error');
+			setMessageAlert('Give the Experiment a Name');
+			setShowAlert(true);
+		}
+	};
+
+	const validateFields = () => {
+		return experimentName;
+	};
+
 	return (
 		<Dialog
 			open={open}
@@ -61,9 +119,9 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 								required
 								hiddenLabel
 								fullWidth
-								id='experimentName'
-								name='experimentName'
 								variant='outlined'
+								value={experimentName}
+								onChange={(e) => setExperimentName(e.target.value)}
 								size='small'
 								inputProps={{
 									style: {
@@ -78,244 +136,13 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 					</Grid>
 				</Box>
 				<Grid container>
-					<Grid item xxs={12} xs={12} mt={{ xxs: 1, xs: 1, sm: 2 }}>
-						<Typography variant='titleDialog' color='secondary.main'>
-							Cochabamba
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						xxs={6}
-						xs={6}
-						s={4}
-						mt={{ xxs: 1, xs: 1, sm: 2 }}
-						sx={{ gridDataStyle }}
-					>
-						<Typography variant='titleDialog' color='primary.700'>
-							Date:
-						</Typography>
-						<Typography
-							ml={{ xxs: 1, xs: 1, sm: 2 }}
-							variant='dataDialog'
-							color='blacky.main'
-						>
-							4/7/2023
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						xxs={6}
-						xs={6}
-						s={4}
-						mt={{ xxs: 1, xs: 1, sm: 2 }}
-						sx={{ gridDataStyle }}
-					>
-						<Typography variant='titleDialog' color='primary.700'>
-							Time:
-						</Typography>
-						<Typography
-							ml={{ xxs: 1, xs: 1, sm: 2 }}
-							variant='dataDialog'
-							color='blacky.main'
-						>
-							15:00:32
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						xxs={6}
-						xs={6}
-						s={4}
-						sx={{ gridDataStyle }}
-						mt={{ xxs: 1, xs: 1, sm: 2 }}
-					>
-						<Typography variant='titleDialog' color='primary.700'>
-							Panel Angle:
-						</Typography>
-						<Typography
-							ml={{ xxs: 1, xs: 1, sm: 1 }}
-							variant='dataDialog'
-							color='blacky.main'
-						>
-							45°
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						xxs={6}
-						xs={6}
-						s={4}
-						sx={{ gridDataStyle }}
-						mt={{ xxs: 1, xs: 1, sm: 2 }}
-					>
-						<Typography variant='titleDialog' color='primary.700'>
-							Voltage:
-						</Typography>
-						<Typography
-							ml={{ xxs: 1, xs: 1, sm: 2 }}
-							variant='dataDialog'
-							color='blacky.main'
-						>
-							15V
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						xxs={6}
-						xs={6}
-						s={4}
-						sx={{ gridDataStyle }}
-						mt={{ xxs: 1, xs: 1, sm: 2 }}
-					>
-						<Typography variant='titleDialog' color='primary.700'>
-							Current:
-						</Typography>
-						<Typography
-							ml={{ xxs: 1, xs: 1, sm: 1 }}
-							variant='dataDialog'
-							color='blacky.main'
-						>
-							0.2 A
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						sx={{ gridDataStyle }}
-						xxs={6}
-						xs={6}
-						s={4}
-						mt={{ xxs: 1, xs: 1, sm: 2 }}
-					>
-						<Typography variant='titleDialog' color='primary.700'>
-							Radiation:
-						</Typography>
-						<Typography
-							ml={{ xxs: 1, xs: 1, sm: 1 }}
-							variant='body3'
-							color='blacky.main'
-						>
-							2 W/m2
-						</Typography>
-					</Grid>
-					<Grid item xxs={12} xs={12} mt={{ xxs: 1, xs: 1, sm: 2 }}>
-						<Typography variant='titleDialog' color='secondary.main'>
-							La Paz
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						xxs={6}
-						xs={6}
-						s={4}
-						mt={{ xxs: 1, xs: 1, sm: 2 }}
-						sx={{ gridDataStyle }}
-					>
-						<Typography variant='titleDialog' color='primary.700'>
-							Date:
-						</Typography>
-						<Typography
-							ml={{ xxs: 1, xs: 1, sm: 2 }}
-							variant='dataDialog'
-							color='blacky.main'
-						>
-							4/7/2023
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						xxs={6}
-						xs={6}
-						s={4}
-						mt={{ xxs: 1, xs: 1, sm: 2 }}
-						sx={{ gridDataStyle }}
-					>
-						<Typography variant='titleDialog' color='primary.700'>
-							Time:
-						</Typography>
-						<Typography
-							ml={{ xxs: 1, xs: 1, sm: 2 }}
-							variant='dataDialog'
-							color='blacky.main'
-						>
-							15:00:32
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						xxs={6}
-						xs={6}
-						s={4}
-						sx={{ gridDataStyle }}
-						mt={{ xxs: 1, xs: 1, sm: 2 }}
-					>
-						<Typography variant='titleDialog' color='primary.700'>
-							Panel Angle:
-						</Typography>
-						<Typography
-							ml={{ xxs: 1, xs: 1, sm: 1 }}
-							variant='dataDialog'
-							color='blacky.main'
-						>
-							45°
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						xxs={6}
-						xs={6}
-						s={4}
-						sx={{ gridDataStyle }}
-						mt={{ xxs: 1, xs: 1, sm: 2 }}
-					>
-						<Typography variant='titleDialog' color='primary.700'>
-							Voltage:
-						</Typography>
-						<Typography
-							ml={{ xxs: 1, xs: 1, sm: 2 }}
-							variant='dataDialog'
-							color='blacky.main'
-						>
-							15V
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						xxs={6}
-						xs={6}
-						s={4}
-						sx={{ gridDataStyle }}
-						mt={{ xxs: 1, xs: 1, sm: 2 }}
-					>
-						<Typography variant='titleDialog' color='primary.700'>
-							Current:
-						</Typography>
-						<Typography
-							ml={{ xxs: 1, xs: 1, sm: 1 }}
-							variant='dataDialog'
-							color='blacky.main'
-						>
-							0.2 A
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						sx={{ gridDataStyle }}
-						xxs={6}
-						xs={6}
-						s={4}
-						mt={{ xxs: 1, xs: 1, sm: 2 }}
-					>
-						<Typography variant='titleDialog' color='primary.700'>
-							Radiation:
-						</Typography>
-						<Typography
-							ml={{ xxs: 1, xs: 1, sm: 1 }}
-							variant='body3'
-							color='blacky.main'
-						>
-							2 W/m2
-						</Typography>
-					</Grid>
+					{selectedCities.map((city) => (
+						<DepartmentDataDialog
+							departmentData={departmentData}
+							key={city}
+							name={city}
+						></DepartmentDataDialog>
+					))}
 				</Grid>
 				<Stack
 					direction='row'
@@ -330,6 +157,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 							bgcolor: 'primary.700',
 							mr: { xxs: 1, xs: 1, sm: 3 },
 						}}
+						onClick={saveExperiment}
 					>
 						<Typography
 							mx={{ xxs: 1, xs: 1, sm: 3 }}
@@ -363,6 +191,12 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 						</Typography>
 					</Button>
 				</Stack>
+				<Alert
+					open={showAlert}
+					handleClose={handleCloseAlert}
+					status={statusAlert}
+					message={messageAlert}
+				/>
 			</Box>
 		</Dialog>
 	);

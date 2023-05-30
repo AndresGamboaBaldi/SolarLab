@@ -114,7 +114,6 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 	//choose the screen size
 	const handleResize = () => {
 		if (window.innerWidth < 644) {
-			console.log;
 			setIsMobile(true);
 		} else {
 			setIsMobile(false);

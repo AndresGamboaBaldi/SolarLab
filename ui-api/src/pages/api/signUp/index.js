@@ -4,8 +4,7 @@ import { hash } from 'bcrypt';
 export default async function Post(req, res) {
 	if (req.method === 'POST') {
 		const { email, fullname, studentCode, password } = req.body;
-
-		const studentExists = await db.Student.findFirst({
+		const studentExists = await db.Student.findUnique({
 			where: {
 				email: email,
 			},
@@ -14,7 +13,7 @@ export default async function Post(req, res) {
 			return res.status(422).json({ error: 'User Already Exists..!' });
 		} else {
 			try {
-				await prisma.Student.create({
+				await db.Student.create({
 					data: {
 						email: email,
 						fullname: fullname,

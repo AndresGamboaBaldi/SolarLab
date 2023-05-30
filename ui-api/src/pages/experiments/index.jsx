@@ -1,13 +1,108 @@
 import CitiesTypography from '../../components/CitiesTypography';
-import CitiesCheckboxes from '../../components/CitiesCheckboxes';
-import CitiesSelect from '../../components/CitiesSelect';
-import ExperimentButtons from '../../components/ExperimentButtons';
 import DepartamentExperiment from '../../components/DepartamentExperiment';
-import { Box, Typography, Grid } from '@mui/material';
+import {
+	Box,
+	Typography,
+	Grid,
+	FormGroup,
+	FormControlLabel,
+	Checkbox,
+	FormControl,
+	Select,
+	MenuItem,
+	ListItemText,
+	Stack,
+	Button,
+} from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
+import SaveExperimentDialog from '../../components/SaveExperimentDialog';
+import ExperimentsListDialog from '../../components/ExperimentsList';
+
+const checkBoxStyle = {
+	color: 'primary.700',
+	'& .MuiSvgIcon-root': {
+		fontSize: { xxs: '24px', xs: '30px', sm: '32px' },
+	},
+};
 
 export default function Experiments() {
+	const [openSaveExperiment, setOpenSaveExperiment] = useState(false);
+	const [openExperimentsList, setOpenExperimentsList] = useState(false);
+
+	const [selectedCities, setSelectedCities] = React.useState(['Cochabamba']);
+
+	const cities = ['Cochabamba', 'La Paz', 'Santa Cruz'];
+
+	const ITEM_HEIGHT = 48;
+	const ITEM_PADDING_TOP = 8;
+
+	const MenuProps = {
+		PaperProps: {
+			style: {
+				maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+				width: 250,
+			},
+		},
+	};
+
+	const [isMobile, setIsMobile] = useState(false);
+
+	var handleResize = () => {
+		if (window.innerWidth < 960) {
+			setIsMobile(true);
+		} else {
+			setIsMobile(false);
+		}
+	};
+
+	useEffect(() => {
+		handleResize();
+		window.addEventListener('resize', handleResize);
+	}, []);
+
+	const handleChangeCheckbox = (event) => {
+		if (event.target.checked) {
+			setSelectedCities((selectedCities) => [
+				...selectedCities,
+				event.target.name,
+			]);
+		} else {
+			setSelectedCities(
+				selectedCities.filter((element) => event.target.name !== element)
+			);
+		}
+	};
+
+	const handleChangeSelect = (event) => {
+		const { value } = event.target;
+		setSelectedCities(value);
+	};
+
+	const departmentData = [
+		{
+			departmentName: 'Cochabamba',
+			voltage: 12,
+			current: 5,
+			radiation: 2,
+			panelangle: 45,
+		},
+		{
+			departmentName: 'La Paz',
+			voltage: 10,
+			current: 7,
+			radiation: 1,
+			panelangle: 60,
+		},
+		{
+			departmentName: 'Santa Cruz',
+			voltage: 16,
+			current: 2,
+			radiation: 1,
+			panelangle: 75,
+		},
+	];
+
 	return (
 		<main>
 			<div>
@@ -63,12 +158,202 @@ export default function Experiments() {
 						order={{ xxs: 2, xs: 2, s: 2, sm: 1 }}
 					>
 						<CitiesTypography></CitiesTypography>
-						<CitiesCheckboxes></CitiesCheckboxes>
-						<CitiesSelect></CitiesSelect>
+						{!isMobile ? (
+							<Box ml={{ xxs: 2, xs: 2, s: 2, sm: 2 }}>
+								<FormGroup row>
+									{cities.map((city) => (
+										<FormControlLabel
+											key={city}
+											control={
+												<Checkbox
+													sx={checkBoxStyle}
+													checked={selectedCities.includes(city)}
+												/>
+											}
+											name={city}
+											onChange={handleChangeCheckbox}
+											label={<Typography variant='buttons1'>{city}</Typography>}
+										/>
+									))}
+								</FormGroup>
+							</Box>
+						) : (
+							<Box
+								mx={{ xxs: 2, xs: 2, s: 2, sm: 2 }}
+								mr={{ xxs: 0, xs: 0, s: 0, sm: 2 }}
+								sx={{
+									width: '100%',
+								}}
+							>
+								<FormControl
+									size='small'
+									sx={{
+										width: '100%',
+									}}
+								>
+									<Select
+										multiple
+										displayEmpty
+										value={selectedCities}
+										onChange={handleChangeSelect}
+										MenuProps={MenuProps}
+										inputProps={{ 'aria-label': 'Without label' }}
+										renderValue={(selected) => {
+											if (selected.length === 0) {
+												return (
+													<Typography variant='body3'>
+														Select the Cities to Display
+													</Typography>
+												);
+											}
+
+											return selected.join(', ');
+										}}
+									>
+										{cities.map((city) => (
+											<MenuItem key={city} value={city}>
+												<Checkbox
+													sx={checkBoxStyle}
+													checked={selectedCities.includes(city)}
+												/>
+												<ListItemText primary={city} />
+											</MenuItem>
+										))}
+									</Select>
+								</FormControl>
+							</Box>
+						)}
 					</Grid>
 				</Grid>
-				<DepartamentExperiment></DepartamentExperiment>
-				<ExperimentButtons></ExperimentButtons>
+				{selectedCities.map((city) => (
+					<DepartamentExperiment
+						key={city}
+						name={city}
+						departmentData={departmentData}
+					></DepartamentExperiment>
+				))}
+				<Box>
+					<Stack
+						direction='row'
+						justifyContent='end'
+						my={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
+						sx={{
+							display: 'none',
+
+							'@media (min-width:418px)': {
+								display: 'flex',
+							},
+						}}
+					>
+						<Button
+							variant='contained'
+							sx={{
+								textTransform: 'none',
+								bgcolor: 'primary.700',
+								mr: { xxs: 1, xs: 1, s: 2, sm: 3 },
+							}}
+							onClick={() => setOpenSaveExperiment(true)}
+						>
+							<Typography
+								color='white.main'
+								variant='buttonsHome'
+								sx={{
+									mx: { xxs: 0, xs: 0, s: 1, sm: 1 },
+								}}
+							>
+								Save Current Experiment
+							</Typography>
+						</Button>
+						<Button
+							variant='outlined'
+							sx={{
+								textTransform: 'none',
+								border: 1,
+								textTransform: 'none',
+								borderColor: 'primary.700',
+							}}
+							onClick={() => setOpenExperimentsList(true)}
+						>
+							<Typography
+								color='primary.700'
+								variant='buttonsHome'
+								sx={{
+									mx: { xxs: 0, xs: 0, s: 1, sm: 1 },
+									'&:hover': {
+										color: '#fff',
+									},
+								}}
+							>
+								Load Previous Experiment
+							</Typography>
+						</Button>
+					</Stack>
+					<Stack
+						direction='row'
+						justifyContent='end'
+						my={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
+						sx={{
+							display: 'flex',
+
+							'@media (min-width:418px)': {
+								display: 'none',
+							},
+						}}
+					>
+						<Button
+							variant='contained'
+							sx={{
+								textTransform: 'none',
+								bgcolor: 'primary.700',
+								mr: { xxs: 1, xs: 1, s: 2, sm: 3 },
+							}}
+							onClick={() => setOpenSaveExperiment(true)}
+						>
+							<Typography
+								color='white.main'
+								variant='buttonsExperiments'
+								sx={{
+									mx: { xxs: 0, xs: 0, s: 1, sm: 1 },
+								}}
+							>
+								Save Experiment
+							</Typography>
+						</Button>
+						<Button
+							variant='contained'
+							color='white'
+							sx={{
+								textTransform: 'none',
+								border: 1,
+								borderColor: 'primary.700',
+							}}
+							onClick={() => setOpenExperimentsList(true)}
+						>
+							<Typography
+								color='primary.700'
+								variant='buttonsExperiments'
+								sx={{
+									mx: { xxs: 0, xs: 0, s: 1, sm: 1 },
+									'&:hover': {
+										color: '#fff',
+									},
+								}}
+							>
+								Load Experiment
+							</Typography>
+						</Button>
+						<SaveExperimentDialog
+							open={openSaveExperiment}
+							handleClose={() => setOpenSaveExperiment(false)}
+							departmentData={departmentData}
+							selectedCities={selectedCities}
+						/>
+						<ExperimentsListDialog
+							open={openExperimentsList}
+							handleClose={() => setOpenExperimentsList(false)}
+						/>
+					</Stack>
+				</Box>
 			</Box>
 		</main>
 	);

@@ -16,10 +16,8 @@ import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 
 export default function SignInDialog({ open, handleClose, onClickSignup }) {
-	const [authState, setAuthState] = useState({
-		email: '',
-		password: '',
-	});
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
 
 	const [showAlert, setShowAlert] = useState(false);
 	const [statusAlert, setStatusAlert] = useState('success');
@@ -29,24 +27,18 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 		setShowAlert(false);
 	};
 
-	const handleOnChange = (e) => {
-		setAuthState((old) => ({ ...old, [e.target.id]: e.target.value }));
-	};
-
 	const handleAuth = async () => {
-		signIn('credentials', {
-			...authState,
-			redirect: false,
-		})
+		signIn('credentials', { email: email, password: password, redirect: false })
 			.then((response) => {
 				if (response.ok) {
 					setStatusAlert('success');
-					setMessageAlert('Successfully Logged In');
+					setMessageAlert('Welcome Back!');
 					setShowAlert(true);
 					handleClose();
 				} else {
 					setStatusAlert('error');
 					setMessageAlert('Incorrect Email or Password, Verify and Retry');
+					setPassword('');
 					setShowAlert(true);
 				}
 			})
@@ -54,6 +46,7 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 				//console.log(error);
 				setStatusAlert('error');
 				setMessageAlert('Something Went Wrong, Please Retry');
+				setPassword('');
 				setShowAlert(true);
 			});
 	};
@@ -100,10 +93,9 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 								required
 								hiddenLabel
 								fullWidth
-								id='email'
-								name='email'
 								autoComplete='email'
-								onChange={handleOnChange}
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
 								variant='outlined'
 								size='small'
 								inputProps={{
@@ -129,11 +121,10 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 								fullWidth
 								size='small'
 								variant='outlined'
-								name='password'
 								type='password'
-								id='password'
 								autoComplete='new-password'
-								onChange={handleOnChange}
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
 								InputProps={{
 									style: {
 										padding: '0',

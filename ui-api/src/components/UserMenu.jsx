@@ -118,7 +118,7 @@ export default function UserMenu() {
 					verticalAlign: 'middle',
 					display: 'none',
 
-					'@media (min-width:446px)': {
+					'@media (min-width:700px)': {
 						display: 'inline-flex',
 					},
 				}}
@@ -130,7 +130,7 @@ export default function UserMenu() {
 							fontSize: { xxs: '16px', xs: '20px', sm: '24px' },
 							display: 'none',
 
-							'@media (min-width:446px)': {
+							'@media (min-width:700px)': {
 								display: 'inline-flex',
 							},
 						}}
