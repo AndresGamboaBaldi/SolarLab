@@ -31,9 +31,7 @@ export default function ExperimentActions({ params, handleClose }) {
 					}}
 				>
 					<IconButton
-						onClick={() => {
-							console.log('pushed');
-						}}
+						onClick={() => {}}
 						sx={{
 							color: 'secondary.main',
 						}}

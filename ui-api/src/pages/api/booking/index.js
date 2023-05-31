@@ -10,11 +10,10 @@ export default async function handler(req, res) {
 		);
 
 		const data = await response.json();
-		console.log(data);
 		if (!data.length) {
 			return res.status(200).json({ status: false });
 		} else {
-			return res.status(200).json({ status: true });
+			return res.status(200).json({ status: true, data: data[0] });
 		}
 	} else {
 		return res.status(400).json({ error: 'Metodo Incorrecto' });
