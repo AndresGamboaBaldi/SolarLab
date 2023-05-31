@@ -1,7 +1,36 @@
 import { Box, IconButton, Typography, Grid } from '@mui/material';
 import { Close, Launch } from '@mui/icons-material';
-import React from 'react';
-export default function ExperimentActions() {
+import React, { useEffect, useState } from 'react';
+import Alert from './Alert';
+export default function ExperimentActions({ params, handleClose }) {
+	const [showAlert, setShowAlert] = useState(false);
+	const [statusAlert, setStatusAlert] = useState('success');
+	const [messageAlert, setMessageAlert] = useState('');
+
+	const handleCloseAlert = (event, reason) => {
+		setShowAlert(false);
+	};
+
+	const deleteExperiment = async () => {
+		const response = await fetch(`/api/experiments/delete`, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+			body: JSON.stringify(params.id),
+		});
+		const deleted = await response.json();
+		if (deleted.error) {
+			setStatusAlert('error');
+			setMessageAlert('Something Wen Wrong, Please Try Again Later');
+			setShowAlert(true);
+		} else {
+			setStatusAlert('success');
+			setMessageAlert('Deleted Successfully!');
+			setShowAlert(true);
+			handleClose();
+		}
+	};
 	return (
 		<Box>
 			<Grid container>
@@ -14,7 +43,9 @@ export default function ExperimentActions() {
 					}}
 				>
 					<IconButton
-						onClick={() => {}}
+						onClick={() => {
+							console.log('pushed');
+						}}
 						sx={{
 							color: 'secondary.main',
 						}}
@@ -28,15 +59,14 @@ export default function ExperimentActions() {
 					<Typography>Open</Typography>
 				</Grid>
 				<Grid
+					onClick={deleteExperiment}
 					item
 					sx={{
 						display: 'flex',
 						alignItems: 'center',
 					}}
 				>
-					{' '}
 					<IconButton
-						onClick={() => {}}
 						sx={{
 							color: 'secondary.main',
 						}}
@@ -50,6 +80,12 @@ export default function ExperimentActions() {
 					<Typography>Delete</Typography>
 				</Grid>
 			</Grid>
+			<Alert
+				open={showAlert}
+				handleClose={handleCloseAlert}
+				status={statusAlert}
+				message={messageAlert}
+			/>
 		</Box>
 	);
 }

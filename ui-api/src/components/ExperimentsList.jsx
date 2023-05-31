@@ -3,8 +3,17 @@ import { DataGrid } from '@mui/x-data-grid';
 import React, { useState, useEffect } from 'react';
 import ExperimentActions from '../components/ExperimentActions';
 import { useSession } from 'next-auth/react';
+import Alert from './Alert';
 
 export default function SaveExperimentDialog({ open, handleClose }) {
+	const [showAlert, setShowAlert] = useState(false);
+	const [statusAlert, setStatusAlert] = useState('success');
+	const [messageAlert, setMessageAlert] = useState('');
+
+	const handleCloseAlert = (event, reason) => {
+		setShowAlert(false);
+	};
+
 	const columns = [
 		{ field: 'id', headerName: 'ID', width: 70 },
 		{
@@ -38,7 +47,14 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 			headerName: '',
 			type: 'actions',
 			width: 250,
-			renderCell: (params) => <ExperimentActions />,
+			renderCell: (params) => (
+				<ExperimentActions
+					params={params}
+					handleClose={handleClose}
+					showAlert={showAlert}
+					setShowAlert={setShowAlert}
+				/>
+			),
 		},
 	];
 
@@ -62,14 +78,21 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 			headerName: '',
 			type: 'actions',
 			width: 200,
-			renderCell: (params) => <ExperimentActions />,
+			renderCell: (params) => (
+				<ExperimentActions
+					params={params}
+					handleClose={handleClose}
+					showAlert={showAlert}
+					setShowAlert={setShowAlert}
+				/>
+			),
 		},
 	];
 
 	const [isMobile, setIsMobile] = useState(false);
-	const { data: session, status } = useSession();
+	const { data: session } = useSession();
 	const [experimentsList, setExperimentList] = useState([]);
-	const [fullname, setFullname] = useState('');
+	const [email, setEmail] = useState('');
 	//choose the screen size
 	const handleResize = () => {
 		if (window.innerWidth < 644) {
@@ -80,15 +103,25 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 	};
 
 	const loadData = async () => {
+		if (typeof session !== 'undefined') {
+			setEmail(session.user.email);
+		} else {
+			setEmail(session.email);
+		}
 		const response = await fetch(`/api/experiments/read`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
-			body: JSON.stringify(session.user.email),
+			body: JSON.stringify(email),
 		});
 		const experiments = await response.json();
 		setExperimentList(experiments);
+		if (experiments.error) {
+			setStatusAlert('error');
+			setMessageAlert(experiments.error);
+			setShowAlert(true);
+		}
 	};
 
 	useEffect(() => {
@@ -275,6 +308,12 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 					</Button>
 				</Stack>
 			</Box>
+			<Alert
+				open={showAlert}
+				handleClose={handleCloseAlert}
+				status={statusAlert}
+				message={messageAlert}
+			/>
 		</Dialog>
 	);
 }
