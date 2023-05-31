@@ -2,115 +2,74 @@ import { Box, Button, Dialog, Grid, Typography, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useState, useEffect } from 'react';
 import ExperimentActions from '../components/ExperimentActions';
-
-const columns = [
-	{ field: 'id', headerName: 'ID', width: 70 },
-	{
-		field: 'experimentName',
-		headerName: 'Name',
-		width: 130,
-	},
-	{ field: 'date', headerName: 'Date', width: 130 },
-	{ field: 'modified', headerName: 'Modified', width: 130 },
-	{
-		field: 'numberOfCities',
-		headerName: 'Cities',
-		type: 'number',
-		width: 70,
-	},
-	{
-		field: 'owner',
-		headerName: 'Owner',
-		width: 200,
-	},
-	{
-		field: 'actions',
-		headerName: '',
-		type: 'actions',
-		width: 250,
-		renderCell: (params) => <ExperimentActions />,
-	},
-];
-
-const columnsMobile = [
-	{ field: 'id', headerName: 'ID', width: 70 },
-	{
-		field: 'experimentName',
-		headerName: 'Name',
-		width: 110,
-	},
-	{ field: 'date', headerName: 'Date', width: 100 },
-
-	{
-		field: 'actions',
-		headerName: '',
-		type: 'actions',
-		width: 200,
-		renderCell: (params) => <ExperimentActions />,
-	},
-];
-
-const rows = [
-	{
-		id: 1,
-		experimentName: 'Experiment 1',
-		date: '07/25/2023',
-		modified: '3 days ago',
-		numberOfCities: 3,
-		owner: 'Andres Gamboa Baldi',
-	},
-	{
-		id: 2,
-		experimentName: 'Experiment 2',
-		date: '06/25/2021',
-		modified: '3 days ago',
-		numberOfCities: 2,
-		owner: 'Andres Gamboa Baldi',
-	},
-	{
-		id: 3,
-		experimentName: 'Experiment 3',
-		date: '12/15/2020',
-		modified: '3 days ago',
-		numberOfCities: 2,
-		owner: 'Andres Gamboa Baldi',
-	},
-	{
-		id: 4,
-		experimentName: 'Experiment 4',
-		date: '11/25/2020',
-		modified: '3 days ago',
-		numberOfCities: 1,
-		owner: 'Andres Gamboa Baldi',
-	},
-	{
-		id: 5,
-		experimentName: 'Experiment 5',
-		date: '07/25/2023',
-		modified: '3 days ago',
-		numberOfCities: 3,
-		owner: 'Andres Gamboa Baldi',
-	},
-	{
-		id: 6,
-		experimentName: 'Experiment 6',
-		date: '07/25/2023',
-		modified: '3 days ago',
-		numberOfCities: 3,
-		owner: 'Andres Gamboa Baldi',
-	},
-	{
-		id: 7,
-		experimentName: 'Experiment 7',
-		date: '07/25/2023',
-		modified: '3 days ago',
-		numberOfCities: 1,
-		owner: 'Andres Gamboa Baldi',
-	},
-];
+import { useSession } from 'next-auth/react';
 
 export default function SaveExperimentDialog({ open, handleClose }) {
+	const columns = [
+		{ field: 'id', headerName: 'ID', width: 70 },
+		{
+			field: 'name',
+			headerName: 'Name',
+			width: 130,
+		},
+		{
+			field: 'experimentDatetime',
+			headerName: 'Date',
+			width: 130,
+			valueFormatter: (params) =>
+				new Date(params?.value).toLocaleDateString('en-US'),
+		},
+		{
+			field: 'modified',
+			headerName: 'Modified',
+			width: 130,
+			valueFormatter: (params) =>
+				new Date(params?.value).toLocaleDateString('en-US'),
+		},
+
+		{
+			field: 'studentEmail',
+			headerName: 'Owner',
+			width: 200,
+			valueFormatter: (params) => params?.value.split('@')[0],
+		},
+		{
+			field: 'actions',
+			headerName: '',
+			type: 'actions',
+			width: 250,
+			renderCell: (params) => <ExperimentActions />,
+		},
+	];
+
+	const columnsMobile = [
+		{ field: 'id', headerName: 'ID', width: 70 },
+		{
+			field: 'name',
+			headerName: 'Name',
+			width: 110,
+		},
+		{
+			field: 'experimentDatetime',
+			headerName: 'Date',
+			width: 100,
+			valueFormatter: (params) =>
+				new Date(params?.value).toLocaleDateString('en-US'),
+		},
+
+		{
+			field: 'actions',
+			headerName: '',
+			type: 'actions',
+			width: 200,
+			renderCell: (params) => <ExperimentActions />,
+		},
+	];
+
 	const [isMobile, setIsMobile] = useState(false);
+	const { data: session, status } = useSession();
+	const [experimentsList, setExperimentList] = useState([]);
+	const [fullname, setFullname] = useState('');
 	//choose the screen size
 	const handleResize = () => {
 		if (window.innerWidth < 644) {
@@ -120,10 +79,23 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 		}
 	};
 
+	const loadData = async () => {
+		const response = await fetch(`/api/experiments/read`, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+			body: JSON.stringify(session.user.email),
+		});
+		const experiments = await response.json();
+		setExperimentList(experiments);
+	};
+
 	useEffect(() => {
 		handleResize();
 		window.addEventListener('resize', handleResize);
-	}, []);
+		loadData();
+	}, [open]);
 
 	return (
 		<Dialog
@@ -160,7 +132,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 							columnVisibilityModel={{
 								id: false,
 							}}
-							rows={rows}
+							rows={experimentsList}
 							columns={columnsMobile}
 							initialState={{
 								pagination: {
@@ -217,7 +189,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 							columnVisibilityModel={{
 								id: false,
 							}}
-							rows={rows}
+							rows={experimentsList}
 							columns={columns}
 							initialState={{
 								pagination: {
