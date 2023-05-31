@@ -9,10 +9,10 @@ import {
 	Typography,
 	Button,
 } from '@mui/material';
-import Alert from './Alert';
 import React, { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
+import { toast } from 'react-toastify';
 
 export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const { data: session, status } = useSession();
@@ -26,14 +26,6 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const [newStudent, setNewStudent] = useState({});
 
 	const [passwordError, setPasswordError] = useState(false);
-	const [showAlert, setShowAlert] = useState(false);
-	const [statusAlert, setStatusAlert] = useState('success');
-	const [messageAlert, setMessageAlert] = useState('');
-
-	const handleCloseAlert = (event, reason) => {
-		setShowAlert(false);
-	};
-
 	useEffect(() => {
 		if (session) {
 			loadData();
@@ -61,17 +53,13 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 				if (data.status) {
 					await createSessionAuth();
 				} else {
-					setStatusAlert('error');
-					setMessageAlert(data.error);
-					setShowAlert(true);
+					toast.error('Something Went Wrong, Please Verify and Retry');
 				}
 			} else {
 				setPasswordError(true);
 			}
 		} else {
-			setStatusAlert('error');
-			setMessageAlert('Missing Fields, Verify and Retry');
-			setShowAlert(true);
+			toast.error('Missing Fields, Verify and Retry');
 		}
 	};
 	const loadData = async () => {
@@ -107,27 +95,19 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 			if (student.email) {
 				setFullname(student.fullname);
 				setStudentCode(student.studentCode);
-				setStatusAlert('success');
-				setMessageAlert('Updated Successfully');
-				setShowAlert(true);
+				toast.success('Updated Successfully');
 			} else {
-				setStatusAlert('error');
-				setMessageAlert('Update Failed, Please Try Again Later');
-				setShowAlert(true);
+				toast.error('Update Failed, Please Try Again Later');
 			}
 		} catch (error) {
-			setStatusAlert('error');
-			setMessageAlert('Update Failed, Please Try Again Later');
-			setShowAlert(true);
+			toast.error('Update Failed, Please Try Again Later');
 		}
 	};
 	const createSessionAuth = async () => {
 		signIn('credentials', { email: email, password: password, redirect: false })
 			.then((response) => {
 				if (response.ok) {
-					setStatusAlert('success');
-					setMessageAlert('Successfully Signed In');
-					setShowAlert(true);
+					toast.success('Welcome Back!');
 					setEmail('');
 					setPassword('');
 					setConfirmPassword('');
@@ -136,9 +116,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 				}
 			})
 			.catch((error) => {
-				setStatusAlert('info');
-				setMessageAlert('Account Created, you can now Log In');
-				setShowAlert(true);
+				toast.info('Account Created, you can now Log In');
 			});
 	};
 	const validateFields = () => {
@@ -387,12 +365,6 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 							</Button>
 						</Grid>
 					)}
-					<Alert
-						open={showAlert}
-						handleClose={handleCloseAlert}
-						status={statusAlert}
-						message={messageAlert}
-					/>
 				</Box>
 			</Box>
 		</Dialog>

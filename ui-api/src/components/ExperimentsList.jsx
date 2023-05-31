@@ -3,17 +3,9 @@ import { DataGrid } from '@mui/x-data-grid';
 import React, { useState, useEffect } from 'react';
 import ExperimentActions from '../components/ExperimentActions';
 import { useSession } from 'next-auth/react';
-import Alert from './Alert';
+import { toast } from 'react-toastify';
 
 export default function SaveExperimentDialog({ open, handleClose }) {
-	const [showAlert, setShowAlert] = useState(false);
-	const [statusAlert, setStatusAlert] = useState('success');
-	const [messageAlert, setMessageAlert] = useState('');
-
-	const handleCloseAlert = (event, reason) => {
-		setShowAlert(false);
-	};
-
 	const columns = [
 		{ field: 'id', headerName: 'ID', width: 70 },
 		{
@@ -48,12 +40,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 			type: 'actions',
 			width: 250,
 			renderCell: (params) => (
-				<ExperimentActions
-					params={params}
-					handleClose={handleClose}
-					showAlert={showAlert}
-					setShowAlert={setShowAlert}
-				/>
+				<ExperimentActions params={params} handleClose={handleClose} />
 			),
 		},
 	];
@@ -79,12 +66,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 			type: 'actions',
 			width: 200,
 			renderCell: (params) => (
-				<ExperimentActions
-					params={params}
-					handleClose={handleClose}
-					showAlert={showAlert}
-					setShowAlert={setShowAlert}
-				/>
+				<ExperimentActions params={params} handleClose={handleClose} />
 			),
 		},
 	];
@@ -105,8 +87,6 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 	const loadData = async () => {
 		if (typeof session !== 'undefined') {
 			setEmail(session.user.email);
-		} else {
-			setEmail(session.email);
 		}
 		const response = await fetch(`/api/experiments/read`, {
 			headers: {
@@ -118,9 +98,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 		const experiments = await response.json();
 		setExperimentList(experiments);
 		if (experiments.error) {
-			setStatusAlert('error');
-			setMessageAlert(experiments.error);
-			setShowAlert(true);
+			toast.error('Something Went Wrong, Please Try Again');
 		}
 	};
 
@@ -308,12 +286,6 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 					</Button>
 				</Stack>
 			</Box>
-			<Alert
-				open={showAlert}
-				handleClose={handleCloseAlert}
-				status={statusAlert}
-				message={messageAlert}
-			/>
 		</Dialog>
 	);
 }

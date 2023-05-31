@@ -16,7 +16,7 @@ export default function HomeButtons() {
 				sx={{
 					textTransform: 'none',
 					bgcolor: 'primary.700',
-					mr: { xxs: 1, xs: 2, s: 3, sm: 5, md: 7, lg: 7 },
+					mr: { xxs: 2, xs: 3, s: 4, sm: 6, md: 8, lg: 9 },
 				}}
 			>
 				<Link
@@ -42,7 +42,7 @@ export default function HomeButtons() {
 			>
 				<Typography
 					sx={{
-						mx: { xxs: 0, xs: 1, s: 3, sm: 4, md: 4, lg: 5 },
+						mx: { xxs: 1, xs: 2, s: 4, sm: 5, md: 6, lg: 7 },
 						'&:hover': {
 							color: '#fff',
 						},
@@ -54,7 +54,7 @@ export default function HomeButtons() {
 							'https://eubbc-digital.upb.edu/booking/booking/24')
 					}
 				>
-					Schedule a Session
+					Book a Session
 				</Typography>
 			</Button>
 		</Box>

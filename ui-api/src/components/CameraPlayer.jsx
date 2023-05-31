@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { Box } from '@mui/material';
-
+import { toast } from 'react-toastify';
 export default function StreamPlayer({ name }) {
 	const wakeUpStream = async () => {
 		const message = { name: name };
@@ -14,9 +14,7 @@ export default function StreamPlayer({ name }) {
 		});
 		if (response.status) {
 		} else {
-			setStatusAlert('error');
-			setMessageAlert('An Error Ocurred Connecting with the Camera');
-			setShowAlert(true);
+			toast.error('An Error Ocurred Connecting with the Camera');
 		}
 	};
 

@@ -6,6 +6,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import { Lato } from 'next/font/google';
 import NavBar from '../components/NavBar';
 import React from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const lato = Lato({
 	subsets: ['latin'],
@@ -17,13 +19,27 @@ export default function App({
 	pageProps: { session, ...pageProps },
 }) {
 	return (
-		<ThemeProvider theme={theme}>
-			<CssBaseline />
-			<SessionProvider session={session}>
-				<NavBar />
-				<Component {...pageProps} />
-			</SessionProvider>
-		</ThemeProvider>
+		<>
+			<ThemeProvider theme={theme}>
+				<CssBaseline />
+				<SessionProvider session={session}>
+					<NavBar />
+					<Component {...pageProps} />
+				</SessionProvider>
+			</ThemeProvider>
+			<ToastContainer
+				theme='dark'
+				position='bottom-center'
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/>
+		</>
 	);
 }
 

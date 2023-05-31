@@ -3,17 +3,13 @@ import styles from '@/styles/Home.module.scss';
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 import HomeButtons from '../components/HomeButtons.jsx';
-import Alert from '../components/Alert.jsx';
+import { toast } from 'react-toastify';
 export default function Home() {
 	const [canAccess, setCanAccess] = useState(false);
-	const [showAlert, setShowAlert] = useState(false);
-	const [statusAlert, setStatusAlert] = useState('success');
-	const [messageAlert, setMessageAlert] = useState('');
-	const [initialState, setInitialState] = useState('first');
 
 	useEffect(() => {
 		reviewAccess();
-	}, [initialState]);
+	}, []);
 
 	const reviewAccess = async () => {
 		const urlParams = new URLSearchParams(window.location.search);
@@ -33,32 +29,23 @@ export default function Home() {
 				});
 				const data = await response.json();
 				if (data.status) {
-					setStatusAlert('info');
-					setMessageAlert(
-						'Your Session Has Started, Click the Button to Enter to the UPB Remote Solar Lab'
+					toast.info(
+						'Your Session Has Started!, You Can Enter to the UPB Remote Solar Lab',
+						{ autoClose: 10000 }
 					);
-					setShowAlert(true);
 					setCanAccess(true);
 				} else {
 					setCanAccess(false);
-					setMessageAlert(
-						'Oops... Your Session has not Started, come back to the right time'
-					);
-					setShowAlert(true);
-					setStatusAlert('warning');
+					toast.warn('Oops.! Your Session has not Started Yet', {
+						autoClose: 10000,
+					});
 				}
 			}
 		} else {
-			setMessageAlert(
-				'Oops... You dont have a Session, Book one and Click the Link to the Enter to the UPB Solar Remote Lab'
-			);
-			setShowAlert(true);
-			setStatusAlert('warning');
+			toast.warn('Oops.! You Dont have a Session, Book One!', {
+				autoClose: 10000,
+			});
 		}
-	};
-
-	const handleCloseAlert = (event, reason) => {
-		setShowAlert(false);
 	};
 
 	return (
@@ -119,12 +106,6 @@ export default function Home() {
 					</div>
 				</CardContent>
 			</Card>
-			<Alert
-				open={showAlert}
-				handleClose={handleCloseAlert}
-				status={statusAlert}
-				message={messageAlert}
-			/>
 		</main>
 	);
 }

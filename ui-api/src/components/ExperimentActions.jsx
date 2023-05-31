@@ -1,16 +1,8 @@
 import { Box, IconButton, Typography, Grid } from '@mui/material';
 import { Close, Launch } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
-import Alert from './Alert';
+import { toast } from 'react-toastify';
 export default function ExperimentActions({ params, handleClose }) {
-	const [showAlert, setShowAlert] = useState(false);
-	const [statusAlert, setStatusAlert] = useState('success');
-	const [messageAlert, setMessageAlert] = useState('');
-
-	const handleCloseAlert = (event, reason) => {
-		setShowAlert(false);
-	};
-
 	const deleteExperiment = async () => {
 		const response = await fetch(`/api/experiments/delete`, {
 			headers: {
@@ -21,13 +13,9 @@ export default function ExperimentActions({ params, handleClose }) {
 		});
 		const deleted = await response.json();
 		if (deleted.error) {
-			setStatusAlert('error');
-			setMessageAlert('Something Wen Wrong, Please Try Again Later');
-			setShowAlert(true);
+			toast.error("'Something Went Wrong, Please Try Again Later'");
 		} else {
-			setStatusAlert('success');
-			setMessageAlert('Deleted Successfully!');
-			setShowAlert(true);
+			toast.success('Deleted Successfully!');
 			handleClose();
 		}
 	};
@@ -80,12 +68,6 @@ export default function ExperimentActions({ params, handleClose }) {
 					<Typography>Delete</Typography>
 				</Grid>
 			</Grid>
-			<Alert
-				open={showAlert}
-				handleClose={handleCloseAlert}
-				status={statusAlert}
-				message={messageAlert}
-			/>
 		</Box>
 	);
 }

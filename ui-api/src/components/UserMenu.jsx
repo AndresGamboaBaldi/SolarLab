@@ -18,6 +18,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import ExperimentsListDialog from '../components/ExperimentsList';
 import { signOut, useSession } from 'next-auth/react';
 import SignUpDialog from '../components/SignUpDialog';
+import { toast } from 'react-toastify';
 
 export default function UserMenu() {
 	const [openSignup, setOpenSignUp] = useState(false);

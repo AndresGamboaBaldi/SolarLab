@@ -2,7 +2,7 @@ import { AppBar, Box, Toolbar, Link } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
 
-import UserButtons from '../components/UserButtonsNavBar';
+import UserButtonsNavBar from '../components/UserButtonsNavBar';
 import UserMenu from '../components/UserMenu';
 import { useSession } from 'next-auth/react';
 
@@ -39,7 +39,7 @@ export default function NavBar() {
 						</Box>
 					) : (
 						<Box>
-							<UserButtons></UserButtons>
+							<UserButtonsNavBar></UserButtonsNavBar>
 						</Box>
 					)}
 				</Toolbar>

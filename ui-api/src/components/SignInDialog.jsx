@@ -1,5 +1,4 @@
 import GoogleButton from './GoogleButton';
-import Alert from './Alert';
 import {
 	Box,
 	Checkbox,
@@ -14,40 +13,24 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
+import { toast } from 'react-toastify';
 
 export default function SignInDialog({ open, handleClose, onClickSignup }) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const [showAlert, setShowAlert] = useState(false);
-	const [statusAlert, setStatusAlert] = useState('success');
-	const [messageAlert, setMessageAlert] = useState('');
-
-	const handleCloseAlert = (event, reason) => {
-		setShowAlert(false);
-	};
-
 	const handleAuth = async () => {
 		signIn('credentials', { email: email, password: password, redirect: false })
 			.then((response) => {
 				if (response.ok) {
-					setStatusAlert('success');
-					setMessageAlert('Welcome Back!');
-					setShowAlert(true);
+					toast.success('Welcome Back!');
 					handleClose();
 				} else {
-					setStatusAlert('error');
-					setMessageAlert('Incorrect Email or Password, Verify and Retry');
-					setPassword('');
-					setShowAlert(true);
+					toast.error('Incorrect Email or Password, Verify and Retry');
 				}
 			})
 			.catch((error) => {
-				//console.log(error);
-				setStatusAlert('error');
-				setMessageAlert('Something Went Wrong, Please Retry');
-				setPassword('');
-				setShowAlert(true);
+				toast.error('Something Went Wrong, Please Retry');
 			});
 	};
 
@@ -195,12 +178,6 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 							</Link>
 						</Grid>
 					</Grid>
-					<Alert
-						open={showAlert}
-						handleClose={handleCloseAlert}
-						status={statusAlert}
-						message={messageAlert}
-					/>
 				</Box>
 			</Box>
 		</Dialog>

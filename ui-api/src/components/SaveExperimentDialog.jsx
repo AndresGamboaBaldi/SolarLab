@@ -8,9 +8,9 @@ import {
 	Stack,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import Alert from './Alert';
 import DepartmentDataDialog from './DepartmentDataDialog';
 import { useSession } from 'next-auth/react';
+import { toast } from 'react-toastify';
 
 export default function SaveExperimentDialog({
 	open,
@@ -21,10 +21,6 @@ export default function SaveExperimentDialog({
 	const { data: session, status } = useSession();
 	const [experimentName, setExperimentName] = useState('');
 
-	const [showAlert, setShowAlert] = useState(false);
-	const [statusAlert, setStatusAlert] = useState('success');
-	const [messageAlert, setMessageAlert] = useState('');
-
 	const [departmentsToSave, setDepartmentsToSave] = useState([]);
 	useEffect(() => {
 		setDepartmentsToSave(
@@ -33,10 +29,6 @@ export default function SaveExperimentDialog({
 			)
 		);
 	}, [selectedCities]);
-
-	const handleCloseAlert = (event, reason) => {
-		setShowAlert(false);
-	};
 
 	const saveExperiment = async () => {
 		if (validateFields()) {
@@ -55,18 +47,13 @@ export default function SaveExperimentDialog({
 			const newExperiment = await response.json();
 			if (newExperiment.name) {
 				setExperimentName('');
-				setStatusAlert('success');
-				setMessageAlert('Saved Successfully!');
-				setShowAlert(true);
+				handleClose();
+				toast.success('Saved Successfully!');
 			} else {
-				setStatusAlert('error');
-				setMessageAlert('Error Saving, Please Try Again Later');
-				setShowAlert(true);
+				toast.error('Error Saving, Please Try Again Later');
 			}
 		} else {
-			setStatusAlert('error');
-			setMessageAlert('Give the Experiment a Name');
-			setShowAlert(true);
+			toast.error('Give the Experiment a Name');
 		}
 	};
 
@@ -191,12 +178,6 @@ export default function SaveExperimentDialog({
 						</Typography>
 					</Button>
 				</Stack>
-				<Alert
-					open={showAlert}
-					handleClose={handleCloseAlert}
-					status={statusAlert}
-					message={messageAlert}
-				/>
 			</Box>
 		</Dialog>
 	);
