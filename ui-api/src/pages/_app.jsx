@@ -14,15 +14,12 @@ const lato = Lato({
 	weight: ['300', '400', '700'],
 });
 
-export default function App({
-	Component,
-	pageProps: { session, ...pageProps },
-}) {
+export default function App({ Component, pageProps }) {
 	return (
 		<>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
-				<SessionProvider session={session}>
+				<SessionProvider session={pageProps.session}>
 					<NavBar />
 					<Component {...pageProps} />
 				</SessionProvider>
@@ -36,8 +33,9 @@ export default function App({
 				closeOnClick
 				rtl={false}
 				pauseOnFocusLoss
-				draggable
+				draggable={false}
 				pauseOnHover
+				style={{ minWidth: 'fit-content' }}
 			/>
 		</>
 	);

@@ -3,12 +3,14 @@ import db from '@/lib/db';
 export default async function handler(req, res) {
 	if (req.method === 'POST') {
 		try {
-			const experiments = await db.Experiment.findMany({
+			const departamentLabs = await db.DepartmentLab.findMany({
 				where: {
-					studentEmail: req.body.email,
+					experimentId: req.body.id,
 				},
 			});
-			return res.status(200).json({ experiments: experiments, status: true });
+			return res
+				.status(200)
+				.json({ departamentLabs: departamentLabs, status: true });
 		} catch (error) {
 			return res.status(400).json({ error: error.message, status: false });
 		}

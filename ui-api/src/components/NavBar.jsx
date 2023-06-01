@@ -1,12 +1,14 @@
-import { AppBar, Box, Toolbar, Link } from '@mui/material';
+import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
 
 import UserButtonsNavBar from '../components/UserButtonsNavBar';
 import UserMenu from '../components/UserMenu';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 export default function NavBar() {
+	const router = useRouter();
 	const { data: session, status } = useSession();
 
 	return (
@@ -20,18 +22,18 @@ export default function NavBar() {
 						height={32}
 					/>
 
-					<Link
+					<Typography
 						color='white.main'
 						variant='header2'
-						underline='none'
 						sx={{
 							flexGrow: 1,
+							cursor: 'pointer',
 						}}
 						ml={{ xxs: 1, xs: 1, sm: 3 }}
-						href='/'
+						onClick={() => router.push('/')}
 					>
 						Solar Remote Lab
-					</Link>
+					</Typography>
 
 					{session ? (
 						<Box sx={{ flexGrow: 0 }}>

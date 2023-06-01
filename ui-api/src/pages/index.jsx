@@ -10,41 +10,56 @@ import {
 	Button,
 } from '@mui/material';
 import { toast } from 'react-toastify';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
+
 export default function Home() {
 	useEffect(() => {
 		reviewAccess();
 	}, []);
 
+	const handleEnterRemoteLab = () => {
+		if (!window.localStorage.getItem('SESSION_DATA')) {
+			toast.error('You Dont Have an Active Session. Book One!');
+		} else {
+			router.push('/laboratory');
+		}
+	};
+
+	const router = useRouter();
+
 	const reviewAccess = async () => {
-		const urlParams = new URLSearchParams(window.location.search);
-		const accessKey = urlParams.get('access_key');
-		if (accessKey != null) {
-			const pwd = urlParams.get('pwd');
-			const message = { access_key: accessKey, pwd: pwd };
-			const response = await fetch(`/api/booking`, {
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				method: 'POST',
-				body: JSON.stringify(message),
-			});
-			const data = await response.json();
-			if (data.status) {
-				toast.info(
-					'Your Session Has Started!, You Can Enter to the UPB Remote Solar Lab',
-					{ autoClose: 10000 }
-				);
-				window.localStorage.setItem('SESSION_DATA', JSON.stringify(data.data));
+		if (JSON.parse(window.localStorage.getItem('SESSION_DATA'))) {
+			toast.info('Your Session Has Started');
+		} else {
+			const urlParams = new URLSearchParams(window.location.search);
+			const accessKey = urlParams.get('access_key');
+			if (accessKey != null) {
+				const pwd = urlParams.get('pwd');
+				const message = { access_key: accessKey, pwd: pwd };
+				const response = await fetch(`/api/booking`, {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					method: 'POST',
+					body: JSON.stringify(message),
+				});
+				const data = await response.json();
+				if (data.status) {
+					toast.info('Your Session Has Started');
+					window.localStorage.setItem(
+						'SESSION_DATA',
+						JSON.stringify(data.data)
+					);
+				} else {
+					toast.warn('Your Session Has Not Started Yet', {
+						autoClose: 10000,
+					});
+				}
 			} else {
-				toast.warn('Oops.! Your Session has not Started Yet', {
+				toast.warn('You Dont Have a Session, Book One!', {
 					autoClose: 10000,
 				});
 			}
-		} else {
-			toast.warn('Oops.! You Dont have a Session, Book One!', {
-				autoClose: 10000,
-			});
 		}
 	};
 
@@ -109,25 +124,28 @@ export default function Home() {
 								<Button
 									variant='contained'
 									sx={{
+										bgcolor: 'white.main',
+										border: 1,
 										textTransform: 'none',
-										bgcolor: 'primary.700',
+										borderColor: 'primary.700',
 										mr: { xxs: 2, xs: 3, s: 4, sm: 6, md: 8, lg: 9 },
+										py: { xxs: '2px', xs: 'auto' },
 									}}
+									onClick={() => router.push('/experiments')}
 								>
-									<Link
-										href={{ pathname: '/laboratory' }}
-										style={{ textDecoration: 'none' }}
+									<Typography
+										sx={{
+											mx: { xxs: 0, xs: 1, s: 3, sm: 4, md: 4, lg: 5 },
+
+											'&:hover': {
+												color: '#fff',
+											},
+										}}
+										variant='buttonsHome'
+										color='primary.700'
 									>
-										<Typography
-											sx={{
-												mx: { xxs: 0, xs: 1, s: 3, sm: 4, md: 4, lg: 5 },
-											}}
-											variant='buttonsHome'
-											color='white.main'
-										>
-											Enter To Remote Lab
-										</Typography>
-									</Link>
+										Previous Experiments
+									</Typography>
 								</Button>
 								<Button
 									variant='contained'
@@ -136,11 +154,12 @@ export default function Home() {
 										border: 1,
 										textTransform: 'none',
 										borderColor: 'primary.700',
+										py: { xxs: '2px', xs: 'auto' },
 									}}
 								>
 									<Typography
 										sx={{
-											mx: { xxs: 1, xs: 2, s: 4, sm: 5, md: 6, lg: 7 },
+											mx: { xxs: 0, xs: 2, s: 4, sm: 5, md: 5, lg: 7 },
 											'&:hover': {
 												color: '#fff',
 											},
@@ -153,6 +172,35 @@ export default function Home() {
 										}
 									>
 										Book a Session
+									</Typography>
+								</Button>
+							</Box>
+							<Box
+								sx={{
+									mt: { xxs: 1, xs: 2, s: 2, sm: 3, md: 5, lg: 6 },
+								}}
+								alignContent='center'
+								alignItems='center'
+								textAlign='center'
+							>
+								<Button
+									variant='contained'
+									sx={{
+										textTransform: 'none',
+										bgcolor: 'primary.700',
+										ml: { xxs: 1, xs: 1, s: 1, sm: 2, md: 2, lg: 2 },
+										py: { xxs: '4px', xs: 'auto' },
+									}}
+									onClick={handleEnterRemoteLab}
+								>
+									<Typography
+										sx={{
+											mx: { xxs: 0, xs: 1, s: 3, sm: 4, md: 4, lg: 5 },
+										}}
+										variant='buttonsHome'
+										color='white.main'
+									>
+										Enter To Remote Lab
 									</Typography>
 								</Button>
 							</Box>

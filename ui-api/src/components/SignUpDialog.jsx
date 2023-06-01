@@ -62,18 +62,22 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 		}
 	};
 	const loadData = async () => {
-		const response = await fetch(`/api/students/read`, {
+		const request = await fetch(`/api/students/read`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
-			body: JSON.stringify(session.email),
+			body: JSON.stringify(session.user.email),
 		});
-		const student = await response.json();
-		setEmailDisable(true);
-		setEmail(student.email);
-		setFullname(student.fullname);
-		setStudentCode(student.studentCode);
+		const response = await request.json();
+		if (!response.status) {
+			toast.error('Something Went Wrong, Please Try Again');
+		} else {
+			setEmailDisable(true);
+			setEmail(response.student.email);
+			setFullname(response.student.fullname);
+			setStudentCode(response.student.studentCode);
+		}
 	};
 
 	const handleUpdate = async () => {

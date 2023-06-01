@@ -19,8 +19,10 @@ import ExperimentsListDialog from '../components/ExperimentsList';
 import { signOut, useSession } from 'next-auth/react';
 import SignUpDialog from '../components/SignUpDialog';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 export default function UserMenu() {
+	const router = useRouter();
 	const [openSignup, setOpenSignUp] = useState(false);
 	const { data: session, status } = useSession();
 
@@ -53,10 +55,15 @@ export default function UserMenu() {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
-			body: JSON.stringify(session.email),
+			body: JSON.stringify({ email: session.user.email }),
 		});
 		const student = await response.json();
-		setFullname(student.fullname);
+
+		if (!student.status) {
+			toast.error('Something Went Wrong, Please Try Again');
+		} else {
+			setFullname(student.student.fullname);
+		}
 	};
 
 	useEffect(() => {
@@ -92,7 +99,7 @@ export default function UserMenu() {
 					mr: { xxs: 0, xs: 0, sm: 1 },
 				}}
 			>
-				<IconButton onClick={() => setOpenExperimentsList(true)}>
+				<IconButton onClick={() => router.push('/experiments')}>
 					<ScienceIcon
 						sx={{
 							fontSize: { xxs: '20px', xs: '24px', sm: '32px' },

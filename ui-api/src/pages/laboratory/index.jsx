@@ -17,9 +17,12 @@ import {
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import SaveExperimentDialog from '../../components/SaveExperimentDialog';
-import ExperimentsListDialog from '../../components/ExperimentsList';
 import SessionTimer from '../../components/SessionTimer';
 import { useRouter } from 'next/router';
+import SignInDialog from '../../components/SignInDialog';
+import SignUpDialog from '../../components/SignUpDialog';
+import { useSession } from 'next-auth/react';
+import { toast } from 'react-toastify';
 
 export default function Laboratory() {
 	const router = useRouter();
@@ -30,7 +33,6 @@ export default function Laboratory() {
 		},
 	};
 	const [openSaveExperiment, setOpenSaveExperiment] = useState(false);
-	const [openExperimentsList, setOpenExperimentsList] = useState(false);
 	const [canAccess, setCanAccess] = useState(false);
 
 	const [selectedCities, setSelectedCities] = React.useState(['Cochabamba']);
@@ -60,10 +62,33 @@ export default function Laboratory() {
 	};
 
 	const checkAccess = () => {
-		if (window.localStorage.getItem('SESSION_DATA') == 'false') {
+		if (!window.localStorage.getItem('SESSION_DATA')) {
+			toast.error('You Dont Have a Session');
 			router.push('/');
 		} else {
 			setCanAccess(true);
+		}
+	};
+
+	const { data: session, status } = useSession();
+
+	const [openSignIn, setOpenSignIn] = useState(false);
+	const [openSignup, setOpenSignUp] = useState(false);
+	const handleOpenSignUpFromSignIn = () => {
+		setOpenSignIn(false);
+		setOpenSignUp(true);
+	};
+
+	const handleOpenSignInFromSignUp = () => {
+		setOpenSignUp(false);
+		setOpenSignIn(true);
+	};
+
+	const handleOpenSaveExperiment = () => {
+		if (session) {
+			setOpenSaveExperiment(true);
+		} else {
+			setOpenSignIn(true);
 		}
 	};
 
@@ -258,7 +283,7 @@ export default function Laboratory() {
 									bgcolor: 'primary.700',
 									mr: { xxs: 1, xs: 1, s: 2, sm: 3 },
 								}}
-								onClick={() => setOpenSaveExperiment(true)}
+								onClick={handleOpenSaveExperiment}
 							>
 								<Typography
 									color='white.main'
@@ -278,7 +303,7 @@ export default function Laboratory() {
 									textTransform: 'none',
 									borderColor: 'primary.700',
 								}}
-								onClick={() => setOpenExperimentsList(true)}
+								onClick={() => router.push('/experiments')}
 							>
 								<Typography
 									color='primary.700'
@@ -290,7 +315,7 @@ export default function Laboratory() {
 										},
 									}}
 								>
-									Load Previous Experiment
+									Load Previous Experiments
 								</Typography>
 							</Button>
 						</Stack>
@@ -333,7 +358,7 @@ export default function Laboratory() {
 									border: 1,
 									borderColor: 'primary.700',
 								}}
-								onClick={() => setOpenExperimentsList(true)}
+								onClick={() => router.push('/experiments')}
 							>
 								<Typography
 									color='primary.700'
@@ -345,7 +370,7 @@ export default function Laboratory() {
 										},
 									}}
 								>
-									Load Experiment
+									My Experiments
 								</Typography>
 							</Button>
 							<SaveExperimentDialog
@@ -354,11 +379,19 @@ export default function Laboratory() {
 								departmentData={departmentData}
 								selectedCities={selectedCities}
 							/>
-							<ExperimentsListDialog
-								open={openExperimentsList}
-								handleClose={() => setOpenExperimentsList(false)}
-							/>
 						</Stack>
+					</Box>
+					<Box>
+						<SignUpDialog
+							open={openSignup}
+							handleClose={() => setOpenSignUp(false)}
+							onClickSignIn={handleOpenSignInFromSignUp}
+						/>
+						<SignInDialog
+							open={openSignIn}
+							handleClose={() => setOpenSignIn(false)}
+							onClickSignup={handleOpenSignUpFromSignIn}
+						/>
 					</Box>
 				</Box>
 			) : null}

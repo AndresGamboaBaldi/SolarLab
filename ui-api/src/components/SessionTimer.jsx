@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 export default function SessionTimer() {
-	const [remaingTime, setRemainingTime] = useState(false);
+	const [remaingTime, setRemainingTime] = useState({});
 	const router = useRouter();
 	useEffect(() => {
 		const timer = setTimeout(() => {
@@ -14,7 +14,7 @@ export default function SessionTimer() {
 			);
 		}, 900);
 		if (remaingTime.minutes <= 0 && remaingTime.seconds <= 0) {
-			window.localStorage.setItem('SESSION_DATA', false);
+			window.localStorage.removeItem('SESSION_DATA');
 			toast.info('Your Session has Ended');
 			router.push('/');
 		} else if (remaingTime.minutes == 5 && remaingTime.seconds <= 0) {
@@ -27,7 +27,10 @@ export default function SessionTimer() {
 
 	const calculateTimeLeft = (endDate) => {
 		let difference = +new Date(endDate) - +new Date();
-		let timeLeft = {};
+		let timeLeft = {
+			minutes: 0,
+			seconds: 0,
+		};
 
 		if (difference > 0) {
 			timeLeft = {

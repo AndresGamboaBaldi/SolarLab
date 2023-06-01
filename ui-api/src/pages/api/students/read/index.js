@@ -8,9 +8,12 @@ export default async function handler(req, res) {
 					email: req.body.email,
 				},
 			});
-			return res.status(200).json(student);
+			const { password, ...studentWithoutPass } = student;
+			return res
+				.status(200)
+				.json({ student: studentWithoutPass, status: true });
 		} catch (error) {
-			return res.status(400).json({ error: error.message });
+			return res.status(400).json({ error: error.message, status: false });
 		}
 	} else {
 		return res.status(500).json({ error: 'HTTP Method not Valid' });

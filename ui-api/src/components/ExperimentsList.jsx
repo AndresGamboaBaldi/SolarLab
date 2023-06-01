@@ -85,28 +85,32 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 	};
 
 	const loadData = async () => {
-		if (typeof session !== 'undefined') {
-			setEmail(session.user.email);
-		}
 		const response = await fetch(`/api/experiments/read`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
-			body: JSON.stringify(email),
+			body: JSON.stringify({ email: session.user.email }),
 		});
 		const experiments = await response.json();
-		setExperimentList(experiments);
-		if (experiments.error) {
+		if (!experiments.status) {
 			toast.error('Something Went Wrong, Please Try Again');
+		} else {
+			setExperimentList(experiments.experiments);
 		}
 	};
 
 	useEffect(() => {
 		handleResize();
 		window.addEventListener('resize', handleResize);
-		loadData();
+		checkSession();
 	}, [open]);
+
+	const checkSession = () => {
+		if (session) {
+			loadData();
+		}
+	};
 
 	return (
 		<Dialog
