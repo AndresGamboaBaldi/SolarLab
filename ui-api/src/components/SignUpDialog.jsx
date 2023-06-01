@@ -35,25 +35,24 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const handleAuth = async () => {
 		if (validateFields()) {
 			if (password === confirmPassword) {
-				setNewStudent({
-					email: email,
-					password: password,
-					studentCode: studentCode,
-					fullname: fullname,
-				});
 				setPasswordError(false);
 				const response = await fetch(`/api/signUp`, {
 					headers: {
 						'Content-Type': 'application/json',
 					},
 					method: 'POST',
-					body: JSON.stringify(newStudent),
+					body: JSON.stringify({
+						email: email,
+						password: password,
+						studentCode: studentCode,
+						fullname: fullname,
+					}),
 				});
 				const data = await response.json();
 				if (data.status) {
 					await createSessionAuth();
 				} else {
-					toast.error('Something Went Wrong, Please Verify and Retry');
+					toast.error(data.error);
 				}
 			} else {
 				setPasswordError(true);
@@ -107,7 +106,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 		signIn('credentials', { email: email, password: password, redirect: false })
 			.then((response) => {
 				if (response.ok) {
-					toast.success('Welcome Back!');
+					toast.success('Welcome!');
 					setEmail('');
 					setPassword('');
 					setConfirmPassword('');

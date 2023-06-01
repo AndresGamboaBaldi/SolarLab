@@ -42,9 +42,9 @@ export default function UserMenu() {
 		setOpenSignUp(true);
 	};
 
-	const handleSignOut = () => {
+	const handleSignOut = async () => {
 		setAnchorElUser(null);
-		signOut({ callbackUrl: '/' });
+		await signOut({ callbackUrl: '/' });
 	};
 
 	const loadData = async () => {
