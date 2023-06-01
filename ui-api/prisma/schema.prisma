@@ -32,7 +32,7 @@ model DepartmentLab {
   current        Float
   voltage        Float
   radiation      Float
-  experiment     Experiment? @relation(fields: [experimentId], references: [id])
+  experiment     Experiment? @relation(fields: [experimentId], references: [id], onDelete: Cascade)
   experimentId   Int?
 }
 

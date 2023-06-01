@@ -27,11 +27,7 @@ import SignUpDialog from '../../components/SignUpDialog';
 
 import Head from 'next/head';
 
-export default function Laboratory() {
-	const [angle, setAngle] = useState(0);
-	const [voltage, setVoltage] = useState('');
-	const [current, setCurrent] = useState('');
-	const [radiation, setRadiation] = useState('');
+export default function Experiments() {
 	const [noExperiments, setNoExperiments] = useState(true);
 
 	const { data: session, status } = useSession();

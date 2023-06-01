@@ -16,6 +16,12 @@ export default function ExperimentActions({ params, handleClose }) {
 			toast.error("'Something Went Wrong, Please Try Again Later'");
 		} else {
 			toast.success('Deleted Successfully!');
+			if (
+				JSON.parse(window.localStorage.getItem('EXPERIMENT')).id == params.id
+			) {
+				window.localStorage.removeItem('EXPERIMENT');
+			}
+
 			handleClose();
 		}
 	};
