@@ -62,13 +62,26 @@ export default function Laboratory() {
 	};
 
 	const loadData = async () => {
-		const response = await fetch(`/api/experiments/readFirst`, {
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			method: 'POST',
-			body: JSON.stringify({ email: session.user.email }),
-		});
+		var response;
+		if (!window.localStorage.getItem('EXPERIMENT')) {
+			response = await fetch(`/api/experiments/readFirst`, {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				method: 'POST',
+				body: JSON.stringify({ email: session.user.email }),
+			});
+		} else {
+			response = await fetch(`/api/experiments/readid`, {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				method: 'POST',
+				body: JSON.stringify({
+					id: JSON.parse(window.localStorage.getItem('EXPERIMENT')).id,
+				}),
+			});
+		}
 
 		const answer = await response.json();
 		if (!answer.status) {

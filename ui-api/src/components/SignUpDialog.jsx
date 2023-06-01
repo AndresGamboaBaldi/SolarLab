@@ -67,7 +67,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
-			body: JSON.stringify(session.user.email),
+			body: JSON.stringify({ email: session.user.email }),
 		});
 		const response = await request.json();
 		if (!response.status) {

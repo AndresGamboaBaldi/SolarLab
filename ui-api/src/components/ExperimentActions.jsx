@@ -19,6 +19,13 @@ export default function ExperimentActions({ params, handleClose }) {
 			handleClose();
 		}
 	};
+	const openExperiment = () => {
+		window.localStorage.setItem(
+			'EXPERIMENT',
+			JSON.stringify({ id: params.id })
+		);
+		handleClose();
+	};
 	return (
 		<Box>
 			<Grid container>
@@ -31,7 +38,7 @@ export default function ExperimentActions({ params, handleClose }) {
 					}}
 				>
 					<IconButton
-						onClick={() => {}}
+						onClick={openExperiment}
 						sx={{
 							color: 'secondary.main',
 						}}

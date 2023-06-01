@@ -46,6 +46,7 @@ export default function UserMenu() {
 
 	const handleSignOut = async () => {
 		setAnchorElUser(null);
+		window.localStorage.removeItem('EXPERIMENT');
 		await signOut({ callbackUrl: '/' });
 	};
 
