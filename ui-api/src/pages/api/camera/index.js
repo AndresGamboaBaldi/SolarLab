@@ -16,6 +16,7 @@ export default async function handler(req, res) {
 		}
 		if (req.method === 'POST') {
 			try {
+				console.log('hola');
 				const stream = new Stream({
 					name: 'SolarLabCamera',
 					streamUrl: cameraUrl,
@@ -25,10 +26,10 @@ export default async function handler(req, res) {
 						'-codec:v': 'mpeg1video', // video codec
 						'-b:v': '1000k', // video bit rate
 						'-r': 25, // frame rate
-						'-s': '216x216', // video size
+						'-s': '240x240', // video size
+						'-loglevel': 'error',
 						'-bf': 0,
-						'-loglevel': 'panic',
-						//-c copy
+						//'-c': 'copy',
 						'-filter:v': 'fps=fps=10',
 					},
 				});

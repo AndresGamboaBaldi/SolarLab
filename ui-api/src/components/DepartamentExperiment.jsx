@@ -95,8 +95,8 @@ export default function DepartamentExperiment({ name, departmentData }) {
 							>
 								<Box
 									sx={{
-										width: '216px',
-										height: '216px',
+										width: '240px',
+										height: '240px',
 										backgroundColor: 'black',
 									}}
 								>

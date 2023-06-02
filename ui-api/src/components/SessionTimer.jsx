@@ -3,15 +3,20 @@ import { Box, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 export default function SessionTimer() {
-	const [remaingTime, setRemainingTime] = useState({});
+	const [remaingTime, setRemainingTime] = useState({
+		minutes: 14,
+		seconds: 59,
+	});
 	const router = useRouter();
 	useEffect(() => {
 		const timer = setTimeout(() => {
-			setRemainingTime(
-				calculateTimeLeft(
-					JSON.parse(window.localStorage.getItem('SESSION_DATA')).end_date
-				)
-			);
+			if (remaingTime.minutes != 0 || remaingTime.seconds != 0) {
+				setRemainingTime(
+					calculateTimeLeft(
+						JSON.parse(window.localStorage.getItem('SESSION_DATA')).end_date
+					)
+				);
+			}
 		}, 900);
 		if (remaingTime.minutes <= 0 && remaingTime.seconds <= 0) {
 			window.localStorage.removeItem('SESSION_DATA');
