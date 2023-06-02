@@ -231,54 +231,53 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								}}
 							/>
 						</Grid>
-						<Grid item xxs={12} xs={12}>
-							<Typography variant='header3'>Password</Typography>
-						</Grid>
-						<Grid item xxs={12} xs={12}>
-							<TextField
-								required
-								fullWidth
-								size='small'
-								variant='outlined'
-								type='password'
-								autoComplete='new-password'
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-								InputProps={{
-									style: {
-										padding: '0',
-										fontFamily: 'Lato',
-									},
-								}}
-							/>
-						</Grid>
-						<Grid item xxs={12} xs={12}>
-							<Typography variant='header3'>Confirm Password</Typography>
-						</Grid>
-						<Grid item xxs={12} xs={12}>
-							<TextField
-								required
-								fullWidth
-								size='small'
-								variant='outlined'
-								type='password'
-								autoComplete='new-password'
-								value={confirmPassword}
-								onChange={(e) => setConfirmPassword(e.target.value)}
-								error={passwordError}
-								InputProps={{
-									style: {
-										padding: '0',
-										fontFamily: 'Lato',
-									},
-								}}
-							/>
-							{passwordError && passwordErrorMessage}
-						</Grid>
 					</Grid>
 					{!session ? (
 						<Box>
-							{' '}
+							<Grid item xxs={12} xs={12} my={{ xxs: 1, xs: 1, sm: 2 }}>
+								<Typography variant='header3'>Password</Typography>
+							</Grid>
+							<Grid item xxs={12} xs={12}>
+								<TextField
+									required
+									fullWidth
+									size='small'
+									variant='outlined'
+									type='password'
+									autoComplete='new-password'
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
+									InputProps={{
+										style: {
+											padding: '0',
+											fontFamily: 'Lato',
+										},
+									}}
+								/>
+							</Grid>
+							<Grid item xxs={12} xs={12} my={{ xxs: 1, xs: 1, sm: 2 }}>
+								<Typography variant='header3'>Confirm Password</Typography>
+							</Grid>
+							<Grid item xxs={12} xs={12}>
+								<TextField
+									required
+									fullWidth
+									size='small'
+									variant='outlined'
+									type='password'
+									autoComplete='new-password'
+									value={confirmPassword}
+									onChange={(e) => setConfirmPassword(e.target.value)}
+									error={passwordError}
+									InputProps={{
+										style: {
+											padding: '0',
+											fontFamily: 'Lato',
+										},
+									}}
+								/>
+								{passwordError && passwordErrorMessage}
+							</Grid>{' '}
 							<Grid
 								item
 								xxs={12}

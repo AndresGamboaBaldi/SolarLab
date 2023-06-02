@@ -18,12 +18,14 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import ExperimentsListDialog from '../components/ExperimentsList';
 import { signOut, useSession } from 'next-auth/react';
 import SignUpDialog from '../components/SignUpDialog';
+import UpdatePasswordDialog from './UpdatePasswordDialog';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 
 export default function UserMenu() {
 	const router = useRouter();
 	const [openSignup, setOpenSignUp] = useState(false);
+	const [openUpdatePassword, setOpenUpdatePassword] = useState(false);
 	const { data: session, status } = useSession();
 
 	const [fullname, setFullname] = useState('');
@@ -183,7 +185,7 @@ export default function UserMenu() {
 					<Typography variant='body1'>My Account</Typography>
 				</MenuItem>
 				<Divider />
-				<MenuItem>
+				<MenuItem onClick={() => setOpenUpdatePassword(true)}>
 					<SettingsIcon
 						sx={{
 							fontSize: { xxs: '20px', xs: '24px', sm: '24px' },
@@ -191,7 +193,7 @@ export default function UserMenu() {
 							color: 'primary.700',
 						}}
 					/>
-					<Typography variant='body2'>Settings</Typography>
+					<Typography variant='body2'>Update Password</Typography>
 				</MenuItem>
 				<MenuItem onClick={handleSignOut}>
 					<LogoutIcon
@@ -207,6 +209,10 @@ export default function UserMenu() {
 				<SignUpDialog
 					open={openSignup}
 					handleClose={() => setOpenSignUp(false)}
+				/>
+				<UpdatePasswordDialog
+					open={openUpdatePassword}
+					handleClose={() => setOpenUpdatePassword(false)}
 				/>
 			</Menu>
 		</Box>
