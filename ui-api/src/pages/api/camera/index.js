@@ -1,22 +1,26 @@
 const Stream = require('node-rtsp-stream');
 
 export default async function handler(req, res) {
-	if (!res.socket.server.io) {
-		var cameraUrl = '';
-		var websocketPort = '';
-		if (req.body.name === 'Cochabamba') {
-			cameraUrl = process.env.CAMERACBBA;
-			websocketPort = process.env.WSPORTCBBA;
-		} else if (req.body.name === 'Santa Cruz') {
-			cameraUrl = process.env.CAMERASCZ;
-			websocketPort = process.env.WSPORTSCZ;
-		} else {
-			cameraUrl = process.env.CAMERALPZ;
-			websocketPort = process.env.WSPORTLPZ;
-		}
+	var cameraUrl = '';
+	var websocketPort = '';
+	var key = '';
+	if (req.body.name === 'Cochabamba') {
+		cameraUrl = process.env.CAMERACBBA;
+		websocketPort = process.env.WSPORTCBBA;
+		key = 'cbba';
+	} else if (req.body.name === 'Santa Cruz') {
+		cameraUrl = process.env.CAMERASCZ;
+		websocketPort = process.env.WSPORTSCZ;
+		key = 'scz';
+	} else {
+		cameraUrl = process.env.CAMERALPZ;
+		websocketPort = process.env.WSPORTLPZ;
+		key = 'lpz';
+	}
+	if (!res.socket.server[key]) {
 		if (req.method === 'POST') {
 			try {
-				const stream = new Stream({
+				const stream = await new Stream({
 					name: 'SolarLabCamera',
 					streamUrl: cameraUrl,
 					wsPort: websocketPort,
@@ -32,16 +36,16 @@ export default async function handler(req, res) {
 						'-filter:v': 'fps=fps=10',
 					},
 				});
-				res.socket.server.io = stream;
-				return res.status(200).json({ status: 'ok' });
+				res.socket.server[key] = true;
+				return res.status(200).json({ status: true });
 			} catch (error) {
-				return res.status(400).json({ error: error.message });
+				return res.status(400).json({ error: error.message, status: false });
 			}
 		} else {
 			return res.status(500).json({ error: 'HTTP Method not Valid' });
 		}
 	} else {
 		console.log('socket.io already running');
+		return res.status(200).json({ status: true });
 	}
-	res.end();
 }
