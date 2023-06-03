@@ -56,6 +56,23 @@ const theme = createTheme({
 				fontSize: '2.3rem',
 			},
 		},
+		header12: {
+			fontFamily: 'Lato',
+			fontWeight: 700,
+			fontSize: '1.5rem',
+			'@media (min-width:200px)': {
+				fontSize: '1.2rem',
+			},
+			'@media (min-width:372px)': {
+				fontSize: '1.4rem',
+			},
+			'@media (min-width:538px)': {
+				fontSize: '1.6rem',
+			},
+			'@media (min-width:664px)': {
+				fontSize: '2.0rem',
+			},
+		},
 		header2: {
 			fontFamily: 'Lato',
 			fontWeight: 700,

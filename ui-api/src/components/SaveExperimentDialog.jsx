@@ -32,25 +32,29 @@ export default function SaveExperimentDialog({
 
 	const saveExperiment = async () => {
 		if (validateFields()) {
-			const experimentToSave = {
-				experimentName: experimentName,
-				email: session.user.email,
-				departments: departmentsToSave,
-			};
-			const response = await fetch(`/api/experiments/create`, {
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				method: 'POST',
-				body: JSON.stringify(experimentToSave),
-			});
-			const newExperiment = await response.json();
-			if (newExperiment.name) {
-				setExperimentName('');
-				handleClose();
-				toast.success('Saved Successfully!');
+			if (selectedCities.length > 0) {
+				const experimentToSave = {
+					experimentName: experimentName,
+					email: session.user.email,
+					departments: departmentsToSave,
+				};
+				const response = await fetch(`/api/experiments/create`, {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					method: 'POST',
+					body: JSON.stringify(experimentToSave),
+				});
+				const newExperiment = await response.json();
+				if (newExperiment.name) {
+					setExperimentName('');
+					handleClose();
+					toast.success('Saved Successfully!');
+				} else {
+					toast.error('Error Saving, Please Try Again Later');
+				}
 			} else {
-				toast.error('Error Saving, Please Try Again Later');
+				toast.error('Select Cities for the Experiment');
 			}
 		} else {
 			toast.error('Give the Experiment a Name');

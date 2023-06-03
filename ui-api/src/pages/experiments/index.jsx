@@ -1,18 +1,4 @@
-import {
-	Box,
-	Grid,
-	Card,
-	Typography,
-	FormGroup,
-	FormControlLabel,
-	Checkbox,
-	FormControl,
-	Select,
-	MenuItem,
-	ListItemText,
-	Stack,
-	Button,
-} from '@mui/material';
+import { Box, Grid, Card, Typography, Stack, Button } from '@mui/material';
 import { toast } from 'react-toastify';
 import ExperimentsListDialog from '../../components/ExperimentsList';
 import React, { useState, useEffect } from 'react';
@@ -20,7 +6,7 @@ import { useRouter } from 'next/router';
 import LineChart from '../../components/LineChart';
 import { ChartData } from '@/data/mockData';
 import { ChartData2 } from '@/data/mockData2';
-import DepartmentDataDialog from '../../components/DepartmentDataDialog';
+import ShowDepartamentData from '../../components/ShowDepartamentData';
 import { useSession } from 'next-auth/react';
 import SignInDialog from '../../components/SignInDialog';
 import SignUpDialog from '../../components/SignUpDialog';
@@ -33,6 +19,9 @@ export default function Experiments() {
 	const { data: session, status } = useSession();
 	const [experiment, setExperiment] = useState({});
 	const [departamentLabs, setDepartamentLabs] = useState([]);
+
+	const [datetime, setDatetime] = useState(0);
+	const [time, setTime] = useState(0);
 
 	const [openSignIn, setOpenSignIn] = useState(false);
 	const [openSignup, setOpenSignUp] = useState(false);
@@ -111,6 +100,8 @@ export default function Experiments() {
 
 	useEffect(() => {
 		checkSession();
+		const datetime = new Date(experiment.experimentDatetime).toLocaleString();
+		setDatetime(datetime);
 	}, [status, openExperimentsList]);
 
 	const [data, setData] = useState({
@@ -187,7 +178,13 @@ export default function Experiments() {
 							mx={{ xxs: 3, xs: 3, s: 4, sm: 5 }}
 						>
 							<Grid container justify='center'>
-								<Grid item xxs={12} xs={12} mb={{ xxs: 1, xs: 2, s: 3, sm: 3 }}>
+								<Grid
+									item
+									xxs={12}
+									xs={12}
+									mb={{ xxs: 1, xs: 2, s: 3, sm: 3 }}
+									sx={{ verticalAlign: 'middle' }}
+								>
 									<Typography variant='header1' color='blacky.main'>
 										{experiment.name}
 									</Typography>
@@ -214,11 +211,11 @@ export default function Experiments() {
 								</Grid>
 								<Grid item xxs={12} align='center' mb={3}>
 									{departamentLabs.map((city) => (
-										<DepartmentDataDialog
+										<ShowDepartamentData
 											departmentData={departamentLabs}
 											key={city.departmentName}
 											name={city.departmentName}
-										></DepartmentDataDialog>
+										></ShowDepartamentData>
 									))}
 								</Grid>
 							</Grid>
