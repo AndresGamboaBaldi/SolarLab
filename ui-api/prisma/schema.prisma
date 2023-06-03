@@ -26,27 +26,22 @@ model Experiment {
 }
 
 model DepartmentLab {
-  id             Int         @id @default(autoincrement())
+  id             Int          @id @default(autoincrement())
   departmentName String
   panelangle     Int
   current        Float
   voltage        Float
   radiation      Float
-  experiment     Experiment? @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+  experiment     Experiment?  @relation(fields: [experimentId], references: [id], onDelete: Cascade)
   experimentId   Int?
-}
-
-model EfficiencyTest {
-  id          Int          @id @default(autoincrement())
-  testRecords TestRecord[]
+  efficiencyTest TestRecord[]
 }
 
 model TestRecord {
-  time             DateTime        @id
-  record           Int
-  radiation        Float
-  current          Float
-  voltage          Float
-  EfficiencyTest   EfficiencyTest? @relation(fields: [efficiencyTestId], references: [id])
-  efficiencyTestId Int?
+  id              Int            @id @default(autoincrement())
+  time            DateTime
+  current         Float
+  voltage         Float
+  departmentlab   DepartmentLab? @relation(fields: [departmentlabId], references: [id], onDelete: Cascade)
+  departmentlabId Int?
 }

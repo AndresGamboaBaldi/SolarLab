@@ -17,6 +17,7 @@ export default function ExperimentActions({ params, handleClose }) {
 		} else {
 			toast.success('Deleted Successfully!');
 			if (
+				window.localStorage.getItem('EXPERIMENT') &&
 				JSON.parse(window.localStorage.getItem('EXPERIMENT')).id == params.id
 			) {
 				window.localStorage.removeItem('EXPERIMENT');

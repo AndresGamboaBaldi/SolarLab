@@ -2,7 +2,7 @@ import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS } from 'chart.js/auto';
 import { useState, useEffect } from 'react';
 
-export default function LineChart({ chartData }) {
+export default function LineChart({ chartData, minimize }) {
 	const [isMobile, setIsMobile] = useState(false);
 	//choose the screen size
 	const handleResize = () => {
@@ -74,7 +74,7 @@ export default function LineChart({ chartData }) {
 		handleResize();
 		window.addEventListener('resize', handleResize);
 	}, []);
-	if (isMobile) {
+	if (isMobile || minimize) {
 		return <Line data={chartData} options={mobileOptions}></Line>;
 	} else {
 		return <Line data={chartData} options={options}></Line>;

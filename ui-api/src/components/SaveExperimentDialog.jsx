@@ -11,6 +11,9 @@ import React, { useState, useEffect } from 'react';
 import DepartmentDataDialog from './DepartmentDataDialog';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
+import { ChartData } from '@/data/mockData';
+import { ChartData2 } from '@/data/mockData2';
+import LineChart from './LineChart';
 
 export default function SaveExperimentDialog({
 	open,
@@ -18,6 +21,28 @@ export default function SaveExperimentDialog({
 	departmentData,
 	selectedCities,
 }) {
+	const [data, setData] = useState({
+		labels: ChartData.map((data) => data.voltage),
+		datasets: [
+			{
+				label: 'Cochabamba',
+				data: ChartData.map((data) => data.current),
+				backgroundColor: ['#F6BD2B'],
+				borderColor: '#F6BD2B',
+				cubicInterpolationMode: 'monotone',
+				borderWidth: 2,
+			},
+			{
+				label: 'La Paz',
+				data: ChartData2.map((data) => data.current),
+				backgroundColor: ['#3E55A2'],
+				borderColor: '#3E55A2',
+				cubicInterpolationMode: 'monotone',
+				borderWidth: 2,
+			},
+		],
+	});
+
 	const { data: session, status } = useSession();
 	const [experimentName, setExperimentName] = useState('');
 
@@ -125,6 +150,15 @@ export default function SaveExperimentDialog({
 							/>
 						</Grid>
 					</Grid>
+				</Box>
+				<Box
+					sx={{
+						width: '100%',
+						height: '19vh',
+					}}
+					mt={{ xxs: 2, xs: 2, sm: 3 }}
+				>
+					<LineChart chartData={data} minimize={true}></LineChart>
 				</Box>
 				<Grid container>
 					{selectedCities.map((city) => (

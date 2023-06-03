@@ -108,6 +108,9 @@ export default function ShowDepartamentData({ departmentData, name }) {
 						'@media (min-width:1100px)': {
 							width: '50%',
 						},
+						'@media (min-width:1300px)': {
+							width: '40%',
+						},
 					}}
 				>
 					<CircularProgressbar
@@ -138,6 +141,9 @@ export default function ShowDepartamentData({ departmentData, name }) {
 						width: '60%',
 						'@media (min-width:1100px)': {
 							width: '50%',
+						},
+						'@media (min-width:1300px)': {
+							width: '40%',
 						},
 					}}
 				>
@@ -176,6 +182,9 @@ export default function ShowDepartamentData({ departmentData, name }) {
 						width: '60%',
 						'@media (min-width:1100px)': {
 							width: '50%',
+						},
+						'@media (min-width:1300px)': {
+							width: '40%',
 						},
 					}}
 				>
