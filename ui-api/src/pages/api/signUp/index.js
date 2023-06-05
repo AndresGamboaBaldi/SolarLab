@@ -3,7 +3,7 @@ import { hash } from 'bcrypt';
 
 export default async function Post(req, res) {
 	if (req.method === 'POST') {
-		const { email, fullname, studentCode, password } = req.body;
+		const { email, fullname, code, password } = req.body;
 		const studentExists = await db.Student.findUnique({
 			where: {
 				email: email,
@@ -17,7 +17,7 @@ export default async function Post(req, res) {
 					data: {
 						email: email,
 						fullname: fullname,
-						studentCode: studentCode,
+						code: code,
 						password: await hash(password, 12),
 					},
 				});

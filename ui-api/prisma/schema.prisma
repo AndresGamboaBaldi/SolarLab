@@ -9,10 +9,36 @@ datasource db {
 
 model Student {
   fullname    String
-  studentCode String
-  email       String       @unique
-  password    String?
+  code        String
+  email       String       @id @unique
+  password    String
   experiments Experiment[]
+  courses     Course[]
+  requests    Request[]
+}
+
+model Teacher {
+  fullname String
+  code     String
+  email    String   @id @unique
+  password String
+  courses  Course[]
+}
+
+model Course {
+  id        Int       @id @default(autoincrement())
+  name      String
+  teacher   Teacher?  @relation(fields: [teacherId], references: [email])
+  teacherId String?
+  students  Student[]
+  requests  Request[]
+}
+
+model Request {
+  id       Int       @id @default(autoincrement())
+  course   Course?   @relation(fields: [courseId], references: [id])
+  courseId Int?
+  students Student[]
 }
 
 model Experiment {

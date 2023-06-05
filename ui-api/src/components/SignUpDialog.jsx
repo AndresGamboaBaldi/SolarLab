@@ -22,7 +22,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [fullname, setFullname] = useState('');
-	const [studentCode, setStudentCode] = useState('');
+	const [code, setcode] = useState('');
 	const [newStudent, setNewStudent] = useState({});
 
 	const [passwordError, setPasswordError] = useState(false);
@@ -44,7 +44,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 					body: JSON.stringify({
 						email: email,
 						password: password,
-						studentCode: studentCode,
+						code: code,
 						fullname: fullname,
 					}),
 				});
@@ -76,14 +76,14 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 			setEmailDisable(true);
 			setEmail(response.student.email);
 			setFullname(response.student.fullname);
-			setStudentCode(response.student.studentCode);
+			setcode(response.student.code);
 		}
 	};
 
 	const handleUpdate = async () => {
 		const updateStudent = {
 			email: email,
-			studentCode: studentCode,
+			code: code,
 			fullname: fullname,
 		};
 		try {
@@ -97,7 +97,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 			const student = await response.json();
 			if (student.email) {
 				setFullname(student.fullname);
-				setStudentCode(student.studentCode);
+				setcode(student.code);
 				toast.success('Updated Successfully');
 			} else {
 				toast.error('Update Failed, Please Try Again Later');
@@ -115,7 +115,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 					setPassword('');
 					setConfirmPassword('');
 					setFullname('');
-					setStudentCode('');
+					setcode('');
 				}
 			})
 			.catch((error) => {
@@ -123,7 +123,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 			});
 	};
 	const validateFields = () => {
-		return password && email && fullname && studentCode;
+		return password && email && fullname && code;
 	};
 
 	const passwordErrorMessage = (
@@ -221,8 +221,8 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								fullWidth
 								size='small'
 								variant='outlined'
-								value={studentCode}
-								onChange={(e) => setStudentCode(e.target.value)}
+								value={code}
+								onChange={(e) => setcode(e.target.value)}
 								inputProps={{
 									style: {
 										padding: '8px',

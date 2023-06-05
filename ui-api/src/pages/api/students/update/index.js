@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 				},
 				data: {
 					fullname: req.body.fullname,
-					studentCode: req.body.studentCode,
+					code: req.body.code,
 				},
 			});
 			return res.status(200).json(updateStudent);
