@@ -1,7 +1,6 @@
 import { Typography, Box, Grid, Button, Card, Slider } from '@mui/material';
 import LineChart from './LineChart';
-import { ChartData } from '@/data/mockData';
-import { ChartData2 } from '@/data/mockData2';
+
 import React, { useState, useEffect } from 'react';
 import CameraPlayer from '../components/CameraPlayer';
 
@@ -10,6 +9,7 @@ export default function DepartamentExperiment({ name, departmentData }) {
 	const [voltage, setVoltage] = useState('');
 	const [current, setCurrent] = useState('');
 	const [radiation, setRadiation] = useState('');
+	const [efficiencyTest, setEfficiencyTest] = useState([]);
 
 	const sendMqttMessage = async (action) => {
 		const message = { action: action, angle: angle };
@@ -30,31 +30,10 @@ export default function DepartamentExperiment({ name, departmentData }) {
 				setCurrent(department.current);
 				setVoltage(department.voltage);
 				setRadiation(department.radiation);
+				setEfficiencyTest(department.efficiencyTest);
 			}
 		});
 	}, []);
-
-	const [data, setData] = useState({
-		labels: ChartData.map((data) => data.voltage),
-		datasets: [
-			{
-				label: 'Cochabamba',
-				data: ChartData.map((data) => data.current),
-				backgroundColor: ['#F6BD2B'],
-				borderColor: '#F6BD2B',
-				cubicInterpolationMode: 'monotone',
-				borderWidth: 2,
-			},
-			{
-				label: 'La Paz',
-				data: ChartData2.map((data) => data.current),
-				backgroundColor: ['#3E55A2'],
-				borderColor: '#3E55A2',
-				cubicInterpolationMode: 'monotone',
-				borderWidth: 2,
-			},
-		],
-	});
 	return (
 		<Box my={{ xxs: 2, xs: 2, s: 2, sm: 3 }}>
 			<Card
@@ -207,7 +186,10 @@ export default function DepartamentExperiment({ name, departmentData }) {
 										height: '23vh',
 									}}
 								>
-									<LineChart chartData={data}></LineChart>
+									<LineChart
+										names={[name]}
+										chartData={[efficiencyTest]}
+									></LineChart>
 								</Box>
 							</Grid>
 							<Grid item>

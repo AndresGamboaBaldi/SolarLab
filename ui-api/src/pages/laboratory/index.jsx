@@ -24,6 +24,103 @@ import SignUpDialog from '../../components/SignUpDialog';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 
+const testLpz = [
+	{
+		voltage: 1,
+		current: 8,
+	},
+	{
+		voltage: 3,
+		current: 8,
+	},
+	{
+		voltage: 5,
+		current: 8,
+	},
+	{
+		voltage: 7,
+		current: 8,
+	},
+	{
+		voltage: 9,
+		current: 8,
+	},
+	{
+		voltage: 11,
+		current: 7,
+	},
+	{
+		voltage: 13,
+		current: 0,
+	},
+	{
+		voltage: 15,
+		current: 0,
+	},
+];
+
+const testCbba = [
+	{
+		voltage: 1,
+		current: 10,
+	},
+	{
+		voltage: 3,
+		current: 10,
+	},
+	{
+		voltage: 5,
+		current: 10,
+	},
+	{
+		voltage: 7,
+		current: 10,
+	},
+	{
+		voltage: 9,
+		current: 10,
+	},
+	{
+		voltage: 11,
+		current: 10,
+	},
+	{
+		voltage: 13,
+		current: 8.5,
+	},
+	{
+		voltage: 15,
+		current: 0,
+	},
+];
+
+const departmentData = [
+	{
+		departmentName: 'Cochabamba',
+		voltage: 12,
+		current: 5,
+		radiation: 2,
+		panelangle: 45,
+		efficiencyTest: testCbba,
+	},
+	{
+		departmentName: 'La Paz',
+		voltage: 10,
+		current: 3,
+		radiation: 1,
+		panelangle: 60,
+		efficiencyTest: testLpz,
+	},
+	{
+		departmentName: 'Santa Cruz',
+		voltage: 16,
+		current: 2,
+		radiation: 1,
+		panelangle: 75,
+		efficiencyTest: [],
+	},
+];
+
 export default function Laboratory() {
 	const router = useRouter();
 	const checkBoxStyle = {
@@ -86,7 +183,11 @@ export default function Laboratory() {
 
 	const handleOpenSaveExperiment = () => {
 		if (session) {
-			setOpenSaveExperiment(true);
+			if (selectedCities.length > 0) {
+				setOpenSaveExperiment(true);
+			} else {
+				toast.error('First you Have to Select a City to Save');
+			}
 		} else {
 			setOpenSignIn(true);
 		}
@@ -115,30 +216,6 @@ export default function Laboratory() {
 		const { value } = event.target;
 		setSelectedCities(value);
 	};
-
-	const departmentData = [
-		{
-			departmentName: 'Cochabamba',
-			voltage: 12,
-			current: 5,
-			radiation: 2,
-			panelangle: 45,
-		},
-		{
-			departmentName: 'La Paz',
-			voltage: 10,
-			current: 7,
-			radiation: 1,
-			panelangle: 60,
-		},
-		{
-			departmentName: 'Santa Cruz',
-			voltage: 16,
-			current: 2,
-			radiation: 1,
-			panelangle: 75,
-		},
-	];
 
 	return (
 		<main>

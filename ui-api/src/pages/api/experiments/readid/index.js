@@ -7,6 +7,17 @@ export default async function handler(req, res) {
 				where: {
 					id: req.body.id,
 				},
+				include: {
+					departmentLabs: {
+						include: {
+							efficiencyTest: {
+								orderBy: {
+									current: 'desc',
+								},
+							},
+						},
+					},
+				},
 			});
 			return res.status(200).json({ experiment: experiment, status: true });
 		} catch (error) {

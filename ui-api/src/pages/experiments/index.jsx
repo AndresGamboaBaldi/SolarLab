@@ -4,8 +4,6 @@ import ExperimentsListDialog from '../../components/ExperimentsList';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import LineChart from '../../components/LineChart';
-import { ChartData } from '@/data/mockData';
-import { ChartData2 } from '@/data/mockData2';
 import ShowDepartamentData from '../../components/ShowDepartamentData';
 import { useSession } from 'next-auth/react';
 import SignInDialog from '../../components/SignInDialog';
@@ -19,9 +17,7 @@ export default function Experiments() {
 	const { data: session, status } = useSession();
 	const [experiment, setExperiment] = useState({});
 	const [departamentLabs, setDepartamentLabs] = useState([]);
-
-	const [datetime, setDatetime] = useState(0);
-	const [time, setTime] = useState(0);
+	const [efficiencyTest, setEfficiencyTest] = useState([]);
 
 	const [openSignIn, setOpenSignIn] = useState(false);
 	const [openSignup, setOpenSignUp] = useState(false);
@@ -37,9 +33,9 @@ export default function Experiments() {
 
 	const [openExperimentsList, setOpenExperimentsList] = useState(false);
 
-	const checkSession = () => {
+	const checkSession = async () => {
 		if (status === 'authenticated') {
-			loadData();
+			await loadData();
 		} else if (status === 'loading') {
 		} else {
 			setOpenSignIn(true);
@@ -75,56 +71,15 @@ export default function Experiments() {
 			if (answer.experiment) {
 				setNoExperiments(false);
 				setExperiment(answer.experiment);
-				await loadDepartaments(answer.experiment.id);
 			} else {
 				setNoExperiments(true);
 			}
 		}
 	};
-	const loadDepartaments = async (id) => {
-		const response = await fetch(`/api/departamentlabs/read`, {
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			method: 'POST',
-			body: JSON.stringify({ id: id }),
-		});
-
-		const answer = await response.json();
-		if (!answer.status) {
-			toast.error('Something Went Wrong, Please Try Again');
-		} else {
-			setDepartamentLabs(answer.departamentLabs);
-		}
-	};
 
 	useEffect(() => {
 		checkSession();
-		const datetime = new Date(experiment.experimentDatetime).toLocaleString();
-		setDatetime(datetime);
-	}, [status, openExperimentsList]);
-
-	const [data, setData] = useState({
-		labels: ChartData.map((data) => data.voltage),
-		datasets: [
-			{
-				label: 'Cochabamba',
-				data: ChartData.map((data) => data.current),
-				backgroundColor: ['#F6BD2B'],
-				borderColor: '#F6BD2B',
-				cubicInterpolationMode: 'monotone',
-				borderWidth: 2,
-			},
-			{
-				label: 'La Paz',
-				data: ChartData2.map((data) => data.current),
-				backgroundColor: ['#3E55A2'],
-				borderColor: '#3E55A2',
-				cubicInterpolationMode: 'monotone',
-				borderWidth: 2,
-			},
-		],
-	});
+	}, [status, openExperimentsList, efficiencyTest]);
 
 	const router = useRouter();
 	const handleEnterRemoteLab = () => {
@@ -206,13 +161,20 @@ export default function Experiments() {
 											},
 										}}
 									>
-										<LineChart chartData={data}></LineChart>
+										<LineChart
+											chartData={experiment.departmentLabs.map(
+												(department) => department.efficiencyTest
+											)}
+											names={experiment.departmentLabs.map(
+												(department) => department.departmentName
+											)}
+										></LineChart>
 									</Box>
 								</Grid>
 								<Grid item xxs={12} align='center' mb={3}>
-									{departamentLabs.map((city) => (
+									{experiment.departmentLabs.map((city) => (
 										<ShowDepartamentData
-											departmentData={departamentLabs}
+											departmentData={experiment.departmentLabs}
 											key={city.departmentName}
 											name={city.departmentName}
 										></ShowDepartamentData>

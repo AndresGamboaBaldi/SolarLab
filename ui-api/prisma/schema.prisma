@@ -26,7 +26,7 @@ model Experiment {
 }
 
 model DepartmentLab {
-  id             Int          @id @default(autoincrement())
+  id             String       @id
   departmentName String
   panelangle     Int
   current        Float
@@ -39,9 +39,8 @@ model DepartmentLab {
 
 model TestRecord {
   id              Int            @id @default(autoincrement())
-  time            DateTime
   current         Float
   voltage         Float
   departmentlab   DepartmentLab? @relation(fields: [departmentlabId], references: [id], onDelete: Cascade)
-  departmentlabId Int?
+  departmentlabId String?
 }

@@ -11,9 +11,8 @@ import React, { useState, useEffect } from 'react';
 import DepartmentDataDialog from './DepartmentDataDialog';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
-import { ChartData } from '@/data/mockData';
-import { ChartData2 } from '@/data/mockData2';
 import LineChart from './LineChart';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function SaveExperimentDialog({
 	open,
@@ -21,28 +20,6 @@ export default function SaveExperimentDialog({
 	departmentData,
 	selectedCities,
 }) {
-	const [data, setData] = useState({
-		labels: ChartData.map((data) => data.voltage),
-		datasets: [
-			{
-				label: 'Cochabamba',
-				data: ChartData.map((data) => data.current),
-				backgroundColor: ['#F6BD2B'],
-				borderColor: '#F6BD2B',
-				cubicInterpolationMode: 'monotone',
-				borderWidth: 2,
-			},
-			{
-				label: 'La Paz',
-				data: ChartData2.map((data) => data.current),
-				backgroundColor: ['#3E55A2'],
-				borderColor: '#3E55A2',
-				cubicInterpolationMode: 'monotone',
-				borderWidth: 2,
-			},
-		],
-	});
-
 	const { data: session, status } = useSession();
 	const [experimentName, setExperimentName] = useState('');
 
@@ -57,37 +34,75 @@ export default function SaveExperimentDialog({
 
 	const saveExperiment = async () => {
 		if (validateFields()) {
-			if (selectedCities.length > 0) {
-				const experimentToSave = {
-					experimentName: experimentName,
-					email: session.user.email,
-					departments: departmentsToSave,
-				};
-				const response = await fetch(`/api/experiments/create`, {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					method: 'POST',
-					body: JSON.stringify(experimentToSave),
-				});
-				const newExperiment = await response.json();
-				if (newExperiment.name) {
-					setExperimentName('');
-					handleClose();
-					toast.success('Saved Successfully!');
+			if (validateEfficiencyTests()) {
+				if (selectedCities.length > 0) {
+					const departmentWithId = departmentsToSave.map((departmentlab) => ({
+						...departmentlab,
+						id: uuidv4(),
+					}));
+
+					const efficiencyTestRecords = departmentWithId.map(
+						({ id, efficiencyTest }) => ({ id, efficiencyTest })
+					);
+					console.log(efficiencyTestRecords);
+
+					const departmentsLabs = departmentWithId.map(
+						({ efficiencyTest, ...department }) => department
+					);
+
+					console.log(departmentsLabs);
+
+					const response = await fetch(`/api/experiments/create`, {
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						method: 'POST',
+						body: JSON.stringify({
+							experimentName: experimentName,
+							email: session.user.email,
+							departments: departmentsLabs,
+							efficiencyTestRecords: efficiencyTestRecords,
+						}),
+					});
+					const answer = await response.json();
+					if (answer.status) {
+						setExperimentName('');
+						handleClose();
+						toast.success('Saved Successfully!');
+					} else {
+						toast.error('Error Saving, Please Try Again Later');
+					}
 				} else {
 					toast.error('Error Saving, Please Try Again Later');
 				}
 			} else {
-				toast.error('Select Cities for the Experiment');
+				toast.error('A City is Missing a Test, Please Start it First');
 			}
 		} else {
-			toast.error('Give the Experiment a Name');
+			toast.error('Select Cities for the Experiment');
 		}
 	};
 
 	const validateFields = () => {
 		return experimentName;
+	};
+	const validateEfficiencyTests = () => {
+		/*departmentsToSave.forEach((department) => {
+			console.log(department.efficiencyTest);
+			console.log(department.efficiencyTest.length == 0);
+			if (department.efficiencyTest.length == 0) {
+				console.log('here inside');
+				return false;
+			}
+		});
+		console.log('here');
+		return true;*/
+
+		for (let i = 0; i < departmentsToSave.length; i++) {
+			console.log(departmentsToSave[i]);
+			if (departmentsToSave[i].efficiencyTest.length == 0) return false;
+		}
+		return true;
 	};
 
 	return (
@@ -158,7 +173,15 @@ export default function SaveExperimentDialog({
 					}}
 					mt={{ xxs: 2, xs: 2, sm: 3 }}
 				>
-					<LineChart chartData={data} minimize={true}></LineChart>
+					<LineChart
+						chartData={departmentsToSave.map(
+							(department) => department.efficiencyTest
+						)}
+						names={departmentsToSave.map(
+							(department) => department.departmentName
+						)}
+						minimize={true}
+					></LineChart>
 				</Box>
 				<Grid container>
 					{selectedCities.map((city) => (
