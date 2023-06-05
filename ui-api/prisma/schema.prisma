@@ -43,11 +43,12 @@ model Course {
 }
 
 model Request {
-  id       Int       @id @default(autoincrement())
-  course   Course?   @relation(fields: [courseId], references: [id])
-  courseId Int?
-  students Student[]
-  status   String
+  id           Int      @id @default(autoincrement())
+  course       Course?  @relation(fields: [courseId], references: [id])
+  courseId     Int?
+  student      Student? @relation(fields: [studentEmail], references: [userEmail])
+  studentEmail String?
+  status       String
 }
 
 model Experiment {

@@ -45,7 +45,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 						password: password,
 						code: code,
 						fullname: fullname,
-						isTeacher: false,
+						isTeacher: true,
 					}),
 				});
 				const data = await response.json();

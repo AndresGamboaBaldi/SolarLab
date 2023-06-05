@@ -18,11 +18,6 @@ import { toast } from 'react-toastify';
 export default function SignInDialog({ open, handleClose, onClickSignup }) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [isTeacher, setIsTeacher] = useState(false);
-
-	const handleChange = (event) => {
-		setIsTeacher(event.target.checked);
-	};
 
 	const handleAuth = async () => {
 		signIn('credentials', { email: email, password: password, redirect: false })
@@ -122,21 +117,8 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 							/>
 						</Grid>
 					</Grid>
-					<Grid item xxs={12} xs={12}>
-						<FormControlLabel
-							sx={{ mt: 1 }}
-							control={
-								<Checkbox
-									color='primary'
-									checked={isTeacher}
-									onChange={handleChange}
-								/>
-							}
-							label={<Typography variant='header3'>I'm a Teacher</Typography>}
-						/>
-					</Grid>
 
-					<Grid container justifyContent='center' mb={{ xxs: 2, xs: 2, sm: 3 }}>
+					<Grid container justifyContent='center' my={{ xxs: 2, xs: 2, sm: 3 }}>
 						<Link href='#' variant='header3'>
 							Forgot Password?
 						</Link>

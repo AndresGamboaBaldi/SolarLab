@@ -10,7 +10,7 @@ import {
 import React, { useState, useEffect } from 'react';
 
 import ScienceIcon from '@mui/icons-material/Science';
-import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
+import GroupsIcon from '@mui/icons-material/Groups';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -21,14 +21,16 @@ import SignUpDialog from '../components/SignUpDialog';
 import UpdatePasswordDialog from './UpdatePasswordDialog';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
+import CoursesDialog from './CourseDialog';
 
 export default function UserMenu() {
 	const router = useRouter();
 	const [openSignup, setOpenSignUp] = useState(false);
+	const [openCourses, setOpenCourses] = useState(false);
 	const [openUpdatePassword, setOpenUpdatePassword] = useState(false);
 	const { data: session, status } = useSession();
 
-	const [fullname, setFullname] = useState('');
+	const [user, setUser] = useState('');
 
 	const [openExperimentsList, setOpenExperimentsList] = useState(false);
 	const [anchorElUser, setAnchorElUser] = useState(null);
@@ -52,6 +54,14 @@ export default function UserMenu() {
 		await signOut({ callbackUrl: '/' });
 	};
 
+	const handleCourses = () => {
+		if (user.teacher) {
+			router.push('/courses');
+		} else if (user.student) {
+			setOpenCourses(true);
+		}
+	};
+
 	const loadData = async () => {
 		const response = await fetch(`/api/users/read`, {
 			headers: {
@@ -65,7 +75,8 @@ export default function UserMenu() {
 		if (!answer.status) {
 			toast.error('Something Went Wrong, Please Try Again');
 		} else {
-			setFullname(answer.user.fullname);
+			setAnchorElUser();
+			setUser(answer.user);
 		}
 	};
 
@@ -78,15 +89,15 @@ export default function UserMenu() {
 	return (
 		<Box>
 			<Tooltip
-				title='Tutorial'
+				title='Courses'
 				enterTouchDelay={0}
 				arrow
 				sx={{
 					mr: { xxs: 0, xs: 0, sm: 1 },
 				}}
 			>
-				<IconButton>
-					<LightbulbOutlinedIcon
+				<IconButton onClick={handleCourses}>
+					<GroupsIcon
 						sx={{
 							fontSize: { xxs: '20px', xs: '24px', sm: '32px' },
 						}}
@@ -116,7 +127,7 @@ export default function UserMenu() {
 				open={openExperimentsList}
 				handleClose={() => setOpenExperimentsList(false)}
 			/>
-			<IconButton onClick={() => setOpenSignUp(true)}>
+			<IconButton onClick={handleOpenUserMenu}>
 				<AccountCircle
 					sx={{
 						fontSize: { xxs: '20px', xs: '24px', sm: '32px' },
@@ -134,7 +145,7 @@ export default function UserMenu() {
 					},
 				}}
 			>
-				<Typography variant='body1'>{fullname}</Typography>
+				<Typography variant='body1'>{user.fullname}</Typography>
 				<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 					<KeyboardArrowDownIcon
 						sx={{
@@ -213,6 +224,11 @@ export default function UserMenu() {
 				<UpdatePasswordDialog
 					open={openUpdatePassword}
 					handleClose={() => setOpenUpdatePassword(false)}
+				/>
+				<CoursesDialog
+					open={openCourses}
+					handleClose={() => setOpenCourses(false)}
+					user={user}
 				/>
 			</Menu>
 		</Box>

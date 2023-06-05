@@ -16,7 +16,6 @@ export default async function handler(req, res) {
 					},
 				},
 			});
-			console.log(req.body.efficiencyTestRecords);
 			req.body.efficiencyTestRecords.forEach((recordsObject) => {
 				recordsObject.efficiencyTest.forEach(async (record) => {
 					const saved = await db.TestRecord.create({
@@ -36,7 +35,6 @@ export default async function handler(req, res) {
 				.status(200)
 				.json({ experimentToSave: experimentToSave, status: true });
 		} catch (error) {
-			console.log(error);
 			return res.status(400).json({ error: error.message, status: false });
 		}
 	} else {

@@ -7,6 +7,27 @@ export default async function handler(req, res) {
 				where: {
 					email: req.body.email,
 				},
+
+				include: {
+					teacher: {
+						include: {
+							courses: true,
+						},
+					},
+					student: {
+						include: {
+							courses: {
+								include: {
+									teacher: {
+										include: {
+											user: true,
+										},
+									},
+								},
+							},
+						},
+					},
+				},
 			});
 			const { password, ...userWithoutPass } = user;
 			return res.status(200).json({ user: userWithoutPass, status: true });
