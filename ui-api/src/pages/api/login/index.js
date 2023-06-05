@@ -4,14 +4,14 @@ import { compare } from 'bcrypt';
 export default async function Post(req, res) {
 	if (req.method === 'POST') {
 		const credentials = await req.body;
-		const student = await db.Student.findFirst({
+		const user = await db.User.findFirst({
 			where: {
 				email: credentials.email,
 			},
 		});
-		if (student && (await compare(credentials.password, student.password))) {
-			const { password, ...studentWithoutPass } = student;
-			return res.status(200).json(studentWithoutPass);
+		if (user && (await compare(credentials.password, user.password))) {
+			const { password, ...userWithoutPass } = user;
+			return res.status(200).json(userWithoutPass);
 		} else {
 			return res.status(400).json(null);
 		}

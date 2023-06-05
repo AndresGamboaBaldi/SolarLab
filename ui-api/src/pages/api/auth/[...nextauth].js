@@ -21,9 +21,9 @@ export const authOptions = {
 						body: JSON.stringify(user),
 					}
 				);
-				const student = await response.json();
-				if (student) {
-					return student;
+				const session = await response.json();
+				if (session) {
+					return session;
 				} else {
 					return null;
 				}

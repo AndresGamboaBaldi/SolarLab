@@ -22,7 +22,7 @@ export default function UpdatePasswordDialog({ open, handleClose }) {
 		try {
 			if (password === confirmPassword) {
 				setPasswordError(false);
-				const response = await fetch(`/api/students/updatepassword`, {
+				const response = await fetch(`/api/users/updatepassword`, {
 					headers: {
 						'Content-Type': 'application/json',
 					},

@@ -3,17 +3,17 @@ import { hash } from 'bcrypt';
 
 export default async function Post(req, res) {
 	if (req.method === 'POST') {
-		const { email, fullname, code, password } = req.body;
-		const studentExists = await db.Student.findUnique({
+		const { email, fullname, code, password, isTeacher } = req.body;
+		const userExists = await db.User.findFirst({
 			where: {
 				email: email,
 			},
 		});
-		if (studentExists) {
+		if (userExists) {
 			return res.status(422).json({ error: 'User Already Exists..!' });
 		} else {
 			try {
-				await db.Student.create({
+				await db.User.create({
 					data: {
 						email: email,
 						fullname: fullname,
@@ -21,8 +21,29 @@ export default async function Post(req, res) {
 						password: await hash(password, 12),
 					},
 				});
+				if (isTeacher) {
+					await db.Teacher.create({
+						data: {
+							user: {
+								connect: {
+									email: email,
+								},
+							},
+						},
+					});
+				} else {
+					await db.Student.create({
+						data: {
+							user: {
+								connect: {
+									email: email,
+								},
+							},
+						},
+					});
+				}
 				return res.status(201).json({ status: true });
-			} catch {
+			} catch (error) {
 				return res.status(400).json({ error: 'Error Creating User' });
 			}
 		}

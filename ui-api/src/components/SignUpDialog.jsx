@@ -23,7 +23,6 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [fullname, setFullname] = useState('');
 	const [code, setcode] = useState('');
-	const [newStudent, setNewStudent] = useState({});
 
 	const [passwordError, setPasswordError] = useState(false);
 	useEffect(() => {
@@ -46,6 +45,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 						password: password,
 						code: code,
 						fullname: fullname,
+						isTeacher: false,
 					}),
 				});
 				const data = await response.json();
@@ -62,7 +62,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 		}
 	};
 	const loadData = async () => {
-		const request = await fetch(`/api/students/read`, {
+		const request = await fetch(`/api/users/read`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -74,30 +74,30 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 			toast.error('Something Went Wrong, Please Try Again');
 		} else {
 			setEmailDisable(true);
-			setEmail(response.student.email);
-			setFullname(response.student.fullname);
-			setcode(response.student.code);
+			setEmail(response.user.email);
+			setFullname(response.user.fullname);
+			setcode(response.user.code);
 		}
 	};
 
 	const handleUpdate = async () => {
-		const updateStudent = {
+		const updateUser = {
 			email: email,
 			code: code,
 			fullname: fullname,
 		};
 		try {
-			const response = await fetch(`/api/students/update`, {
+			const response = await fetch(`/api/users/update`, {
 				headers: {
 					'Content-Type': 'application/json',
 				},
 				method: 'POST',
-				body: JSON.stringify(updateStudent),
+				body: JSON.stringify(updateUser),
 			});
-			const student = await response.json();
-			if (student.email) {
-				setFullname(student.fullname);
-				setcode(student.code);
+			const user = await response.json();
+			if (user.email) {
+				setFullname(user.fullname);
+				setcode(user.code);
 				toast.success('Updated Successfully');
 			} else {
 				toast.error('Update Failed, Please Try Again Later');
@@ -119,7 +119,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 				}
 			})
 			.catch((error) => {
-				toast.info('Account Created, you can now Log In');
+				toast.info('Account Created, You Can Now LogIn');
 			});
 	};
 	const validateFields = () => {

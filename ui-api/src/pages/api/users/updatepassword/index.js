@@ -3,7 +3,7 @@ import { hash, compare } from 'bcrypt';
 export default async function handler(req, res) {
 	if (req.method === 'POST') {
 		try {
-			const oldPassword = await db.Student.findFirst({
+			const oldPassword = await db.User.findFirst({
 				where: {
 					email: req.body.email,
 				},
@@ -12,7 +12,7 @@ export default async function handler(req, res) {
 				},
 			});
 			if (await compare(req.body.oldPassword, oldPassword.password)) {
-				const updateStudent = await db.Student.update({
+				const updateUser = await db.User.update({
 					where: {
 						email: req.body.email,
 					},

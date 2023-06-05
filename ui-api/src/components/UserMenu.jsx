@@ -53,19 +53,19 @@ export default function UserMenu() {
 	};
 
 	const loadData = async () => {
-		const response = await fetch(`/api/students/read`, {
+		const response = await fetch(`/api/users/read`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
 			body: JSON.stringify({ email: session.user.email }),
 		});
-		const student = await response.json();
+		const answer = await response.json();
 
-		if (!student.status) {
+		if (!answer.status) {
 			toast.error('Something Went Wrong, Please Try Again');
 		} else {
-			setFullname(student.student.fullname);
+			setFullname(answer.user.fullname);
 		}
 	};
 

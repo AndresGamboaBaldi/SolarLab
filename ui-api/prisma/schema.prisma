@@ -7,31 +7,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Student {
-  fullname    String
-  code        String
-  email       String       @id @unique
-  password    String
-  experiments Experiment[]
-  courses     Course[]
-  requests    Request[]
-}
-
-model Teacher {
+model User {
   fullname String
   code     String
   email    String   @id @unique
   password String
-  courses  Course[]
+  student  Student?
+  teacher  Teacher?
+}
+
+model Student {
+  id          Int          @id @default(autoincrement())
+  experiments Experiment[]
+  courses     Course[]
+  requests    Request[]
+  user        User         @relation(fields: [userEmail], references: [email])
+  userEmail   String       @unique
+}
+
+model Teacher {
+  id        Int      @id @default(autoincrement())
+  courses   Course[]
+  user      User     @relation(fields: [userEmail], references: [email])
+  userEmail String   @unique
 }
 
 model Course {
-  id        Int       @id @default(autoincrement())
-  name      String
-  teacher   Teacher?  @relation(fields: [teacherId], references: [email])
-  teacherId String?
-  students  Student[]
-  requests  Request[]
+  id         Int          @id @default(autoincrement())
+  name       String
+  teacher    Teacher?     @relation(fields: [teacherId], references: [userEmail])
+  teacherId  String?
+  students   Student[]
+  requests   Request[]
+  Experiment Experiment[]
 }
 
 model Request {
@@ -39,15 +47,18 @@ model Request {
   course   Course?   @relation(fields: [courseId], references: [id])
   courseId Int?
   students Student[]
+  status   String
 }
 
 model Experiment {
   id                 Int             @id @default(autoincrement())
   name               String
   experimentDatetime DateTime        @default(now())
-  student            Student?        @relation(fields: [studentEmail], references: [email])
+  student            Student?        @relation(fields: [studentEmail], references: [userEmail])
   studentEmail       String?
   departmentLabs     DepartmentLab[]
+  course             Course?         @relation(fields: [courseId], references: [id])
+  courseId           Int?
   modified           DateTime        @updatedAt
 }
 

@@ -18,6 +18,11 @@ import { toast } from 'react-toastify';
 export default function SignInDialog({ open, handleClose, onClickSignup }) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [isTeacher, setIsTeacher] = useState(false);
+
+	const handleChange = (event) => {
+		setIsTeacher(event.target.checked);
+	};
 
 	const handleAuth = async () => {
 		signIn('credentials', { email: email, password: password, redirect: false })
@@ -120,8 +125,14 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 					<Grid item xxs={12} xs={12}>
 						<FormControlLabel
 							sx={{ mt: 1 }}
-							control={<Checkbox value='allowExtraEmails' color='primary' />}
-							label={<Typography variant='body1'>Remember me</Typography>}
+							control={
+								<Checkbox
+									color='primary'
+									checked={isTeacher}
+									onChange={handleChange}
+								/>
+							}
+							label={<Typography variant='header3'>I'm a Teacher</Typography>}
 						/>
 					</Grid>
 

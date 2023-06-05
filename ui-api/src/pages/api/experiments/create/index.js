@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 					name: req.body.experimentName,
 					student: {
 						connect: {
-							email: req.body.email,
+							userEmail: req.body.email,
 						},
 					},
 					departmentLabs: {

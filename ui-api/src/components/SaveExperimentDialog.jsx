@@ -44,13 +44,10 @@ export default function SaveExperimentDialog({
 					const efficiencyTestRecords = departmentWithId.map(
 						({ id, efficiencyTest }) => ({ id, efficiencyTest })
 					);
-					console.log(efficiencyTestRecords);
 
 					const departmentsLabs = departmentWithId.map(
 						({ efficiencyTest, ...department }) => department
 					);
-
-					console.log(departmentsLabs);
 
 					const response = await fetch(`/api/experiments/create`, {
 						headers: {
@@ -87,19 +84,7 @@ export default function SaveExperimentDialog({
 		return experimentName;
 	};
 	const validateEfficiencyTests = () => {
-		/*departmentsToSave.forEach((department) => {
-			console.log(department.efficiencyTest);
-			console.log(department.efficiencyTest.length == 0);
-			if (department.efficiencyTest.length == 0) {
-				console.log('here inside');
-				return false;
-			}
-		});
-		console.log('here');
-		return true;*/
-
 		for (let i = 0; i < departmentsToSave.length; i++) {
-			console.log(departmentsToSave[i]);
 			if (departmentsToSave[i].efficiencyTest.length == 0) return false;
 		}
 		return true;
