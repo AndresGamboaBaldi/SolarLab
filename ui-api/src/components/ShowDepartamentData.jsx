@@ -9,7 +9,11 @@ const gridDataStyle = {
 	lineHeight: 'normal',
 };
 
-export default function ShowDepartamentData({ departmentData, name }) {
+export default function ShowDepartamentData({
+	departmentData,
+	name,
+	experimentDatetime,
+}) {
 	const [angle, setAngle] = useState(0);
 	const [voltage, setVoltage] = useState(0);
 	const [current, setCurrent] = useState(0);
@@ -26,7 +30,7 @@ export default function ShowDepartamentData({ departmentData, name }) {
 				setRadiation(department.radiation);
 			}
 		});
-		const datetime = new Date().toLocaleString();
+		const datetime = new Date(experimentDatetime).toLocaleString();
 		setDate(datetime.split(',')[0]);
 		setTime(datetime.split(',')[1].split(' ')[1]);
 	}, []);

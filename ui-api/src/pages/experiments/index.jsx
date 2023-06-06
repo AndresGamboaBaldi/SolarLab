@@ -177,6 +177,7 @@ export default function Experiments() {
 											departmentData={experiment.departmentLabs}
 											key={city.departmentName}
 											name={city.departmentName}
+											experimentDatetime={experiment.experimentDatetime}
 										></ShowDepartamentData>
 									))}
 								</Grid>
