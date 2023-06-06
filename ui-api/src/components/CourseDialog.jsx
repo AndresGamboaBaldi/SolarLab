@@ -11,11 +11,71 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import CoursesActions from '../components/CoursesActions';
+import PendingIcon from '@mui/icons-material/Pending';
+import BlockIcon from '@mui/icons-material/Block';
 
 export default function CoursesDialog({ open, handleClose, user }) {
 	const { data: session, status } = useSession();
+	const [studentCourses, setStudentCourses] = useState([]);
+	const [availableCourses, setAvailableCourses] = useState([]);
+	const [studentRequests, setStudentRequests] = useState([]);
 
-	const [name, setName] = useState('');
+	const loadStudentCourses = async () => {
+		const response = await fetch(`/api/courses/readfiltered`, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+			body: JSON.stringify({ email: session.user.email }),
+		});
+		const answer = await response.json();
+
+		if (!answer.status) {
+			toast.error('Something Went Wrong, Please Try Again');
+		} else {
+			setStudentCourses(answer.courses);
+		}
+	};
+	const loadAvailableCourses = async () => {
+		const response = await fetch(`/api/courses/readnotcontains`, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+			body: JSON.stringify({ email: session.user.email }),
+		});
+		const answer = await response.json();
+
+		if (!answer.status) {
+			toast.error('Something Went Wrong, Please Try Again');
+		} else {
+			setAvailableCourses(answer.courses);
+		}
+	};
+	const loadStudentRequests = async () => {
+		const response = await fetch(`/api/request/readfiltered`, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+			body: JSON.stringify({ email: session.user.email }),
+		});
+		const answer = await response.json();
+
+		if (!answer.status) {
+			toast.error('Something Went Wrong, Please Try Again');
+		} else {
+			setStudentRequests(answer.requests);
+		}
+	};
+
+	useEffect(() => {
+		if (session) {
+			loadStudentCourses();
+			loadAvailableCourses();
+			loadStudentRequests();
+		}
+	}, [open]);
 
 	const columns = [
 		{ field: 'id', headerName: 'ID', width: 70 },
@@ -32,12 +92,101 @@ export default function CoursesDialog({ open, handleClose, user }) {
 		},
 		{
 			field: 'actions',
-			headerName: '',
-			type: 'actions',
+			headerName: 'Status',
 			width: 180,
-			renderCell: (params) => (
-				<CoursesActions params={params} handleClose={handleClose} />
-			),
+			renderCell: (params) => {
+				var checkRequest;
+				studentRequests.forEach((request) => {
+					if (request.courseId == params.id) {
+						checkRequest = request;
+					}
+				});
+
+				if (checkRequest) {
+					if (checkRequest.status == 'Pending') {
+						return (
+							<Box>
+								<Grid container>
+									{checkRequest.status == 'Pending' ? (
+										<Grid
+											item
+											sx={{
+												display: 'flex',
+												alignItems: 'center',
+											}}
+											ml={1}
+										>
+											<PendingIcon
+												sx={{
+													fontSize: { xxs: '20px', xs: '24px', sm: '30px' },
+													color: '#F6BD2B',
+												}}
+											/>
+											<Typography ml={1}>{checkRequest.status}</Typography>
+										</Grid>
+									) : (
+										<Grid
+											item
+											sx={{
+												display: 'flex',
+												alignItems: 'center',
+											}}
+										>
+											<BlockIcon
+												sx={{
+													fontSize: { xxs: '20px', xs: '24px', sm: '30px' },
+													color: '#DF2E21',
+												}}
+											/>
+											<Typography ml={1}>{checkRequest.status}</Typography>
+										</Grid>
+									)}
+								</Grid>
+							</Box>
+						);
+					} else {
+						return (
+							<Box>
+								<Grid container>
+									<Grid
+										item
+										sx={{
+											display: 'flex',
+											alignItems: 'center',
+										}}
+										ml={1}
+									>
+										<BlockIcon
+											sx={{
+												fontSize: { xxs: '20px', xs: '24px', sm: '30px' },
+												color: '#006DD3',
+											}}
+										/>
+										<Typography ml={1}>{checkRequest.status}</Typography>
+									</Grid>
+								</Grid>
+							</Box>
+						);
+					}
+				} else {
+					return <CoursesActions params={params} handleClose={handleClose} />;
+				}
+			},
+		},
+	];
+
+	const columnsStudentCourses = [
+		{ field: 'id', headerName: 'ID', width: 70 },
+		{
+			field: 'name',
+			headerName: 'Name',
+			width: 220,
+		},
+		{
+			field: 'teacherId',
+			headerName: 'Teacher',
+			width: 220,
+			valueGetter: (params) => params.row?.teacher?.user?.fullname,
 		},
 	];
 
@@ -71,13 +220,13 @@ export default function CoursesDialog({ open, handleClose, user }) {
 					<Grid item xxs={12} xs={12}>
 						<Typography variant='header2'>Available Courses:</Typography>
 					</Grid>
-					<Box height='80%' width='100%' mt={{ xxs: 1, xs: 1, s: 2, sm: 2 }}>
-						{user ? (
+					{availableCourses.length > 0 ? (
+						<Box height='80%' width='100%' mt={{ xxs: 1, xs: 1, s: 2, sm: 2 }}>
 							<DataGrid
 								columnVisibilityModel={{
 									id: false,
 								}}
-								rows={user.student.courses}
+								rows={availableCourses}
 								columns={columns}
 								initialState={{
 									pagination: {
@@ -131,8 +280,82 @@ export default function CoursesDialog({ open, handleClose, user }) {
 									},
 								}}
 							/>
-						) : null}
-					</Box>
+						</Box>
+					) : (
+						<Typography variant='header3' color='error.main'>
+							There is no Course Available to Join
+						</Typography>
+					)}
+
+					<Grid item xxs={12} xs={12}>
+						<Typography variant='header2'>My Courses:</Typography>
+					</Grid>
+					{studentCourses.length > 0 ? (
+						<Box height='80%' width='100%' mt={{ xxs: 1, xs: 1, s: 2, sm: 2 }}>
+							<DataGrid
+								columnVisibilityModel={{
+									id: false,
+								}}
+								rows={studentCourses}
+								columns={columnsStudentCourses}
+								initialState={{
+									pagination: {
+										paginationModel: { page: 0, pageSize: 5 },
+									},
+								}}
+								pageSizeOptions={[5, 10]}
+								getRowSpacing={(params) => ({
+									top: params.isFirstVisible ? 0 : 5,
+									bottom: params.isLastVisible ? 0 : 5,
+								})}
+								getRowId={(row) => row.id}
+								rowsPerPageOptions={[5, 10, 20]}
+								sx={{
+									display: 'flex',
+
+									boxShadow: 0,
+									border: 'none',
+									'& .MuiDataGrid-cell': {
+										color: 'blacky.main',
+										fontFamily: 'Lato',
+										fontSize: '1.0rem',
+										'@media (min-width:644px)': {
+											fontSize: '1.0rem',
+										},
+										'@media (min-width:900px)': {
+											fontSize: '1.1rem',
+										},
+									},
+									'& .MuiDataGrid-columnHeader': {
+										color: 'blacky.main',
+										borderBottom: 3,
+									},
+									'& .MuiDataGrid-columnHeaderTitle': {
+										fontFamily: 'Lato',
+										fontWeight: 700,
+										fontSize: '1.1rem',
+										'@media (min-width:644px)': {
+											fontSize: '1.2rem',
+										},
+										'@media (min-width:900px)': {
+											fontSize: '1.3rem',
+										},
+									},
+									'& .MuiDataGrid-virtualScroller': {
+										color: 'primary.700',
+									},
+									'& .MuiDataGrid-footerContainer': {
+										boxShadow: 0,
+										borderBottom: 'none',
+									},
+								}}
+							/>
+						</Box>
+					) : (
+						<Typography variant='header3' color='error.main'>
+							You Have not Joined Any Course
+						</Typography>
+					)}
 				</Grid>
 			</Box>
 		</Dialog>

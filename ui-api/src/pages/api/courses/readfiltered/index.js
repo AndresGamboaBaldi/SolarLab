@@ -3,18 +3,25 @@ import db from '@/lib/db';
 export default async function handler(req, res) {
 	if (req.method === 'POST') {
 		try {
-			const user = await db.User.findFirst({
+			const courses = await db.Course.findMany({
 				where: {
-					email: req.body.email,
+					students: {
+						some: {
+							userEmail: {
+								equals: req.body.email,
+							},
+						},
+					},
 				},
-
 				include: {
-					teacher: true,
-					student: true,
+					teacher: {
+						include: {
+							user: true,
+						},
+					},
 				},
 			});
-			const { password, ...userWithoutPass } = user;
-			return res.status(200).json({ user: userWithoutPass, status: true });
+			return res.status(200).json({ courses: courses, status: true });
 		} catch (error) {
 			return res.status(400).json({ error: error.message, status: false });
 		}

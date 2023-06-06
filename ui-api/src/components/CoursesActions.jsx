@@ -31,11 +31,12 @@ export default function ExperimentActions({ params, handleClose }) {
 					sx={{
 						display: 'flex',
 						alignItems: 'center',
+						cursor: 'pointer',
 					}}
 				>
 					<IconButton
 						sx={{
-							color: 'secondary.main',
+							color: 'primary.700',
 						}}
 					>
 						<Send
@@ -44,7 +45,7 @@ export default function ExperimentActions({ params, handleClose }) {
 							}}
 						/>
 					</IconButton>
-					<Typography>Request To Join</Typography>
+					<Typography color='primary.700'>Request To Join</Typography>
 				</Grid>
 			</Grid>
 		</Box>
