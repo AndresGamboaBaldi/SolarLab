@@ -282,7 +282,7 @@ export default function CoursesDialog({ open, handleClose, user }) {
 							/>
 						</Box>
 					) : (
-						<Typography variant='header3' color='error.main'>
+						<Typography variant='header3' color='info.main'>
 							There is no Course Available to Join
 						</Typography>
 					)}
@@ -352,7 +352,7 @@ export default function CoursesDialog({ open, handleClose, user }) {
 							/>
 						</Box>
 					) : (
-						<Typography variant='header3' color='error.main'>
+						<Typography variant='header3' color='info.main'>
 							You Have not Joined Any Course
 						</Typography>
 					)}
