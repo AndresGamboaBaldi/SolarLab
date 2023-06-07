@@ -8,6 +8,8 @@ import {
 	TextField,
 	Typography,
 	Button,
+	FormControlLabel,
+	Checkbox,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
@@ -23,8 +25,14 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [fullname, setFullname] = useState('');
 	const [code, setcode] = useState('');
+	const [isTeacher, setIsTeacher] = useState(false);
 
 	const [passwordError, setPasswordError] = useState(false);
+
+	const handleChange = (event) => {
+		setIsTeacher(event.target.checked);
+	};
+
 	useEffect(() => {
 		if (session) {
 			loadData();
@@ -45,7 +53,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 						password: password,
 						code: code,
 						fullname: fullname,
-						isTeacher: true,
+						isTeacher: isTeacher,
 					}),
 				});
 				const data = await response.json();
@@ -277,13 +285,28 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 									}}
 								/>
 								{passwordError && passwordErrorMessage}
-							</Grid>{' '}
+							</Grid>
+							<Grid item xxs={12} xs={12}>
+								<FormControlLabel
+									sx={{ mt: 2 }}
+									control={
+										<Checkbox
+											checked={isTeacher}
+											onChange={handleChange}
+											color='primary'
+										/>
+									}
+									label={
+										<Typography variant='header3'>I am a Teacher</Typography>
+									}
+								/>
+							</Grid>
 							<Grid
 								item
 								xxs={12}
 								xs={12}
 								mb={{ xxs: 2, xs: 2, sm: 3 }}
-								mt={{ xxs: 2, xs: 3, sm: 4 }}
+								mt={{ xxs: 2, xs: 3, sm: 3 }}
 							>
 								<Button
 									fullWidth
