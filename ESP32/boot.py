@@ -7,7 +7,7 @@ import esp
 import json
 from time import sleep
 import time
-from umodbus.tcp import TCP as ModbusTCPMaster
+#from umodbus.tcp import TCP as ModbusTCPMaster
 esp.osdebug(None)
 import gc
 gc.collect()
@@ -17,7 +17,7 @@ global oled
 #MQTT 
 
 #mqtt_server = '192.168.100.7'
-mqtt_server = '192.168.46.20'
+mqtt_server = '192.168.46.207'
 client_id = ubinascii.hexlify(machine.unique_id())
 port = 1883
 client = MQTTClient(client_id, mqtt_server, port)

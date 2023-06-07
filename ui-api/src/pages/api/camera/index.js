@@ -30,10 +30,10 @@ export default async function handler(req, res) {
 						'-b:v': '1000k', // video bit rate
 						'-r': 25, // frame rate
 						'-s': '240x240', // video size
-						'-loglevel': 'panic',
 						'-bf': 0,
+						'-loglevel': 'panic',
+						'-filter:v': 'fps=fps=15',
 						//'-c': 'copy',
-						'-filter:v': 'fps=fps=10',
 					},
 				});
 				res.socket.server[key] = true;

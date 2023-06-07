@@ -40,7 +40,7 @@ def setState(newState):
 
   oled.show()
 
-def get_datalogger_angle():
+"""def get_datalogger_angle():
     # TCP Slave setup
     slave_tcp_port = 502            # port to listen to
     slave_addr = 0                 # bus address of client
@@ -60,6 +60,8 @@ def get_datalogger_angle():
       return register_value[0]
     except Exception:
       return "-1"
+
+      """
 
 def moveUp():
   relayPowerA.value(1)
@@ -113,7 +115,7 @@ def sub_cb(topic, msg):
     elif topic == b'test/upb' and action == 'OFF':
       turnOff()
       setState(OFF)
-    elif topic == b'test/upb' and action == "ANGLE":
+    """elif topic == b'test/upb' and action == "ANGLE":
       newAngle = received_msg['angle']
       currentAngle = get_datalogger_angle() 
       print("New Requested Angle: ", newAngle)
@@ -138,7 +140,7 @@ def sub_cb(topic, msg):
         print("Current: ", str(currentAngle))
         print("New: ", str(newAngle))
         messageAngle(currentAngle, newAngle)
-      turnOff()
+      turnOff()"""
 
       
 

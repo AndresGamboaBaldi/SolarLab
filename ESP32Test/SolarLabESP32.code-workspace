@@ -1,8 +1,14 @@
 {
-	"folders": [
-		{
-			"name": "SolarLabESP32",
-			"path": "."
-		}
-	]
+  "folders": [
+    {
+      "name": "SolarLabESP32",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "python.formatting.provider": "none"
+  }
 }
