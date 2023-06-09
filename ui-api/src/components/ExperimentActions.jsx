@@ -9,7 +9,7 @@ export default function ExperimentActions({ params, handleClose }) {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
-			body: JSON.stringify(params.id),
+			body: JSON.stringify({ id: params.id }),
 		});
 		const deleted = await response.json();
 		if (deleted.error) {

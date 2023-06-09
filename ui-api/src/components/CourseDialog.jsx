@@ -5,13 +5,14 @@ import {
 	TextField,
 	Typography,
 	Button,
+	IconButton,
 } from '@mui/material';
+import { Send } from '@mui/icons-material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
-import CoursesActions from '../components/CoursesActions';
-import PendingIcon from '@mui/icons-material/Pending';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import BlockIcon from '@mui/icons-material/Block';
 
 export default function CoursesDialog({ open, handleClose, user }) {
@@ -19,6 +20,24 @@ export default function CoursesDialog({ open, handleClose, user }) {
 	const [studentCourses, setStudentCourses] = useState([]);
 	const [availableCourses, setAvailableCourses] = useState([]);
 	const [studentRequests, setStudentRequests] = useState([]);
+	const [reRender, setReRender] = useState(false);
+
+	const requestToJoin = async (params) => {
+		const response = await fetch(`/api/request/create`, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+			body: JSON.stringify({ courseId: params.id, email: session.user.email }),
+		});
+		const answer = await response.json();
+		if (!answer.status) {
+			toast.error("'Something Went Wrong, Please Try Again Later'");
+		} else {
+			toast.success('Request Sended Successfully!');
+			setReRender(!reRender);
+		}
+	};
 
 	const loadStudentCourses = async () => {
 		const response = await fetch(`/api/courses/readfiltered`, {
@@ -75,7 +94,7 @@ export default function CoursesDialog({ open, handleClose, user }) {
 			loadAvailableCourses();
 			loadStudentRequests();
 		}
-	}, [open]);
+	}, [open, reRender]);
 
 	const columns = [
 		{ field: 'id', headerName: 'ID', width: 70 },
@@ -103,51 +122,27 @@ export default function CoursesDialog({ open, handleClose, user }) {
 				});
 
 				if (checkRequest) {
-					if (checkRequest.status == 'Pending') {
-						return (
-							<Box>
-								<Grid container>
-									{checkRequest.status == 'Pending' ? (
-										<Grid
-											item
+					return (
+						<Box>
+							<Grid container>
+								{checkRequest.status == 'Pending' ? (
+									<Grid
+										item
+										sx={{
+											display: 'flex',
+											alignItems: 'center',
+										}}
+										ml={1}
+									>
+										<HourglassTopIcon
 											sx={{
-												display: 'flex',
-												alignItems: 'center',
+												fontSize: { xxs: '20px', xs: '24px', sm: '30px' },
+												color: '#F6BD2B',
 											}}
-											ml={1}
-										>
-											<PendingIcon
-												sx={{
-													fontSize: { xxs: '20px', xs: '24px', sm: '30px' },
-													color: '#F6BD2B',
-												}}
-											/>
-											<Typography ml={1}>{checkRequest.status}</Typography>
-										</Grid>
-									) : (
-										<Grid
-											item
-											sx={{
-												display: 'flex',
-												alignItems: 'center',
-											}}
-										>
-											<BlockIcon
-												sx={{
-													fontSize: { xxs: '20px', xs: '24px', sm: '30px' },
-													color: '#DF2E21',
-												}}
-											/>
-											<Typography ml={1}>{checkRequest.status}</Typography>
-										</Grid>
-									)}
-								</Grid>
-							</Box>
-						);
-					} else {
-						return (
-							<Box>
-								<Grid container>
+										/>
+										<Typography ml={1}>{checkRequest.status}</Typography>
+									</Grid>
+								) : (
 									<Grid
 										item
 										sx={{
@@ -159,17 +154,46 @@ export default function CoursesDialog({ open, handleClose, user }) {
 										<BlockIcon
 											sx={{
 												fontSize: { xxs: '20px', xs: '24px', sm: '30px' },
-												color: '#006DD3',
+												color: '#DF2E21',
 											}}
 										/>
 										<Typography ml={1}>{checkRequest.status}</Typography>
 									</Grid>
-								</Grid>
-							</Box>
-						);
-					}
+								)}
+							</Grid>
+						</Box>
+					);
 				} else {
-					return <CoursesActions params={params} handleClose={handleClose} />;
+					return (
+						<Box>
+							<Grid container>
+								<Grid
+									onClick={() => {
+										requestToJoin(params);
+									}}
+									item
+									sx={{
+										display: 'flex',
+										alignItems: 'center',
+										cursor: 'pointer',
+									}}
+								>
+									<IconButton
+										sx={{
+											color: 'primary.700',
+										}}
+									>
+										<Send
+											sx={{
+												fontSize: { xxs: '20px', xs: '24px', sm: '30px' },
+											}}
+										/>
+									</IconButton>
+									<Typography>Request To Join</Typography>
+								</Grid>
+							</Grid>
+						</Box>
+					);
 				}
 			},
 		},
@@ -216,76 +240,6 @@ export default function CoursesDialog({ open, handleClose, user }) {
 							Remote Lab
 						</Typography>
 					</Grid>
-
-					<Grid item xxs={12} xs={12}>
-						<Typography variant='header2'>Available Courses:</Typography>
-					</Grid>
-					{availableCourses.length > 0 ? (
-						<Box height='80%' width='100%' mt={{ xxs: 1, xs: 1, s: 2, sm: 2 }}>
-							<DataGrid
-								columnVisibilityModel={{
-									id: false,
-								}}
-								rows={availableCourses}
-								columns={columns}
-								initialState={{
-									pagination: {
-										paginationModel: { page: 0, pageSize: 5 },
-									},
-								}}
-								pageSizeOptions={[5, 10]}
-								getRowSpacing={(params) => ({
-									top: params.isFirstVisible ? 0 : 5,
-									bottom: params.isLastVisible ? 0 : 5,
-								})}
-								getRowId={(row) => row.id}
-								rowsPerPageOptions={[5, 10, 20]}
-								sx={{
-									display: 'flex',
-
-									boxShadow: 0,
-									border: 'none',
-									'& .MuiDataGrid-cell': {
-										color: 'blacky.main',
-										fontFamily: 'Lato',
-										fontSize: '1.0rem',
-										'@media (min-width:644px)': {
-											fontSize: '1.0rem',
-										},
-										'@media (min-width:900px)': {
-											fontSize: '1.1rem',
-										},
-									},
-									'& .MuiDataGrid-columnHeader': {
-										color: 'blacky.main',
-										borderBottom: 3,
-									},
-									'& .MuiDataGrid-columnHeaderTitle': {
-										fontFamily: 'Lato',
-										fontWeight: 700,
-										fontSize: '1.1rem',
-										'@media (min-width:644px)': {
-											fontSize: '1.2rem',
-										},
-										'@media (min-width:900px)': {
-											fontSize: '1.3rem',
-										},
-									},
-									'& .MuiDataGrid-virtualScroller': {
-										color: 'primary.700',
-									},
-									'& .MuiDataGrid-footerContainer': {
-										boxShadow: 0,
-										borderBottom: 'none',
-									},
-								}}
-							/>
-						</Box>
-					) : (
-						<Typography variant='header3' color='info.main'>
-							There is no Course Available to Join
-						</Typography>
-					)}
 
 					<Grid item xxs={12} xs={12}>
 						<Typography variant='header2'>My Courses:</Typography>
@@ -357,6 +311,76 @@ export default function CoursesDialog({ open, handleClose, user }) {
 						</Typography>
 					)}
 				</Grid>
+				<Grid item xxs={12} xs={12}>
+					<Typography variant='header2'>Available Courses:</Typography>
+				</Grid>
+				{availableCourses.length > 0 ? (
+					<Box height='80%' width='100%' mt={{ xxs: 1, xs: 1, s: 2, sm: 2 }}>
+						<DataGrid
+							disableColumnSelector={true}
+							columnVisibilityModel={{
+								id: false,
+							}}
+							rows={availableCourses}
+							columns={columns}
+							initialState={{
+								pagination: {
+									paginationModel: { page: 0, pageSize: 5 },
+								},
+							}}
+							pageSizeOptions={[5, 10]}
+							getRowSpacing={(params) => ({
+								top: params.isFirstVisible ? 0 : 5,
+								bottom: params.isLastVisible ? 0 : 5,
+							})}
+							getRowId={(row) => row.id}
+							rowsPerPageOptions={[5, 10, 20]}
+							sx={{
+								display: 'flex',
+
+								boxShadow: 0,
+								border: 'none',
+								'& .MuiDataGrid-cell': {
+									color: 'blacky.main',
+									fontFamily: 'Lato',
+									fontSize: '1.0rem',
+									'@media (min-width:644px)': {
+										fontSize: '1.0rem',
+									},
+									'@media (min-width:900px)': {
+										fontSize: '1.1rem',
+									},
+								},
+								'& .MuiDataGrid-columnHeader': {
+									color: 'blacky.main',
+									borderBottom: 3,
+								},
+								'& .MuiDataGrid-columnHeaderTitle': {
+									fontFamily: 'Lato',
+									fontWeight: 700,
+									fontSize: '1.1rem',
+									'@media (min-width:644px)': {
+										fontSize: '1.2rem',
+									},
+									'@media (min-width:900px)': {
+										fontSize: '1.3rem',
+									},
+								},
+								'& .MuiDataGrid-virtualScroller': {
+									color: 'primary.700',
+								},
+								'& .MuiDataGrid-footerContainer': {
+									boxShadow: 0,
+									borderBottom: 'none',
+								},
+							}}
+						/>
+					</Box>
+				) : (
+					<Typography variant='header3' color='info.main'>
+						There is no Course Available to Join
+					</Typography>
+				)}
 			</Box>
 		</Dialog>
 	);

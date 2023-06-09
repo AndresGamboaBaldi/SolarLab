@@ -144,6 +144,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 				<Box height='80%'>
 					{isMobile ? (
 						<DataGrid
+							disableColumnSelector={true}
 							columnVisibilityModel={{
 								id: false,
 							}}
@@ -201,6 +202,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 						/>
 					) : (
 						<DataGrid
+							disableColumnSelector={true}
 							columnVisibilityModel={{
 								id: false,
 							}}

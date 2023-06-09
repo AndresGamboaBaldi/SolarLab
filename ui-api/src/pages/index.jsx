@@ -144,7 +144,7 @@ export default function Home() {
 										variant='buttonsHome'
 										color='primary.700'
 									>
-										Previous Experiments
+										Manage Experiments
 									</Typography>
 								</Button>
 								<Button
