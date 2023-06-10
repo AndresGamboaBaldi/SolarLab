@@ -63,7 +63,7 @@ export default function UserMenu() {
 
 	const handleExperiments = () => {
 		if (user.teacher) {
-			router.push('/teacherExperiments');
+			router.push('/teacherexperiments');
 		} else if (user.student) {
 			router.push('/experiments');
 		}

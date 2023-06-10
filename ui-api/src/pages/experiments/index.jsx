@@ -55,7 +55,7 @@ export default function Experiments() {
 			toast.error('Something Went Wrong, Please Try Again');
 		} else {
 			if (answer.user.teacher) {
-				router.push('/teacherExperiments');
+				router.push('/teacherexperiments');
 			} else {
 				loadData();
 			}

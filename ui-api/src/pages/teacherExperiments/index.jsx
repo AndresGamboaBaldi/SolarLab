@@ -18,7 +18,7 @@ import ShowDepartamentData from '../../components/ShowDepartamentData';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 
-export default function teacherExperiments() {
+export default function TeacherExperiments() {
 	const [selectedCourseName, setSelectedCourseName] = useState('');
 	const [selectedStudentName, setSelectedStudentName] = useState('');
 	const [selectedStudentEmail, setSelectedStudentEmail] = useState('');
@@ -72,9 +72,11 @@ export default function teacherExperiments() {
 		const answer = await response.json();
 
 		if (!answer.status) {
-			toast.error('Something Went Wrong, Please Try Again');
+			toast.error('Something Went Wrong, Please Try');
 		} else {
+			setSelectedCourseName(answer.courses[0].name);
 			setTeacherCourses(answer.courses);
+			setCourseStudents(answer.courses[0].students);
 		}
 	};
 
