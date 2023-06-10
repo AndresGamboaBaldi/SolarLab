@@ -8,7 +8,7 @@ import ShowDepartamentData from '../../components/ShowDepartamentData';
 import { useSession } from 'next-auth/react';
 import SignInDialog from '../../components/SignInDialog';
 import SignUpDialog from '../../components/SignUpDialog';
-
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import Head from 'next/head';
 
 export default function Experiments() {
@@ -283,10 +283,36 @@ export default function Experiments() {
 							my={{ xxs: 2, xs: 3, s: 3, sm: 3 }}
 							mx={{ xxs: 3, xs: 3, s: 4, sm: 5 }}
 						>
-							<Grid container justify='center'>
-								<Grid item xxs={12} xs={12} mb={{ xxs: 1, xs: 2, s: 3, sm: 3 }}>
-									<Typography variant='header1' color='blacky.main'>
-										No Experiments Found, Create One!
+							<Grid container justify='center' rowSpacing={2}>
+								<Grid
+									item
+									xxs={12}
+									xs={12}
+									sx={{
+										display: 'flex',
+										alignItems: 'center',
+									}}
+									justifyContent='center'
+								>
+									<ErrorOutlineIcon
+										sx={{
+											fontSize: { xxs: '32px', xs: '48px', sm: '64px' },
+											color: 'warning.main',
+										}}
+									/>
+								</Grid>
+								<Grid
+									item
+									xxs={12}
+									xs={12}
+									sx={{
+										display: 'flex',
+										alignItems: 'center',
+									}}
+									justifyContent='center'
+								>
+									<Typography variant='header2' color='blacky.main'>
+										You have not Saved any Experiment
 									</Typography>
 								</Grid>
 							</Grid>

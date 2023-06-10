@@ -17,6 +17,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { DataGrid } from '@mui/x-data-grid';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 import Head from 'next/head';
 
@@ -326,7 +327,7 @@ export default function Courses() {
 									</FormControl>
 								) : (
 									<Typography variant='header3' color='blacky.main'>
-										You have not any Course yet, Create One!
+										Create a Course first
 									</Typography>
 								)}
 							</Box>
@@ -413,7 +414,7 @@ export default function Courses() {
 									order={{ xxs: 5, xs: 5, s: 5, sm: 5, md: 4 }}
 								>
 									<Typography variant='header2' color='secondary.main'>
-										Pending Requests:
+										Join Requests:
 									</Typography>
 								</Grid>
 								<Grid
@@ -491,9 +492,40 @@ export default function Courses() {
 											/>
 										</Box>
 									) : (
-										<Typography variant='header3' color='blacky.main'>
-											There are no Students in this Course
-										</Typography>
+										<Grid container justify='center' rowSpacing={2}>
+											<Grid
+												item
+												xxs={12}
+												xs={12}
+												sx={{
+													display: 'flex',
+													alignItems: 'center',
+												}}
+												justifyContent='center'
+											>
+												<ErrorOutlineIcon
+													sx={{
+														fontSize: { xxs: '32px', xs: '48px', sm: '64px' },
+														color: 'warning.main',
+													}}
+												/>
+											</Grid>
+											<Grid
+												item
+												xxs={12}
+												xs={12}
+												sx={{
+													display: 'flex',
+													alignItems: 'center',
+													textAlign: 'center',
+												}}
+												justifyContent='center'
+											>
+												<Typography variant='header3' color='blacky.main'>
+													There are no Students in this Course
+												</Typography>
+											</Grid>
+										</Grid>
 									)}
 								</Grid>
 
@@ -572,9 +604,40 @@ export default function Courses() {
 											/>
 										</Box>
 									) : (
-										<Typography variant='header3' color='blacky.main'>
-											There are no Pending Requests in this Course
-										</Typography>
+										<Grid container justify='center' rowSpacing={2}>
+											<Grid
+												item
+												xxs={12}
+												xs={12}
+												sx={{
+													display: 'flex',
+													alignItems: 'center',
+												}}
+												justifyContent='center'
+											>
+												<ErrorOutlineIcon
+													sx={{
+														fontSize: { xxs: '32px', xs: '48px', sm: '64px' },
+														color: 'warning.main',
+													}}
+												/>
+											</Grid>
+											<Grid
+												item
+												xxs={12}
+												xs={12}
+												sx={{
+													display: 'flex',
+													alignItems: 'center',
+													textAlign: 'center',
+												}}
+												justifyContent='center'
+											>
+												<Typography variant='header3' color='blacky.main'>
+													There are no Join Requests in this Course
+												</Typography>
+											</Grid>
+										</Grid>
 									)}
 								</Grid>
 							</Grid>

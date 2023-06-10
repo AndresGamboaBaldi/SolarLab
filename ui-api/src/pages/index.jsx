@@ -95,7 +95,7 @@ export default function Home() {
 								width: '100%',
 							}}
 							component='img'
-							image='/solarpanelwp.jpeg'
+							image='/SolarLabUPB.jpeg'
 							alt='solar panel wps'
 						/>
 						<div
@@ -108,10 +108,10 @@ export default function Home() {
 								width: 'max-content',
 							}}
 						>
-							<Typography variant='headerHome' color='primary.800'>
+							<Typography variant='headerHome' color='secondary.main'>
 								Welcome to{' '}
 							</Typography>
-							<Typography variant='headerHome' color='secondary.main'>
+							<Typography variant='headerHome' color='primary.800'>
 								UPB{' '}
 							</Typography>
 							<Typography variant='headerHome'>Solar Remote Lab</Typography>

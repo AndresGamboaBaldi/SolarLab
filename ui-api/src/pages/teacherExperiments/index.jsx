@@ -17,6 +17,7 @@ import LineChart from '../../components/LineChart';
 import ShowDepartamentData from '../../components/ShowDepartamentData';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 export default function TeacherExperiments() {
 	const [selectedCourseName, setSelectedCourseName] = useState('');
@@ -177,7 +178,7 @@ export default function TeacherExperiments() {
 									</FormControl>
 								) : (
 									<Typography variant='header3' color='blacky.main'>
-										You have not any Course, Create One!
+										Create a Course first
 									</Typography>
 								)}
 							</Box>
@@ -223,7 +224,7 @@ export default function TeacherExperiments() {
 									</FormControl>
 								) : (
 									<Typography variant='header3' color='blacky.main'>
-										No Students Found in this Course
+										No Students found in this Course
 									</Typography>
 								)}
 							</Box>
@@ -364,14 +365,40 @@ export default function TeacherExperiments() {
 										</Grid>
 									</Box>
 								) : (
-									<Typography
-										variant='header3'
-										color='blacky.main'
-										mt={2}
-										ml={2}
-									>
-										This Student has not done any Experiments yet
-									</Typography>
+									<Grid container justify='center' rowSpacing={2}>
+										<Grid
+											item
+											xxs={12}
+											xs={12}
+											sx={{
+												display: 'flex',
+												alignItems: 'center',
+											}}
+											justifyContent='center'
+										>
+											<ErrorOutlineIcon
+												sx={{
+													fontSize: { xxs: '32px', xs: '48px', sm: '64px' },
+													color: 'warning.main',
+												}}
+											/>
+										</Grid>
+										<Grid
+											item
+											xxs={12}
+											xs={12}
+											sx={{
+												display: 'flex',
+												alignItems: 'center',
+												textAlign: 'center',
+											}}
+											justifyContent='center'
+										>
+											<Typography variant='header3' color='blacky.main'>
+												This Student has not done any Experiment yet
+											</Typography>
+										</Grid>
+									</Grid>
 								)}
 							</Grid>
 						</Box>
