@@ -5,7 +5,12 @@ import ExperimentActions from '../components/ExperimentActions';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 
-export default function SaveExperimentDialog({ open, handleClose }) {
+export default function SaveExperimentDialog({
+	open,
+	handleClose,
+	email,
+	setExperiment,
+}) {
 	const columns = [
 		{ field: 'id', headerName: 'ID', width: 70 },
 		{
@@ -40,7 +45,11 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 			type: 'actions',
 			width: 250,
 			renderCell: (params) => (
-				<ExperimentActions params={params} handleClose={handleClose} />
+				<ExperimentActions
+					params={params}
+					handleClose={handleClose}
+					setExperiment={setExperiment}
+				/>
 			),
 		},
 	];
@@ -74,7 +83,6 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 	const [isMobile, setIsMobile] = useState(false);
 	const { data: session } = useSession();
 	const [experimentsList, setExperimentList] = useState([]);
-	const [email, setEmail] = useState('');
 	//choose the screen size
 	const handleResize = () => {
 		if (window.innerWidth < 644) {
@@ -90,7 +98,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
-			body: JSON.stringify({ email: session.user.email }),
+			body: JSON.stringify({ email: email }),
 		});
 		const experiments = await response.json();
 		if (!experiments.status) {
@@ -141,7 +149,7 @@ export default function SaveExperimentDialog({ open, handleClose }) {
 						</Typography>
 					</Grid>
 				</Grid>
-				<Box height='80%'>
+				<Box height='100%'>
 					{isMobile ? (
 						<DataGrid
 							disableColumnSelector={true}

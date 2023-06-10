@@ -22,10 +22,10 @@ import Head from 'next/head';
 
 export default function Courses() {
 	const { data: session, status } = useSession();
-	const [selectedCourseName, setSelectedCourseName] = useState('');
+
 	const [teacherCourses, setTeacherCourses] = useState([]);
 	const [openCreateCourseDialog, setOpenCreateCourseDialog] = useState(false);
-	const [selectedCourse, setSelectedCourse] = useState({});
+	const [selectedCourseName, setSelectedCourseName] = useState('');
 	const [courseStudents, setCourseStudents] = useState({});
 	const [courseRequests, setCourseRequests] = useState({});
 	const [reRender, setReRender] = useState(false);
@@ -39,7 +39,7 @@ export default function Courses() {
 	};
 
 	const loadCourses = async () => {
-		const response = await fetch(`/api/courses/teacher/readfiltered`, {
+		const response = await fetch(`/api/teacher/courses/readfiltered`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -78,7 +78,7 @@ export default function Courses() {
 	};
 
 	const loadCourseStudents = async (id) => {
-		const response = await fetch(`/api/courses/teacher/read`, {
+		const response = await fetch(`/api/teacher/courses/read`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -95,7 +95,7 @@ export default function Courses() {
 	};
 
 	const loadCourseRequests = async (id) => {
-		const response = await fetch(`/api/courses/teacher/requests/read`, {
+		const response = await fetch(`/api/teacher/requests/read`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -115,7 +115,6 @@ export default function Courses() {
 		setSelectedCourseName(event.target.value);
 		teacherCourses.forEach((course) => {
 			if (course.name === event.target.value) {
-				setSelectedCourse(course);
 				loadCourseStudents(course.id);
 				loadCourseRequests(course.id);
 				window.localStorage.setItem(

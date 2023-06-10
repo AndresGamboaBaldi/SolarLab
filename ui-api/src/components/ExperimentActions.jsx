@@ -2,7 +2,11 @@ import { Box, IconButton, Typography, Grid } from '@mui/material';
 import { Close, Launch } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-export default function ExperimentActions({ params, handleClose }) {
+export default function ExperimentActions({
+	params,
+	handleClose,
+	setExperiment,
+}) {
 	const deleteExperiment = async () => {
 		const response = await fetch(`/api/experiments/delete`, {
 			headers: {
@@ -27,6 +31,7 @@ export default function ExperimentActions({ params, handleClose }) {
 		}
 	};
 	const openExperiment = () => {
+		setExperiment(params.row);
 		window.localStorage.setItem(
 			'EXPERIMENT',
 			JSON.stringify({ id: params.id })

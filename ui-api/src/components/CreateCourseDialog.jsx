@@ -16,7 +16,7 @@ export default function CreateCourseDialog({ open, handleClose }) {
 	const [name, setName] = useState('');
 	const saveCourse = async () => {
 		if (validateFields()) {
-			const response = await fetch(`/api/courses/teacher/create`, {
+			const response = await fetch(`/api/teacher/courses/create`, {
 				headers: {
 					'Content-Type': 'application/json',
 				},

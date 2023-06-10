@@ -15,6 +15,24 @@ export default async function handler(req, res) {
 							user: true,
 						},
 					},
+					students: {
+						include: {
+							user: true,
+							experiments: {
+								include: {
+									departmentLabs: {
+										include: {
+											efficiencyTest: {
+												orderBy: {
+													current: 'desc',
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
 				},
 			});
 			return res.status(200).json({ courses: courses, status: true });

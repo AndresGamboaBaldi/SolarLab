@@ -15,9 +15,8 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
-import ExperimentsListDialog from '../components/ExperimentsList';
 import { signOut, useSession } from 'next-auth/react';
-import SignUpDialog from '../components/SignUpDialog';
+import SignUpDialog from './SignUpDialog';
 import UpdatePasswordDialog from './UpdatePasswordDialog';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
@@ -32,7 +31,6 @@ export default function UserMenu() {
 
 	const [user, setUser] = useState('');
 
-	const [openExperimentsList, setOpenExperimentsList] = useState(false);
 	const [anchorElUser, setAnchorElUser] = useState(null);
 
 	const handleOpenUserMenu = (event) => {
@@ -63,6 +61,14 @@ export default function UserMenu() {
 		}
 	};
 
+	const handleExperiments = () => {
+		if (user.teacher) {
+			router.push('/teacherExperiments');
+		} else if (user.student) {
+			router.push('/experiments');
+		}
+	};
+
 	const loadData = async () => {
 		const response = await fetch(`/api/users/read`, {
 			headers: {
@@ -76,7 +82,6 @@ export default function UserMenu() {
 		if (!answer.status) {
 			toast.error('Something Went Wrong, Please Try Again');
 		} else {
-			setAnchorElUser();
 			setUser(answer.user);
 		}
 	};
@@ -107,14 +112,14 @@ export default function UserMenu() {
 				</IconButton>
 			</Tooltip>
 			<Tooltip
-				title='My Experiments'
+				title='Experiments'
 				enterTouchDelay={0}
 				arrow
 				sx={{
 					mr: { xxs: 0, xs: 0, sm: 1 },
 				}}
 			>
-				<IconButton onClick={() => router.push('/experiments')}>
+				<IconButton onClick={handleExperiments}>
 					<ScienceIcon
 						sx={{
 							fontSize: { xxs: '20px', xs: '24px', sm: '32px' },
@@ -124,10 +129,6 @@ export default function UserMenu() {
 				</IconButton>
 			</Tooltip>
 
-			<ExperimentsListDialog
-				open={openExperimentsList}
-				handleClose={() => setOpenExperimentsList(false)}
-			/>
 			<IconButton onClick={handleOpenUserMenu}>
 				<AccountCircle
 					sx={{

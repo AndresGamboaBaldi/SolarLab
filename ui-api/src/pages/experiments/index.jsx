@@ -16,7 +16,6 @@ export default function Experiments() {
 
 	const { data: session, status } = useSession();
 	const [experiment, setExperiment] = useState({});
-	const [departamentLabs, setDepartamentLabs] = useState([]);
 	const [efficiencyTest, setEfficiencyTest] = useState([]);
 
 	const [openSignIn, setOpenSignIn] = useState(false);
@@ -35,10 +34,31 @@ export default function Experiments() {
 
 	const checkSession = async () => {
 		if (status === 'authenticated') {
-			await loadData();
+			await verifyRole();
 		} else if (status === 'loading') {
 		} else {
 			setOpenSignIn(true);
+		}
+	};
+
+	const verifyRole = async () => {
+		const response = await fetch(`/api/users/read`, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+			body: JSON.stringify({ email: session.user.email }),
+		});
+		const answer = await response.json();
+
+		if (!answer.status) {
+			toast.error('Something Went Wrong, Please Try Again');
+		} else {
+			if (answer.user.teacher) {
+				router.push('/teacherExperiments');
+			} else {
+				loadData();
+			}
 		}
 	};
 
@@ -240,6 +260,7 @@ export default function Experiments() {
 							<ExperimentsListDialog
 								open={openExperimentsList}
 								handleClose={() => setOpenExperimentsList(false)}
+								email={session.user.email}
 							/>
 						</Stack>
 					</Box>

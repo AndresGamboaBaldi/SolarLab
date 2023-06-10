@@ -7,6 +7,17 @@ export default async function handler(req, res) {
 				where: {
 					studentEmail: req.body.email,
 				},
+				include: {
+					departmentLabs: {
+						include: {
+							efficiencyTest: {
+								orderBy: {
+									current: 'desc',
+								},
+							},
+						},
+					},
+				},
 			});
 			return res.status(200).json({ experiments: experiments, status: true });
 		} catch (error) {
