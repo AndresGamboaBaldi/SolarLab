@@ -74,9 +74,15 @@ export default function TeacherExperiments() {
 		if (!answer.status) {
 			toast.error('Something Went Wrong, Please Try');
 		} else {
-			setSelectedCourseName(answer.courses[0].name);
 			setTeacherCourses(answer.courses);
-			setCourseStudents(answer.courses[0].students);
+			if (answer.courses.length > 0) {
+				setSelectedCourseName(answer.courses[0].name);
+				setCourseStudents(answer.courses[0].students);
+				if (answer.courses[0].students.length > 0) {
+					setSelectedStudentName(answer.courses[0].students[0].user.fullname);
+					setExperiment(answer.courses[0].students[0].experiments[0]);
+				}
+			}
 		}
 	};
 
@@ -122,200 +128,255 @@ export default function TeacherExperiments() {
 			</div>
 			<Box
 				mt={{ xxs: 10, xs: 10, s: 10, sm: 12 }}
-				px={{ xxs: 2, xs: 2, s: 3, sm: 4 }}
+				px={{ xxs: 2, xs: 2, s: 3, sm: 3 }}
 			>
-				<Card
-					elevation={5}
+				<Box
+					my={{ xxs: 2, xs: 3, s: 3, sm: 3 }}
+					mx={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
 					sx={{
 						height: '100%',
 						width: 'auto',
 					}}
 				>
-					<Box
-						my={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
-						mx={{ xxs: 3, xs: 3, s: 4, sm: 5 }}
-					>
-						<Grid container justify='center' columnSpacing={2} rowSpacing={2}>
-							<Grid
-								item
-								xs={12}
-								s={12}
-								sm={12}
-								md={12}
-								lg={4}
-								sx={{
-									display: 'flex',
-									alignItems: 'center',
-								}}
-							>
-								<Typography variant='header2' color='primary.700'>
-									Course:
-								</Typography>
-								<Box ml={2}>
-									{teacherCourses.length > 0 ? (
-										<FormControl size='small' sx={{ minWidth: 180 }}>
-											<InputLabel>
-												<Typography variant='header3' color='blacky.main'>
-													Select a Course
-												</Typography>
-											</InputLabel>
-											<Select
-												value={selectedCourseName}
-												onChange={handleChangeCourse}
-											>
-												{teacherCourses.map((course) => (
-													<MenuItem key={course.id} value={course.name}>
-														<Typography variant='header3' color='blacky.main'>
-															{course.name}
-														</Typography>
-													</MenuItem>
-												))}
-											</Select>
-										</FormControl>
-									) : (
-										<Typography variant='header3' color='blacky.main'>
-											You have not Any Course, Create One!
-										</Typography>
-									)}
-								</Box>
-							</Grid>
-							<Grid
-								item
-								xs={12}
-								s={12}
-								sm={12}
-								md={12}
-								lg={4}
-								sx={{
-									display: 'flex',
-									alignItems: 'center',
-								}}
-							>
-								<Typography variant='header2' color='primary.700'>
-									Student:
-								</Typography>
-								<Box ml={2}>
-									{courseStudents.length > 0 ? (
-										<FormControl size='small' sx={{ minWidth: 180 }}>
-											<InputLabel>
-												<Typography variant='header3' color='blacky.main'>
-													Select a Student
-												</Typography>
-											</InputLabel>
-											<Select
-												value={selectedStudentName}
-												onChange={handleChangeStudent}
-											>
-												{courseStudents.map((student) => (
-													<MenuItem
-														key={student.id}
-														value={student.user.fullname}
-													>
-														<Typography variant='header3' color='blacky.main'>
-															{student.user.fullname}
-														</Typography>
-													</MenuItem>
-												))}
-											</Select>
-										</FormControl>
-									) : (
-										<Typography variant='header3' color='blacky.main'>
-											There are no Students in this Course
-										</Typography>
-									)}
-								</Box>
-							</Grid>
-							<Grid
-								item
-								xs={12}
-								s={12}
-								sm={12}
-								md={12}
-								lg={4}
-								sx={{
-									display: 'flex',
-									alignItems: 'center',
-								}}
-								justifyContent={{ xs: 'left', s: 'flex-end' }}
-							>
-								{experiment && Object.keys(experiment).length > 0 ? (
-									<Button
-										variant='contained'
-										sx={{
-											textTransform: 'none',
-											bgcolor: 'primary.700',
-											ml: { xxs: 0, xs: 0, s: 0, sm: 3 },
-											py: { xxs: 0, xs: 0, s: 0, sm: 1 },
-										}}
-										onClick={() => setOpenExperimentsList(true)}
-									>
-										<Typography color='white.main' variant='buttonsExperiments'>
-											View Student Experiments
-										</Typography>
-									</Button>
-								) : null}
-							</Grid>
-							{experiment && Object.keys(experiment).length > 0 ? (
-								<Box>
-									<Grid
-										item
-										xxs={12}
-										xs={12}
-										my={2}
-										ml={2}
-										sx={{ verticalAlign: 'middle' }}
-									>
-										<Typography variant='header1' color='blacky.main'>
-											{experiment.name}
-										</Typography>
-									</Grid>
-
-									<Grid
-										item
-										xxs={12}
-										ml={2}
-										mb={{ xxs: 1, xs: 2, s: 3, sm: 2 }}
-										align='center'
-									>
-										<Box
-											sx={{
-												width: '65vw',
-												height: '23vh',
-												'@media (min-width:700px)': {
-													width: '65vw',
-													height: '32vh',
-												},
-											}}
+					<Grid container justify='center' columnSpacing={2} rowSpacing={2}>
+						<Grid
+							item
+							xs={12}
+							s={12}
+							sm={12}
+							md={12}
+							lg={4}
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+							}}
+						>
+							<Typography variant='header2' color='primary.700'>
+								Course:
+							</Typography>
+							<Box ml={2}>
+								{teacherCourses.length > 0 ? (
+									<FormControl size='small' sx={{ minWidth: 180 }}>
+										<InputLabel>
+											<Typography variant='header3' color='blacky.main'>
+												Select a Course
+											</Typography>
+										</InputLabel>
+										<Select
+											value={selectedCourseName}
+											onChange={handleChangeCourse}
 										>
-											<LineChart
-												chartData={experiment.departmentLabs.map(
-													(department) => department.efficiencyTest
-												)}
-												names={experiment.departmentLabs.map(
-													(department) => department.departmentName
-												)}
-											></LineChart>
-										</Box>
-									</Grid>
-									<Grid item xxs={12} align='center' ml={2} mb={3}>
-										{experiment.departmentLabs.map((city) => (
-											<ShowDepartamentData
-												departmentData={experiment.departmentLabs}
-												key={city.departmentName}
-												name={city.departmentName}
-												experimentDatetime={experiment.experimentDatetime}
-											></ShowDepartamentData>
-										))}
-									</Grid>
-								</Box>
+											{teacherCourses.map((course) => (
+												<MenuItem key={course.id} value={course.name}>
+													<Typography variant='header3' color='blacky.main'>
+														{course.name}
+													</Typography>
+												</MenuItem>
+											))}
+										</Select>
+									</FormControl>
+								) : (
+									<Typography variant='header3' color='blacky.main'>
+										You have not any Course, Create One!
+									</Typography>
+								)}
+							</Box>
+						</Grid>
+						<Grid
+							item
+							xs={12}
+							s={12}
+							sm={12}
+							md={12}
+							lg={4}
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+							}}
+						>
+							<Typography variant='header2' color='primary.700'>
+								Student:
+							</Typography>
+							<Box ml={2}>
+								{courseStudents.length > 0 ? (
+									<FormControl size='small' sx={{ minWidth: 180 }}>
+										<InputLabel>
+											<Typography variant='header3' color='blacky.main'>
+												Select a Student
+											</Typography>
+										</InputLabel>
+										<Select
+											value={selectedStudentName}
+											onChange={handleChangeStudent}
+										>
+											{courseStudents.map((student) => (
+												<MenuItem
+													key={student.id}
+													value={student.user.fullname}
+												>
+													<Typography variant='header3' color='blacky.main'>
+														{student.user.fullname}
+													</Typography>
+												</MenuItem>
+											))}
+										</Select>
+									</FormControl>
+								) : (
+									<Typography variant='header3' color='blacky.main'>
+										No Students Found in this Course
+									</Typography>
+								)}
+							</Box>
+						</Grid>
+						<Grid
+							item
+							xs={12}
+							s={12}
+							sm={12}
+							md={12}
+							lg={4}
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+							}}
+							justifyContent={{ md: 'left', lg: 'flex-end' }}
+						>
+							{experiment && Object.keys(experiment).length > 0 ? (
+								<Button
+									variant='contained'
+									sx={{
+										textTransform: 'none',
+										bgcolor: 'primary.700',
+										ml: { xxs: 0, xs: 0, s: 0, sm: 0, md: 0, lg: 2 },
+										py: { xxs: 0, xs: 0, s: 0, sm: 1 },
+									}}
+									onClick={() => setOpenExperimentsList(true)}
+								>
+									<Typography color='white.main' variant='buttonsExperiments'>
+										View Student Experiments
+									</Typography>
+								</Button>
 							) : (
-								<Typography variant='header2' color='blacky.main' mt={2} ml={2}>
-									This Student has not done Any Experiments
-								</Typography>
+								<Button
+									variant='contained'
+									sx={{
+										textTransform: 'none',
+										bgcolor: 'primary.700',
+										ml: { xxs: 0, xs: 0, s: 0, sm: 0, md: 0, lg: 2 },
+										py: { xxs: 0, xs: 0, s: 0, sm: 1 },
+									}}
+									onClick={() => router.push('/courses')}
+								>
+									<Typography color='white.main' variant='buttonsExperiments'>
+										Manage Courses
+									</Typography>
+								</Button>
 							)}
 						</Grid>
-					</Box>
-				</Card>
+					</Grid>
+				</Box>
+				<Box
+					mx={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
+					mb={{ xxs: 2, xs: 3, s: 4, sm: 6 }}
+					sx={{
+						height: '100%',
+						width: 'auto',
+					}}
+				>
+					<Card
+						elevation={5}
+						sx={{
+							height: '100%',
+							width: 'auto',
+						}}
+					>
+						<Box
+							my={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
+							mx={{ xxs: 3, xs: 3, s: 4, sm: 5 }}
+						>
+							<Grid container justify='center' columnSpacing={2} rowSpacing={2}>
+								<Grid
+									item
+									xs={12}
+									s={12}
+									sm={12}
+									md={12}
+									sx={{
+										display: 'flex',
+										alignItems: 'center',
+									}}
+								>
+									<Typography variant='header2' color='secondary.main'>
+										Experiment Info:
+									</Typography>
+								</Grid>
+								{experiment && Object.keys(experiment).length > 0 ? (
+									<Box>
+										<Grid
+											item
+											xxs={12}
+											xs={12}
+											my={2}
+											ml={2}
+											sx={{ verticalAlign: 'middle' }}
+										>
+											<Typography variant='header1' color='blacky.main'>
+												{experiment.name}
+											</Typography>
+										</Grid>
+
+										<Grid
+											item
+											xxs={12}
+											ml={2}
+											mb={{ xxs: 1, xs: 2, s: 3, sm: 2 }}
+											align='center'
+										>
+											<Box
+												sx={{
+													width: '65vw',
+													height: '23vh',
+													'@media (min-width:700px)': {
+														width: '65vw',
+														height: '32vh',
+													},
+												}}
+											>
+												<LineChart
+													chartData={experiment.departmentLabs.map(
+														(department) => department.efficiencyTest
+													)}
+													names={experiment.departmentLabs.map(
+														(department) => department.departmentName
+													)}
+												></LineChart>
+											</Box>
+										</Grid>
+										<Grid item xxs={12} align='center' ml={2} mb={3}>
+											{experiment.departmentLabs.map((city) => (
+												<ShowDepartamentData
+													departmentData={experiment.departmentLabs}
+													key={city.departmentName}
+													name={city.departmentName}
+													experimentDatetime={experiment.experimentDatetime}
+												></ShowDepartamentData>
+											))}
+										</Grid>
+									</Box>
+								) : (
+									<Typography
+										variant='header3'
+										color='blacky.main'
+										mt={2}
+										ml={2}
+									>
+										This Student has not done any Experiments yet
+									</Typography>
+								)}
+							</Grid>
+						</Box>
+					</Card>
+				</Box>
 				<ExperimentsListDialog
 					open={openExperimentsList}
 					handleClose={() => setOpenExperimentsList(false)}
