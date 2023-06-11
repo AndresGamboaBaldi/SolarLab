@@ -131,6 +131,7 @@ export default function Laboratory() {
 	};
 	const [openSaveExperiment, setOpenSaveExperiment] = useState(false);
 	const [canAccess, setCanAccess] = useState(false);
+	const [syncPanels, setSyncPanels] = useState(true);
 
 	const [selectedCities, setSelectedCities] = React.useState(['Cochabamba']);
 
@@ -338,6 +339,8 @@ export default function Laboratory() {
 							key={city}
 							name={city}
 							departmentData={departmentData}
+							syncPanels={syncPanels}
+							setSyncPanels={setSyncPanels}
 						></DepartamentExperiment>
 					))}
 					<Box>

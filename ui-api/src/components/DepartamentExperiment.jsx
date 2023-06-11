@@ -1,10 +1,24 @@
-import { Typography, Box, Grid, Button, Card, Slider } from '@mui/material';
+import {
+	Typography,
+	Box,
+	Grid,
+	Button,
+	Card,
+	Slider,
+	FormControlLabel,
+	Checkbox,
+} from '@mui/material';
 import LineChart from './LineChart';
 
 import React, { useState, useEffect } from 'react';
 import CameraPlayer from '../components/CameraPlayer';
 
-export default function DepartamentExperiment({ name, departmentData }) {
+export default function DepartamentExperiment({
+	name,
+	departmentData,
+	syncPanels,
+	setSyncPanels,
+}) {
 	const [angle, setAngle] = useState(0);
 	const [voltage, setVoltage] = useState('');
 	const [current, setCurrent] = useState('');
@@ -12,7 +26,11 @@ export default function DepartamentExperiment({ name, departmentData }) {
 	const [efficiencyTest, setEfficiencyTest] = useState([]);
 
 	const sendMqttMessage = async (action) => {
-		const message = { action: action, angle: angle };
+		var department = name;
+		if (syncPanels) {
+			department = 'All';
+		}
+		const message = { action: action, angle: angle, department: department };
 		const response = await fetch(`/api/mqtt`, {
 			headers: {
 				'Content-Type': 'application/json',
@@ -34,6 +52,10 @@ export default function DepartamentExperiment({ name, departmentData }) {
 			}
 		});
 	}, []);
+
+	const handleChange = (event) => {
+		setSyncPanels(event.target.checked);
+	};
 	return (
 		<Box my={{ xxs: 2, xs: 2, s: 2, sm: 3 }}>
 			<Card
@@ -96,21 +118,46 @@ export default function DepartamentExperiment({ name, departmentData }) {
 								>
 									Panel Angle:
 								</Typography>
+								<Typography
+									variant='titleDepartment'
+									color='secondary.main'
+									sx={{
+										verticalAlign: 'middle',
+									}}
+								>
+									{'  '}
+									{angle}°
+								</Typography>
 							</Grid>
-							<Grid
-								item
-								sx={{ display: 'flex' }}
-								justifyContent='center'
-								mb={{ xxs: 0, xs: 0, s: 0, sm: 1, md: 1 }}
-							>
+							<Grid item sx={{ display: 'flex' }} justifyContent='center'>
 								<Box width='70%'>
 									<Slider
 										size='medium'
 										value={angle}
 										valueLabelDisplay='auto'
 										onChange={(_, value) => setAngle(value)}
+										max='180'
 									/>
 								</Box>
+							</Grid>
+							<Grid
+								item
+								sx={{ display: 'flex' }}
+								mb={{ xxs: 0, xs: 0, s: 0, sm: 1, md: 1 }}
+								justifyContent='center'
+							>
+								<FormControlLabel
+									control={
+										<Checkbox
+											checked={syncPanels}
+											onChange={handleChange}
+											color='secondary'
+										/>
+									}
+									label={
+										<Typography variant='header3'>Sync all Panels</Typography>
+									}
+								/>
 							</Grid>
 
 							<Grid item textAlign='center'>

@@ -261,6 +261,7 @@ export default function Experiments() {
 								open={openExperimentsList}
 								handleClose={() => setOpenExperimentsList(false)}
 								email={session.user.email}
+								setExperiment={setExperiment}
 							/>
 						</Stack>
 					</Box>
