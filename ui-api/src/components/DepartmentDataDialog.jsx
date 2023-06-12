@@ -11,8 +11,8 @@ export default function DepartmentDataDialog({ departmentData, name }) {
 	const [voltage, setVoltage] = useState(0);
 	const [current, setCurrent] = useState(0);
 	const [radiation, setRadiation] = useState(0);
-	const [date, setDate] = useState(0);
-	const [time, setTime] = useState(0);
+	const [power, setPower] = useState(100);
+	const [uvaRadiation, setUvaRadiation] = useState(200);
 	useEffect(() => {
 		departmentData.forEach((department) => {
 			if (department.departmentName === name) {
@@ -22,13 +22,10 @@ export default function DepartmentDataDialog({ departmentData, name }) {
 				setRadiation(department.radiation);
 			}
 		});
-		const datetime = new Date().toLocaleString();
-		setDate(datetime.split(',')[0]);
-		setTime(datetime.split(',')[1].split(' ')[1]);
 	}, []);
 	return (
-		<Grid container>
-			<Grid item xxs={12} xs={12} mt={{ xxs: 1, xs: 1, sm: 2 }}>
+		<Grid container columnSpacing={1}>
+			<Grid item xxs={12} xs={12}>
 				<Typography variant='titleDialog' color='secondary.main'>
 					{name}
 				</Typography>
@@ -41,15 +38,15 @@ export default function DepartmentDataDialog({ departmentData, name }) {
 				mt={{ xxs: 1, xs: 1, sm: 2 }}
 				sx={{ gridDataStyle }}
 			>
-				<Typography variant='titleDialog' color='primary.700'>
-					Date:
+				<Typography variant='buttonsExperiments' color='primary.700'>
+					Voltage:
 				</Typography>
 				<Typography
 					ml={{ xxs: 1, xs: 1, sm: 2 }}
 					variant='dataDialog'
 					color='blacky.main'
 				>
-					{date}
+					{voltage} V
 				</Typography>
 			</Grid>
 			<Grid
@@ -60,15 +57,15 @@ export default function DepartmentDataDialog({ departmentData, name }) {
 				mt={{ xxs: 1, xs: 1, sm: 2 }}
 				sx={{ gridDataStyle }}
 			>
-				<Typography variant='titleDialog' color='primary.700'>
-					Time:
+				<Typography variant='buttonsExperiments' color='primary.700'>
+					Current:
 				</Typography>
 				<Typography
-					ml={{ xxs: 1, xs: 1, sm: 2 }}
+					ml={{ xxs: 1, xs: 1, sm: 1 }}
 					variant='dataDialog'
 					color='blacky.main'
 				>
-					{time}
+					{current} A
 				</Typography>
 			</Grid>
 			<Grid
@@ -79,7 +76,7 @@ export default function DepartmentDataDialog({ departmentData, name }) {
 				sx={{ gridDataStyle }}
 				mt={{ xxs: 1, xs: 1, sm: 2 }}
 			>
-				<Typography variant='titleDialog' color='primary.700'>
+				<Typography variant='buttonsExperiments' color='primary.700'>
 					Panel Angle:
 				</Typography>
 				<Typography
@@ -98,15 +95,15 @@ export default function DepartmentDataDialog({ departmentData, name }) {
 				sx={{ gridDataStyle }}
 				mt={{ xxs: 1, xs: 1, sm: 2 }}
 			>
-				<Typography variant='titleDialog' color='primary.700'>
-					Voltage:
+				<Typography variant='buttonsExperiments' color='primary.700'>
+					Power:
 				</Typography>
 				<Typography
 					ml={{ xxs: 1, xs: 1, sm: 2 }}
 					variant='dataDialog'
 					color='blacky.main'
 				>
-					{voltage} V
+					{power} W
 				</Typography>
 			</Grid>
 			<Grid
@@ -117,15 +114,15 @@ export default function DepartmentDataDialog({ departmentData, name }) {
 				sx={{ gridDataStyle }}
 				mt={{ xxs: 1, xs: 1, sm: 2 }}
 			>
-				<Typography variant='titleDialog' color='primary.700'>
-					Current:
+				<Typography variant='buttonsExperiments' color='primary.700'>
+					UVA Radiation:
 				</Typography>
 				<Typography
 					ml={{ xxs: 1, xs: 1, sm: 1 }}
 					variant='dataDialog'
 					color='blacky.main'
 				>
-					{current} A
+					{uvaRadiation} W/m2
 				</Typography>
 			</Grid>
 			<Grid
@@ -136,7 +133,7 @@ export default function DepartmentDataDialog({ departmentData, name }) {
 				s={4}
 				mt={{ xxs: 1, xs: 1, sm: 2 }}
 			>
-				<Typography variant='titleDialog' color='primary.700'>
+				<Typography variant='buttonsExperiments' color='primary.700'>
 					Radiation:
 				</Typography>
 				<Typography

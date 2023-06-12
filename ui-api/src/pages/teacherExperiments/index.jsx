@@ -133,7 +133,7 @@ export default function TeacherExperiments() {
 			>
 				<Box
 					my={{ xxs: 2, xs: 3, s: 3, sm: 3 }}
-					mx={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
+					mx={{ xxs: 1, xs: 1, s: 1, sm: 2 }}
 					sx={{
 						height: '100%',
 						width: 'auto',
@@ -143,9 +143,9 @@ export default function TeacherExperiments() {
 						<Grid
 							item
 							xs={12}
-							s={12}
-							sm={12}
-							md={12}
+							s={6}
+							sm={6}
+							md={6}
 							lg={4}
 							sx={{
 								display: 'flex',
@@ -157,7 +157,13 @@ export default function TeacherExperiments() {
 							</Typography>
 							<Box ml={2}>
 								{teacherCourses.length > 0 ? (
-									<FormControl size='small' sx={{ minWidth: 180 }}>
+									<FormControl
+										size='small'
+										sx={{
+											minWidth: { xxs: 160, xs: 180, s: 140, sm: 150, md: 180 },
+											maxWidth: { xxs: 180, xs: 220, s: 140, sm: 180, md: 250 },
+										}}
+									>
 										<InputLabel>
 											<Typography variant='header3' color='blacky.main'>
 												Select a Course
@@ -186,21 +192,28 @@ export default function TeacherExperiments() {
 						<Grid
 							item
 							xs={12}
-							s={12}
-							sm={12}
-							md={12}
+							s={6}
+							sm={6}
+							md={6}
 							lg={4}
 							sx={{
 								display: 'flex',
 								alignItems: 'center',
 							}}
+							justifyContent={{ xs: 'left', s: 'flex-end' }}
 						>
 							<Typography variant='header2' color='primary.700'>
 								Student:
 							</Typography>
 							<Box ml={2}>
 								{courseStudents.length > 0 ? (
-									<FormControl size='small' sx={{ minWidth: 180 }}>
+									<FormControl
+										size='small'
+										sx={{
+											minWidth: { xxs: 160, xs: 180, s: 140, sm: 150, md: 180 },
+											maxWidth: { xxs: 180, xs: 220, s: 140, sm: 180, md: 250 },
+										}}
+									>
 										<InputLabel>
 											<Typography variant='header3' color='blacky.main'>
 												Select a Student
@@ -240,7 +253,7 @@ export default function TeacherExperiments() {
 								display: 'flex',
 								alignItems: 'center',
 							}}
-							justifyContent={{ md: 'left', lg: 'flex-end' }}
+							justifyContent={{ s: 'left', sm: 'flex-end' }}
 						>
 							{experiment && Object.keys(experiment).length > 0 ? (
 								<Button
@@ -249,7 +262,6 @@ export default function TeacherExperiments() {
 										textTransform: 'none',
 										bgcolor: 'primary.700',
 										ml: { xxs: 0, xs: 0, s: 0, sm: 0, md: 0, lg: 2 },
-										py: { xxs: 0, xs: 0, s: 0, sm: 1 },
 									}}
 									onClick={() => setOpenExperimentsList(true)}
 								>
@@ -264,7 +276,6 @@ export default function TeacherExperiments() {
 										textTransform: 'none',
 										bgcolor: 'primary.700',
 										ml: { xxs: 0, xs: 0, s: 0, sm: 0, md: 0, lg: 2 },
-										py: { xxs: 0, xs: 0, s: 0, sm: 1 },
 									}}
 									onClick={() => router.push('/courses')}
 								>
@@ -277,7 +288,7 @@ export default function TeacherExperiments() {
 					</Grid>
 				</Box>
 				<Box
-					mx={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
+					mx={{ xxs: 1, xs: 1, s: 1, sm: 2 }}
 					mb={{ xxs: 2, xs: 3, s: 4, sm: 6 }}
 					sx={{
 						height: '100%',
@@ -292,10 +303,15 @@ export default function TeacherExperiments() {
 						}}
 					>
 						<Box
-							my={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
-							mx={{ xxs: 3, xs: 3, s: 4, sm: 5 }}
+							py={{ xxs: 2, xs: 4, s: 5, sm: 5 }}
+							px={{ xxs: 1, xs: 2, s: 2, sm: 4 }}
 						>
-							<Grid container justify='center' columnSpacing={2} rowSpacing={2}>
+							<Grid
+								container
+								justify='center'
+								px={2}
+								mb={{ xxs: 1, xs: 1, s: 1, sm: 3 }}
+							>
 								<Grid
 									item
 									xs={12}
@@ -311,96 +327,113 @@ export default function TeacherExperiments() {
 										Experiment Info:
 									</Typography>
 								</Grid>
-								{experiment && Object.keys(experiment).length > 0 ? (
-									<Box>
-										<Grid
-											item
-											xxs={12}
-											xs={12}
-											my={2}
-											ml={2}
-											sx={{ verticalAlign: 'middle' }}
-										>
-											<Typography variant='header1' color='blacky.main'>
-												{experiment.name}
-											</Typography>
-										</Grid>
+							</Grid>
+							{experiment && Object.keys(experiment).length > 0 ? (
+								<Grid
+									container
+									justify='center'
+									rowSpacing={{ xxs: 1, xs: 1, s: 1, sm: 3 }}
+									px={2}
+								>
+									<Grid
+										item
+										xxs={12}
+										xs={12}
+										s={12}
+										sx={{ verticalAlign: 'middle' }}
+									>
+										<Typography variant='header12' color='blacky.main'>
+											{experiment.name}
+										</Typography>
+									</Grid>
+									<Grid item xxs={12} xs={12} s={12}>
+										<Typography variant='titleDialog' color='primary.700'>
+											Date:
+										</Typography>
+										<Typography ml={1} variant='dataDialog' color='blacky.main'>
+											{experiment.experimentDate}
+										</Typography>
+									</Grid>
+									<Grid item xxs={12} xs={12} s={12}>
+										<Typography variant='titleDialog' color='primary.700'>
+											Time:
+										</Typography>
+										<Typography ml={1} variant='dataDialog' color='blacky.main'>
+											{experiment.experimentTime} ({experiment.timezone})
+										</Typography>
+									</Grid>
 
-										<Grid
-											item
-											xxs={12}
-											ml={2}
-											mb={{ xxs: 1, xs: 2, s: 3, sm: 2 }}
-											align='center'
-										>
-											<Box
-												sx={{
+									<Grid item xxs={12} align='center'>
+										<Box
+											sx={{
+												width: '65vw',
+												height: '18vh',
+												'@media (min-width:500px)': {
 													width: '65vw',
 													height: '23vh',
-													'@media (min-width:700px)': {
-														width: '65vw',
-														height: '32vh',
-													},
-												}}
-											>
-												<LineChart
-													chartData={experiment.departmentLabs.map(
-														(department) => department.efficiencyTest
-													)}
-													names={experiment.departmentLabs.map(
-														(department) => department.departmentName
-													)}
-												></LineChart>
-											</Box>
-										</Grid>
-										<Grid item xxs={12} align='center' ml={2} mb={3}>
-											{experiment.departmentLabs.map((city) => (
-												<ShowDepartamentData
-													departmentData={experiment.departmentLabs}
-													key={city.departmentName}
-													name={city.departmentName}
-													experimentDatetime={experiment.experimentDatetime}
-												></ShowDepartamentData>
-											))}
-										</Grid>
-									</Box>
-								) : (
-									<Grid container justify='center' rowSpacing={2}>
-										<Grid
-											item
-											xxs={12}
-											xs={12}
-											sx={{
-												display: 'flex',
-												alignItems: 'center',
+												},
+												'@media (min-width:700px)': {
+													width: '65vw',
+													height: '32vh',
+												},
 											}}
-											justifyContent='center'
 										>
-											<ErrorOutlineIcon
-												sx={{
-													fontSize: { xxs: '32px', xs: '48px', sm: '64px' },
-													color: 'warning.main',
-												}}
-											/>
-										</Grid>
-										<Grid
-											item
-											xxs={12}
-											xs={12}
-											sx={{
-												display: 'flex',
-												alignItems: 'center',
-												textAlign: 'center',
-											}}
-											justifyContent='center'
-										>
-											<Typography variant='header3' color='blacky.main'>
-												This Student has not done any Experiment yet
-											</Typography>
-										</Grid>
+											<LineChart
+												chartData={experiment.departmentLabs.map(
+													(department) => department.efficiencyTest
+												)}
+												names={experiment.departmentLabs.map(
+													(department) => department.departmentName
+												)}
+											></LineChart>
+										</Box>
 									</Grid>
-								)}
-							</Grid>
+									<Grid item xxs={12} align='center' ml={2} mb={3}>
+										{experiment.departmentLabs.map((city) => (
+											<ShowDepartamentData
+												departmentData={experiment.departmentLabs}
+												key={city.departmentName}
+												name={city.departmentName}
+											></ShowDepartamentData>
+										))}
+									</Grid>
+								</Grid>
+							) : (
+								<Grid container justify='center' rowSpacing={2}>
+									<Grid
+										item
+										xxs={12}
+										xs={12}
+										sx={{
+											display: 'flex',
+											alignItems: 'center',
+										}}
+										justifyContent='center'
+									>
+										<ErrorOutlineIcon
+											sx={{
+												fontSize: { xxs: '32px', xs: '48px', sm: '64px' },
+												color: 'warning.main',
+											}}
+										/>
+									</Grid>
+									<Grid
+										item
+										xxs={12}
+										xs={12}
+										sx={{
+											display: 'flex',
+											alignItems: 'center',
+											textAlign: 'center',
+										}}
+										justifyContent='center'
+									>
+										<Typography variant='header3' color='blacky.main'>
+											This Student has not done any Experiment yet
+										</Typography>
+									</Grid>
+								</Grid>
+							)}
 						</Box>
 					</Card>
 				</Box>

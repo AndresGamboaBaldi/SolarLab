@@ -19,11 +19,9 @@ export default function SaveExperimentDialog({
 			width: 130,
 		},
 		{
-			field: 'experimentDatetime',
+			field: 'experimentDate',
 			headerName: 'Date',
 			width: 110,
-			valueFormatter: (params) =>
-				new Date(params?.value).toLocaleDateString('en-US'),
 		},
 		{
 			field: 'modified',
@@ -62,11 +60,9 @@ export default function SaveExperimentDialog({
 			width: 110,
 		},
 		{
-			field: 'experimentDatetime',
+			field: 'experimentDate',
 			headerName: 'Date',
 			width: 90,
-			valueFormatter: (params) =>
-				new Date(params?.value).toLocaleDateString('en-US'),
 		},
 
 		{

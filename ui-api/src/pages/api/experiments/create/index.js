@@ -6,6 +6,9 @@ export default async function handler(req, res) {
 			const experimentToSave = await db.Experiment.create({
 				data: {
 					name: req.body.experimentName,
+					experimentDate: req.body.experimentDate,
+					experimentTime: req.body.experimentTime,
+					timezone: req.body.timezone,
 					student: {
 						connect: {
 							userEmail: req.body.email,
@@ -35,6 +38,7 @@ export default async function handler(req, res) {
 				.status(200)
 				.json({ experimentToSave: experimentToSave, status: true });
 		} catch (error) {
+			console.log(error);
 			return res.status(400).json({ error: error.message, status: false });
 		}
 	} else {

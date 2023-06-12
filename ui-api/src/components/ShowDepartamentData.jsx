@@ -9,18 +9,35 @@ const gridDataStyle = {
 	lineHeight: 'normal',
 };
 
-export default function ShowDepartamentData({
-	departmentData,
-	name,
-	experimentDatetime,
-}) {
+const progressBarStyle = {
+	width: '95%',
+	'@media (min-width:500px)': {
+		width: '65%',
+	},
+	'@media (min-width:700px)': {
+		width: '55%',
+	},
+	'@media (min-width:1100px)': {
+		width: '45%',
+	},
+	'@media (min-width:1300px)': {
+		width: '35%',
+	},
+};
+
+export default function ShowDepartamentData({ departmentData, name }) {
 	const [angle, setAngle] = useState(0);
 	const [voltage, setVoltage] = useState(0);
 	const [current, setCurrent] = useState(0);
 	const [radiation, setRadiation] = useState(0);
-	const [date, setDate] = useState(0);
-	const [time, setTime] = useState(0);
-	const [percentage, setPercentage] = useState(45);
+
+	const [power, setPower] = useState(100);
+	const [uvaRadiation, setUvaRadiation] = useState(200);
+	const [time, setTime] = useState('');
+	const [date, setDate] = useState('');
+	const [timezone, setTimezone] = useState(
+		Intl.DateTimeFormat().resolvedOptions().timeZone
+	);
 	useEffect(() => {
 		departmentData.forEach((department) => {
 			if (department.departmentName === name) {
@@ -28,95 +45,26 @@ export default function ShowDepartamentData({
 				setCurrent(department.current);
 				setVoltage(department.voltage);
 				setRadiation(department.radiation);
+				setDate(department.experimentDate);
+				setTime(department.experimentTime);
+				setTimezone(department.timeZone);
 			}
 		});
-		const datetime = new Date(experimentDatetime).toLocaleString();
-		setDate(datetime.split(',')[0]);
-		setTime(datetime.split(',')[1].split(' ')[1]);
 	}, []);
 	return (
-		<Grid container>
-			<Grid
-				item
-				xxs={12}
-				xs={12}
-				mt={{ xxs: 1, xs: 2, sm: 1 }}
-				mb={{ xxs: 1, xs: 1, sm: 1 }}
-			>
-				<Typography variant='header12' color='blacky.main'>
+		<Grid
+			container
+			rowSpacing={{ xxs: 1, xs: 2, s: 3, sm: 3 }}
+			columnSpacing={2}
+		>
+			<Grid item xxs={12} xs={12} mb={{ xxs: 1, xs: 1, sm: 1 }}>
+				<Typography variant='header2' color='blacky.main'>
 					{name}
 				</Typography>
 			</Grid>
-			<Grid
-				item
-				xxs={6}
-				xs={6}
-				s={4}
-				mt={{ xxs: 1, xs: 1, sm: 2 }}
-				sx={{ gridDataStyle }}
-			>
-				<Typography variant='titleDialog' color='primary.700'>
-					Date:
-				</Typography>
-				<Typography
-					ml={{ xxs: 1, xs: 1, sm: 2 }}
-					variant='dataDialog'
-					color='blacky.main'
-				>
-					{date}
-				</Typography>
-			</Grid>
-			<Grid
-				item
-				xxs={6}
-				xs={6}
-				s={4}
-				mt={{ xxs: 1, xs: 1, sm: 2 }}
-				sx={{ gridDataStyle }}
-			>
-				<Typography variant='titleDialog' color='primary.700'>
-					Time:
-				</Typography>
-				<Typography
-					ml={{ xxs: 1, xs: 1, sm: 2 }}
-					variant='dataDialog'
-					color='blacky.main'
-				>
-					{time}
-				</Typography>
-			</Grid>
-			<Grid
-				item
-				xxs={12}
-				xs={12}
-				s={4}
-				sx={{ gridDataStyle }}
-				mt={{ xxs: 1, xs: 1, sm: 2 }}
-			>
-				<Typography variant='titleDialog' color='primary.700'>
-					Panel Angle:
-				</Typography>
-				<Typography
-					ml={{ xxs: 1, xs: 1, sm: 1 }}
-					variant='dataDialog'
-					color='blacky.main'
-				>
-					{angle} °
-				</Typography>
-			</Grid>
 
-			<Grid item xxs={4} xs={4} s={4} mt={{ xxs: 1, xs: 1, sm: 2 }}>
-				<Box
-					sx={{
-						width: '60%',
-						'@media (min-width:1100px)': {
-							width: '50%',
-						},
-						'@media (min-width:1300px)': {
-							width: '40%',
-						},
-					}}
-				>
+			<Grid item xxs={4} xs={4} s={4}>
+				<Box sx={progressBarStyle}>
 					<CircularProgressbar
 						value={voltage}
 						text={`${voltage}V`}
@@ -139,18 +87,8 @@ export default function ShowDepartamentData({
 					Voltage
 				</Typography>
 			</Grid>
-			<Grid item xxs={4} xs={4} s={4} mt={{ xxs: 1, xs: 1, sm: 2 }}>
-				<Box
-					sx={{
-						width: '60%',
-						'@media (min-width:1100px)': {
-							width: '50%',
-						},
-						'@media (min-width:1300px)': {
-							width: '40%',
-						},
-					}}
-				>
+			<Grid item xxs={4} xs={4} s={4}>
+				<Box sx={progressBarStyle}>
 					<CircularProgressbar
 						value={current}
 						text={`${current}A`}
@@ -173,28 +111,11 @@ export default function ShowDepartamentData({
 					Current
 				</Typography>
 			</Grid>
-			<Grid
-				item
-				xxs={4}
-				xs={4}
-				s={4}
-				mt={{ xxs: 1, xs: 1, sm: 2 }}
-				mb={{ xxs: 1, xs: 1, sm: 2 }}
-			>
-				<Box
-					sx={{
-						width: '60%',
-						'@media (min-width:1100px)': {
-							width: '50%',
-						},
-						'@media (min-width:1300px)': {
-							width: '40%',
-						},
-					}}
-				>
+			<Grid item xxs={4} xs={4} s={4} mb={{ xxs: 1, xs: 1, sm: 2 }}>
+				<Box sx={progressBarStyle}>
 					<CircularProgressbar
-						value={radiation}
-						text={`${radiation}W/m2`}
+						value={power}
+						text={`${power}W`}
 						circleRatio={0.7}
 						styles={buildStyles({
 							rotation: 0.65,
@@ -207,11 +128,47 @@ export default function ShowDepartamentData({
 							trailColor: '#d6d6d6',
 							backgroundColor: '#FFF',
 						})}
-						maxValue={6}
+						maxValue={200}
 					/>
 				</Box>
 				<Typography variant='titleDialog' color='primary.700'>
-					Radiation
+					Power
+				</Typography>
+			</Grid>
+			<Grid item xxs={12} xs={12} s={12} sm={6} md={4} sx={{ gridDataStyle }}>
+				<Typography variant='titleDialog' color='primary.700'>
+					UVA Radiation:
+				</Typography>
+				<Typography
+					ml={{ xxs: 1, xs: 1, sm: 2 }}
+					variant='dataDialog'
+					color='blacky.main'
+				>
+					{uvaRadiation} W/m2
+				</Typography>
+			</Grid>
+			<Grid item xxs={12} xs={12} s={12} sm={6} md={4} sx={{ gridDataStyle }}>
+				<Typography variant='titleDialog' color='primary.700'>
+					Radiation:
+				</Typography>
+				<Typography
+					ml={{ xxs: 1, xs: 1, sm: 2 }}
+					variant='dataDialog'
+					color='blacky.main'
+				>
+					{radiation} W/m2
+				</Typography>
+			</Grid>
+			<Grid item xxs={12} xs={12} s={12} sm={12} md={4} sx={{ gridDataStyle }}>
+				<Typography variant='titleDialog' color='primary.700'>
+					Panel Angle:
+				</Typography>
+				<Typography
+					ml={{ xxs: 1, xs: 1, sm: 1 }}
+					variant='dataDialog'
+					color='blacky.main'
+				>
+					{angle} °
 				</Typography>
 			</Grid>
 		</Grid>

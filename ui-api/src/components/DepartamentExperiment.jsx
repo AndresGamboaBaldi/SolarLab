@@ -20,10 +20,16 @@ export default function DepartamentExperiment({
 	setSyncPanels,
 }) {
 	const [angle, setAngle] = useState(0);
-	const [voltage, setVoltage] = useState('');
-	const [current, setCurrent] = useState('');
-	const [radiation, setRadiation] = useState('');
+	const [voltage, setVoltage] = useState(0);
+	const [current, setCurrent] = useState(0);
+	const [power, setPower] = useState(100);
+	const [uvaRadiation, setUvaRadiation] = useState(200);
+	const [radiation, setRadiation] = useState(0);
 	const [efficiencyTest, setEfficiencyTest] = useState([]);
+	const [time, setTime] = useState(0);
+	const [timezone, setTimezone] = useState(
+		Intl.DateTimeFormat().resolvedOptions().timeZone
+	);
 
 	const sendMqttMessage = async (action) => {
 		var department = name;
@@ -42,6 +48,10 @@ export default function DepartamentExperiment({
 	};
 
 	useEffect(() => {
+		const timer = setTimeout(() => {
+			const datetime = new Date().toLocaleString();
+			setTime(datetime.split(',')[1].split(' ')[1]);
+		}, 900);
 		departmentData.forEach((department) => {
 			if (department.departmentName === name) {
 				setAngle(department.panelangle);
@@ -51,7 +61,8 @@ export default function DepartamentExperiment({
 				setEfficiencyTest(department.efficiencyTest);
 			}
 		});
-	}, []);
+		return () => clearTimeout(timer);
+	}, [time]);
 
 	const handleChange = (event) => {
 		setSyncPanels(event.target.checked);
@@ -68,13 +79,46 @@ export default function DepartamentExperiment({
 				}}
 			>
 				<Box
-					my={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
+					my={{ xxs: 2, xs: 3, s: 3, sm: 5 }}
 					mx={{ xxs: 3, xs: 3, s: 4, sm: 5 }}
 				>
 					<Grid container>
-						<Grid item xxs={12} xs={12} mb={{ xxs: 1, xs: 2, s: 3, sm: 3 }}>
+						<Grid
+							item
+							xxs={12}
+							xs={12}
+							s={12}
+							sm={12}
+							md={6}
+							mb={{ xxs: 1, xs: 1, s: 1, sm: 2, md: 3 }}
+						>
 							<Typography variant='header1' color='blacky.main'>
 								{name}
+							</Typography>
+						</Grid>
+						<Grid
+							item
+							xxs={12}
+							xs={12}
+							s={12}
+							sm={12}
+							md={6}
+							mb={{ xxs: 1, xs: 2, s: 3, sm: 3 }}
+							sx={{
+								alignItems: 'center',
+								display: 'flex',
+								verticalAlign: 'middle',
+								lineHeight: 'normal',
+							}}
+							justifyContent={{ sm: 'left', md: 'flex-end' }}
+						>
+							<Typography variant='titleDepartment' color='primary.700'>
+								Local Time:
+							</Typography>
+							<Typography ml={1} variant='dataDepartment' color='blacky.main'>
+								{time} {'   ('}
+								{timezone}
+								{')'}
 							</Typography>
 						</Grid>
 						<Grid
@@ -136,7 +180,7 @@ export default function DepartamentExperiment({
 										value={angle}
 										valueLabelDisplay='auto'
 										onChange={(_, value) => setAngle(value)}
-										max='180'
+										max={180}
 									/>
 								</Box>
 							</Grid>
@@ -218,7 +262,7 @@ export default function DepartamentExperiment({
 							md={8}
 							lg={9}
 						>
-							<Grid item xs mb={{ xxs: 1, xs: 2, s: 3, sm: 2 }}>
+							<Grid item xs mb={{ xxs: 1, xs: 2, s: 2, sm: 2 }}>
 								<Box
 									sx={{
 										width: '79vw',
@@ -240,7 +284,7 @@ export default function DepartamentExperiment({
 								</Box>
 							</Grid>
 							<Grid item>
-								<Grid container columnSpacing={1} rowSpacing={1}>
+								<Grid container columnSpacing={1} rowSpacing={2}>
 									<Grid item xxs={6} sm={4}>
 										<Typography variant='titleDepartment' color='primary.700'>
 											Voltage:
@@ -265,7 +309,19 @@ export default function DepartamentExperiment({
 											{current} A
 										</Typography>
 									</Grid>
-									<Grid item xxs={12} sm={4}>
+									<Grid item xxs={6} sm={4}>
+										<Typography variant='titleDepartment' color='primary.700'>
+											Power:
+										</Typography>
+										<Typography
+											ml={1}
+											variant='dataDepartment'
+											color='blacky.main'
+										>
+											{power} W
+										</Typography>
+									</Grid>
+									<Grid item xxs={6} sm={6}>
 										<Typography variant='titleDepartment' color='primary.700'>
 											Radiation:
 										</Typography>
@@ -275,6 +331,18 @@ export default function DepartamentExperiment({
 											color='blacky.main'
 										>
 											{radiation} W/m2
+										</Typography>
+									</Grid>
+									<Grid item xxs={12} sm={6}>
+										<Typography variant='titleDepartment' color='primary.700'>
+											UVA Radiation:
+										</Typography>
+										<Typography
+											ml={1}
+											variant='dataDepartment'
+											color='blacky.main'
+										>
+											{uvaRadiation} W/m2
 										</Typography>
 									</Grid>
 								</Grid>

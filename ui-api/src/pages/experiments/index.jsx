@@ -149,32 +149,51 @@ export default function Experiments() {
 						}}
 					>
 						<Box
-							my={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
+							my={{ xxs: 2, xs: 3, s: 3, sm: 5 }}
 							mx={{ xxs: 3, xs: 3, s: 4, sm: 5 }}
 						>
-							<Grid container justify='center'>
+							<Grid
+								container
+								justify='center'
+								rowSpacing={{ xxs: 1, xs: 2, s: 3 }}
+							>
 								<Grid
 									item
 									xxs={12}
 									xs={12}
-									mb={{ xxs: 1, xs: 2, s: 3, sm: 3 }}
 									sx={{ verticalAlign: 'middle' }}
+									mt={{ xxs: 1, xs: 1, s: 2 }}
 								>
 									<Typography variant='header1' color='blacky.main'>
 										{experiment.name}
 									</Typography>
 								</Grid>
+								<Grid item xxs={12} xs={12}>
+									<Typography variant='titleDialog' color='primary.700'>
+										Date:
+									</Typography>
+									<Typography ml={1} variant='dataDialog' color='blacky.main'>
+										{experiment.experimentDate}
+									</Typography>
+								</Grid>
+								<Grid item xxs={12} xs={12}>
+									<Typography variant='titleDialog' color='primary.700'>
+										Time:
+									</Typography>
+									<Typography ml={1} variant='dataDialog' color='blacky.main'>
+										{experiment.experimentTime} ({experiment.timezone})
+									</Typography>
+								</Grid>
 
-								<Grid
-									item
-									xxs={12}
-									mb={{ xxs: 1, xs: 2, s: 3, sm: 2 }}
-									align='center'
-								>
+								<Grid item xxs={12} align='center'>
 									<Box
 										sx={{
 											width: '65vw',
-											height: '23vh',
+											height: '18vh',
+											'@media (min-width:500px)': {
+												width: '65vw',
+												height: '23vh',
+											},
 											'@media (min-width:700px)': {
 												width: '65vw',
 												height: '32vh',
@@ -191,13 +210,12 @@ export default function Experiments() {
 										></LineChart>
 									</Box>
 								</Grid>
-								<Grid item xxs={12} align='center' mb={3}>
+								<Grid item xxs={12} align='center' mb={5}>
 									{experiment.departmentLabs.map((city) => (
 										<ShowDepartamentData
 											departmentData={experiment.departmentLabs}
 											key={city.departmentName}
 											name={city.departmentName}
-											experimentDatetime={experiment.experimentDatetime}
 										></ShowDepartamentData>
 									))}
 								</Grid>

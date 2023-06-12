@@ -22,20 +22,28 @@ export default function SaveExperimentDialog({
 }) {
 	const { data: session, status } = useSession();
 	const [experimentName, setExperimentName] = useState('');
+	const [date, setDate] = useState(0);
+	const [time, setTime] = useState(0);
+	const [timezone, setTimezone] = useState(
+		Intl.DateTimeFormat().resolvedOptions().timeZone
+	);
 
 	const [departmentsToSave, setDepartmentsToSave] = useState([]);
 	useEffect(() => {
+		const datetime = new Date().toLocaleString();
+		setDate(datetime.split(',')[0]);
+		setTime(datetime.split(',')[1].split(' ')[1]);
 		setDepartmentsToSave(
 			departmentData.filter((department) =>
 				selectedCities.includes(department.departmentName)
 			)
 		);
-	}, [selectedCities]);
+	}, [selectedCities, open]);
 
 	const saveExperiment = async () => {
-		if (validateFields()) {
-			if (validateEfficiencyTests()) {
-				if (selectedCities.length > 0) {
+		if (selectedCities.length > 0) {
+			if (validateFields()) {
+				if (validateEfficiencyTests()) {
 					const departmentWithId = departmentsToSave.map((departmentlab) => ({
 						...departmentlab,
 						id: uuidv4(),
@@ -59,6 +67,9 @@ export default function SaveExperimentDialog({
 							email: session.user.email,
 							departments: departmentsLabs,
 							efficiencyTestRecords: efficiencyTestRecords,
+							experimentDate: date,
+							experimentTime: time,
+							timezone: timezone,
 						}),
 					});
 					const answer = await response.json();
@@ -70,10 +81,10 @@ export default function SaveExperimentDialog({
 						toast.error('Error Saving, Please Try Again Later');
 					}
 				} else {
-					toast.error('Error Saving, Please Try Again Later');
+					toast.error('A City is Missing a Test, Please Start it First');
 				}
 			} else {
-				toast.error('A City is Missing a Test, Please Start it First');
+				toast.error('Please Give the Experiment a Name before Saving');
 			}
 		} else {
 			toast.error('Select Cities for the Experiment');
@@ -102,8 +113,8 @@ export default function SaveExperimentDialog({
 			}}
 		>
 			<Box m={{ xxs: 3, xs: 4, s: 4, sm: 5 }}>
-				<Grid container>
-					<Grid item xxs={12} xs={12}>
+				<Grid container rowSpacing={1}>
+					<Grid item xxs={12} xs={12} mb={1}>
 						<Typography variant='header1' color='secondary'>
 							Save{' '}
 						</Typography>
@@ -111,76 +122,95 @@ export default function SaveExperimentDialog({
 							Experiment
 						</Typography>
 					</Grid>
-				</Grid>
-				<Grid container>
-					<Grid item xxs={12} xs={12} mt={{ xxs: 1, xs: 1, sm: 2 }}>
+					<Grid item xxs={12} xs={12}>
 						<Typography variant='titleDialog' color='blacky.main'>
 							Review the data and give the experiment a name
 						</Typography>
 					</Grid>
-				</Grid>
-
-				<Box>
-					<Grid container>
-						<Typography
-							variant='titleDialog'
-							mb={{ xxs: 1, xs: 1, sm: 2 }}
-							sx={{ mt: 2 }}
-							color='primary.700'
-						>
+					<Grid item xxs={12} xs={12} mb={1}>
+						<Typography variant='titleDialog' color='primary.700'>
 							Name
 						</Typography>
-						<Grid item xxs={12} xs={12}>
-							<TextField
-								required
-								hiddenLabel
-								fullWidth
-								variant='outlined'
-								value={experimentName}
-								onChange={(e) => setExperimentName(e.target.value)}
-								size='small'
-								inputProps={{
-									style: {
-										height: '1.6rem',
-										padding: '8px',
-										fontFamily: 'Lato',
-										fontSize: '1.2rem',
-									},
-								}}
-							/>
-						</Grid>
 					</Grid>
-				</Box>
-				<Box
-					sx={{
-						width: '100%',
-						height: '19vh',
-					}}
-					mt={{ xxs: 2, xs: 2, sm: 3 }}
-				>
-					<LineChart
-						chartData={departmentsToSave.map(
-							(department) => department.efficiencyTest
-						)}
-						names={departmentsToSave.map(
-							(department) => department.departmentName
-						)}
-						minimize={true}
-					></LineChart>
-				</Box>
-				<Grid container>
-					{selectedCities.map((city) => (
-						<DepartmentDataDialog
-							departmentData={departmentData}
-							key={city}
-							name={city}
-						></DepartmentDataDialog>
-					))}
+					<Grid item xxs={12} xs={12} mb={1}>
+						{' '}
+						<TextField
+							required
+							hiddenLabel
+							fullWidth
+							variant='outlined'
+							value={experimentName}
+							onChange={(e) => setExperimentName(e.target.value)}
+							size='small'
+							inputProps={{
+								style: {
+									height: '1.6rem',
+									padding: '8px',
+									fontFamily: 'Lato',
+									fontSize: '1.2rem',
+								},
+							}}
+						/>
+					</Grid>
+
+					<Grid item xxs={4} xs={4}>
+						<Typography variant='buttonsExperiments' color='primary.700'>
+							Date
+						</Typography>
+					</Grid>
+					<Grid item xxs={8} xs={8}>
+						<Typography variant='buttonsExperiments' color='primary.700'>
+							Time
+						</Typography>
+					</Grid>
+					<Grid item xxs={4} xs={4}>
+						{' '}
+						<Typography variant='dataDialog' color='blacky.main'>
+							{date}
+						</Typography>
+					</Grid>
+					<Grid item xxs={8} xs={8}>
+						{' '}
+						<Typography variant='dataDialog' color='blacky.main'>
+							{time} {timezone}
+						</Typography>
+					</Grid>
+
+					<Grid item xxs={12} xs={12}>
+						{' '}
+						<Box
+							sx={{
+								width: '100%',
+								height: '19vh',
+							}}
+							mt={1}
+						>
+							<LineChart
+								chartData={departmentsToSave.map(
+									(department) => department.efficiencyTest
+								)}
+								names={departmentsToSave.map(
+									(department) => department.departmentName
+								)}
+								minimize={true}
+							></LineChart>
+						</Box>
+					</Grid>
+
+					<Grid item xxs={12} xs={12}>
+						{selectedCities.map((city) => (
+							<DepartmentDataDialog
+								departmentData={departmentData}
+								key={city}
+								name={city}
+							></DepartmentDataDialog>
+						))}
+					</Grid>
 				</Grid>
 				<Stack
 					direction='row'
 					justifyContent='end'
-					mt={{ xxs: 2, xs: 4, sm: 4 }}
+					mt={{ xxs: 1, xs: 1, sm: 2 }}
 				>
 					<Button
 						variant='contained'

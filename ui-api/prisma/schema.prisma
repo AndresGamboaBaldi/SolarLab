@@ -52,15 +52,17 @@ model Request {
 }
 
 model Experiment {
-  id                 Int             @id @default(autoincrement())
-  name               String
-  experimentDatetime DateTime        @default(now())
-  student            Student?        @relation(fields: [studentEmail], references: [userEmail])
-  studentEmail       String?
-  departmentLabs     DepartmentLab[]
-  course             Course?         @relation(fields: [courseId], references: [id])
-  courseId           Int?
-  modified           DateTime        @updatedAt
+  id             Int             @id @default(autoincrement())
+  name           String
+  experimentDate String
+  experimentTime String
+  timezone       String
+  student        Student?        @relation(fields: [studentEmail], references: [userEmail])
+  studentEmail   String?
+  departmentLabs DepartmentLab[]
+  course         Course?         @relation(fields: [courseId], references: [id])
+  courseId       Int?
+  modified       DateTime        @updatedAt
 }
 
 model DepartmentLab {

@@ -51,8 +51,8 @@ export default function StreamPlayer({ name }) {
 			<canvas
 				ref={streamRef}
 				id='stream-canvas'
-				width='216px'
-				height='216px'
+				width='240px'
+				height='240px'
 			></canvas>
 		</Box>
 	);
