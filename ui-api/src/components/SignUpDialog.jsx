@@ -27,13 +27,20 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const [code, setcode] = useState('');
 	const [isTeacher, setIsTeacher] = useState(false);
 
+	const [emailError, setEmailError] = useState(false);
+	const [nameError, setNameError] = useState(false);
+	const [codeError, setCodeError] = useState(false);
+	const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 	const [passwordError, setPasswordError] = useState(false);
 
-	const handleChange = (event) => {
-		setIsTeacher(event.target.checked);
-	};
+	const [emailMessage, setEmailMessage] = useState('');
+	const [passwordMessage, setPasswordMessage] = useState('');
+	const [confirmPasswordMessage, setConfirmPasswordMessage] = useState('');
+	const [nameMessage, setNameMessage] = useState('');
+	const [codeMessage, setCodeMessage] = useState('');
 
 	useEffect(() => {
+		clearFields();
 		if (session) {
 			loadData();
 		}
@@ -41,29 +48,24 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 
 	const handleAuth = async () => {
 		if (validateFields()) {
-			if (password === confirmPassword) {
-				setPasswordError(false);
-				const response = await fetch(`/api/signUp`, {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					method: 'POST',
-					body: JSON.stringify({
-						email: email,
-						password: password,
-						code: code,
-						name: name,
-						isTeacher: isTeacher,
-					}),
-				});
-				const data = await response.json();
-				if (data.status) {
-					await createSessionAuth();
-				} else {
-					toast.error(data.error);
-				}
+			const response = await fetch(`/api/signUp`, {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				method: 'POST',
+				body: JSON.stringify({
+					email: email,
+					password: password,
+					code: code,
+					name: name,
+					isTeacher: isTeacher,
+				}),
+			});
+			const data = await response.json();
+			if (data.status) {
+				await createSessionAuth();
 			} else {
-				setPasswordError(true);
+				toast.error(data.error);
 			}
 		} else {
 			toast.error('Missing Fields, Verify and Retry');
@@ -119,11 +121,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 			.then((response) => {
 				if (response.ok) {
 					toast.success('Welcome!');
-					setEmail('');
-					setPassword('');
-					setConfirmPassword('');
-					setName('');
-					setcode('');
+					clearFields();
 				}
 			})
 			.catch((error) => {
@@ -131,14 +129,102 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 			});
 	};
 	const validateFields = () => {
-		return password && email && name && code;
+		console.log(emailError);
+		console.log(email);
+		return (
+			!emailError &&
+			!nameError &&
+			!codeError &&
+			!passwordError &&
+			!confirmPasswordError &&
+			email &&
+			name &&
+			code &&
+			password
+		);
 	};
 
-	const passwordErrorMessage = (
-		<Typography variant='body2' color='error' gutterBottom>
-			Las contraseñas no coinciden
-		</Typography>
-	);
+	const clearFields = () => {
+		setName('');
+		setEmail('');
+		setcode('');
+		setPassword('');
+		setConfirmPassword('');
+		setNameMessage('');
+		setEmailMessage('');
+		setCodeMessage('');
+		setPasswordMessage('');
+		setConfirmPasswordMessage('');
+		setCodeError(false);
+		setNameError(false);
+		setEmailError(false);
+		setPasswordError(false);
+		setConfirmPasswordError(false);
+	};
+
+	const handleChange = (event) => {
+		setIsTeacher(event.target.checked);
+	};
+
+	const handleEmailChange = (event) => {
+		setEmail(event.target.value);
+		const regexp =
+			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if (!regexp.test(event.target.value)) {
+			setEmailMessage('Enter a valid Email');
+			setEmailError(true);
+		} else {
+			setEmailMessage('');
+			setEmailError(false);
+		}
+	};
+
+	const handleNameChange = (event) => {
+		setName(event.target.value);
+		if (event.target.value.length < 6) {
+			setNameMessage('Full Name should contain at least 6 characters');
+			setNameError(true);
+		} else {
+			setNameMessage('');
+			setNameError(false);
+		}
+	};
+
+	const handleCodeChange = (event) => {
+		setcode(event.target.value);
+		if (event.target.value.length < 2) {
+			setCodeMessage('Code should contain at least 2 characters');
+			setCodeError(true);
+		} else {
+			setCodeMessage('');
+			setCodeError(false);
+		}
+	};
+
+	const handlePasswordChange = (event) => {
+		const regex = /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d).*$/;
+		setPassword(event.target.value);
+		if (!regex.test(event.target.value)) {
+			setPasswordMessage(
+				'Password should contain at least 8 characters, a Lowercase and a Capital Letter'
+			);
+			setPasswordError(true);
+		} else {
+			setPasswordMessage('');
+			setPasswordError(false);
+		}
+	};
+
+	const handleConfirmPasswordChange = (event) => {
+		setConfirmPassword(event.target.value);
+		if (password != event.target.value) {
+			setConfirmPasswordMessage('Passwords do not match');
+			setConfirmPasswordError(true);
+		} else {
+			setConfirmPasswordMessage('');
+			setConfirmPasswordError(false);
+		}
+	};
 
 	return (
 		<Dialog
@@ -179,6 +265,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 
 						<Grid item xxs={12} xs={12}>
 							<TextField
+								error={emailError}
 								required
 								fullWidth
 								size='small'
@@ -186,13 +273,8 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								autoComplete='email'
 								value={email}
 								disabled={emailDisable}
-								onChange={(e) => setEmail(e.target.value)}
-								inputProps={{
-									style: {
-										padding: '8px',
-										fontFamily: 'Lato',
-									},
-								}}
+								onChange={handleEmailChange}
+								helperText={emailMessage}
 							/>
 						</Grid>
 						<Grid item xxs={8} xs={8}>
@@ -207,36 +289,28 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 						</Grid>
 						<Grid item xxs={8} xs={8}>
 							<TextField
+								error={nameError}
 								required
 								fullWidth
 								size='small'
 								variant='outlined'
 								autoComplete='name'
 								value={name}
-								onChange={(e) => setName(e.target.value)}
-								inputProps={{
-									style: {
-										padding: '8px',
-										fontFamily: 'Lato',
-									},
-								}}
+								onChange={handleNameChange}
+								helperText={nameMessage}
 							/>
 						</Grid>
 
 						<Grid item xxs={4} xs={4}>
 							<TextField
+								error={codeError}
 								required
 								fullWidth
 								size='small'
 								variant='outlined'
 								value={code}
-								onChange={(e) => setcode(e.target.value)}
-								inputProps={{
-									style: {
-										padding: '8px',
-										fontFamily: 'Lato',
-									},
-								}}
+								onChange={handleCodeChange}
+								helperText={codeMessage}
 							/>
 						</Grid>
 					</Grid>
@@ -247,6 +321,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 							</Grid>
 							<Grid item xxs={12} xs={12}>
 								<TextField
+									error={passwordError}
 									required
 									fullWidth
 									size='small'
@@ -254,13 +329,8 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 									type='password'
 									autoComplete='new-password'
 									value={password}
-									onChange={(e) => setPassword(e.target.value)}
-									InputProps={{
-										style: {
-											padding: '0',
-											fontFamily: 'Lato',
-										},
-									}}
+									onChange={handlePasswordChange}
+									helperText={passwordMessage}
 								/>
 							</Grid>
 							<Grid item xxs={12} xs={12} my={{ xxs: 1, xs: 1, sm: 2 }}>
@@ -275,16 +345,10 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 									type='password'
 									autoComplete='new-password'
 									value={confirmPassword}
-									onChange={(e) => setConfirmPassword(e.target.value)}
-									error={passwordError}
-									InputProps={{
-										style: {
-											padding: '0',
-											fontFamily: 'Lato',
-										},
-									}}
+									onChange={handleConfirmPasswordChange}
+									error={confirmPasswordError}
+									helperText={confirmPasswordMessage}
 								/>
-								{passwordError && passwordErrorMessage}
 							</Grid>
 							<Grid item xxs={12} xs={12}>
 								<FormControlLabel

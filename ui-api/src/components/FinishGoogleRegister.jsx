@@ -110,12 +110,6 @@ export default function FinishGoogleRegister({ open, handleClose, user }) {
 							value={email}
 							disabled={emailDisable}
 							onChange={(e) => setEmail(e.target.value)}
-							inputProps={{
-								style: {
-									padding: '8px',
-									fontFamily: 'Lato',
-								},
-							}}
 						/>
 					</Grid>
 					<Grid item xxs={8} xs={8}>
@@ -133,12 +127,6 @@ export default function FinishGoogleRegister({ open, handleClose, user }) {
 							autoComplete='name'
 							value={name}
 							onChange={(e) => setName(e.target.value)}
-							inputProps={{
-								style: {
-									padding: '8px',
-									fontFamily: 'Lato',
-								},
-							}}
 						/>
 					</Grid>
 
@@ -150,12 +138,6 @@ export default function FinishGoogleRegister({ open, handleClose, user }) {
 							variant='outlined'
 							value={code}
 							onChange={(e) => setcode(e.target.value)}
-							inputProps={{
-								style: {
-									padding: '8px',
-									fontFamily: 'Lato',
-								},
-							}}
 						/>
 					</Grid>
 					<Grid item xxs={12} xs={12} mt={1}>

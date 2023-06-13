@@ -15,8 +15,13 @@ export default function UpdatePasswordDialog({ open, handleClose }) {
 	const [oldPassword, setOldPassword] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
-	const [passwordError, setPasswordError] = useState(false);
 	const { data: session, status } = useSession();
+
+	const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+	const [passwordError, setPasswordError] = useState(false);
+
+	const [passwordMessage, setPasswordMessage] = useState('');
+	const [confirmPasswordMessage, setConfirmPasswordMessage] = useState('');
 
 	const handleUpdate = async () => {
 		try {
@@ -51,11 +56,30 @@ export default function UpdatePasswordDialog({ open, handleClose }) {
 		}
 	};
 
-	const passwordErrorMessage = (
-		<Typography variant='body2' color='error' gutterBottom>
-			Las contraseñas no coinciden
-		</Typography>
-	);
+	const handlePasswordChange = (event) => {
+		const regex = /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d).*$/;
+		setPassword(event.target.value);
+		if (!regex.test(event.target.value)) {
+			setPasswordMessage(
+				'Password should contain at least 8 characters, a Lowercase and a Capital Letter'
+			);
+			setPasswordError(true);
+		} else {
+			setPasswordMessage('');
+			setPasswordError(false);
+		}
+	};
+
+	const handleConfirmPasswordChange = (event) => {
+		setConfirmPassword(event.target.value);
+		if (password != event.target.value) {
+			setConfirmPasswordMessage('Passwords do not match');
+			setConfirmPasswordError(true);
+		} else {
+			setConfirmPasswordMessage('');
+			setConfirmPasswordError(false);
+		}
+	};
 
 	return (
 		<Dialog
@@ -103,12 +127,6 @@ export default function UpdatePasswordDialog({ open, handleClose }) {
 								autoComplete='new-password'
 								value={oldPassword}
 								onChange={(e) => setOldPassword(e.target.value)}
-								InputProps={{
-									style: {
-										padding: '0',
-										fontFamily: 'Lato',
-									},
-								}}
 							/>
 						</Grid>
 						<Grid item xxs={12} xs={12}>
@@ -116,6 +134,7 @@ export default function UpdatePasswordDialog({ open, handleClose }) {
 						</Grid>
 						<Grid item xxs={12} xs={12}>
 							<TextField
+								error={passwordError}
 								required
 								fullWidth
 								size='small'
@@ -123,13 +142,8 @@ export default function UpdatePasswordDialog({ open, handleClose }) {
 								type='password'
 								autoComplete='new-password'
 								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-								InputProps={{
-									style: {
-										padding: '0',
-										fontFamily: 'Lato',
-									},
-								}}
+								onChange={handlePasswordChange}
+								helperText={passwordMessage}
 							/>
 						</Grid>
 						<Grid item xxs={12} xs={12}>
@@ -144,17 +158,11 @@ export default function UpdatePasswordDialog({ open, handleClose }) {
 								type='password'
 								autoComplete='new-password'
 								value={confirmPassword}
-								onChange={(e) => setConfirmPassword(e.target.value)}
-								error={passwordError}
-								InputProps={{
-									style: {
-										padding: '0',
-										fontFamily: 'Lato',
-									},
-								}}
+								onChange={handleConfirmPasswordChange}
+								error={confirmPasswordError}
+								helperText={confirmPasswordMessage}
 							/>
-							{passwordError && passwordErrorMessage}
-						</Grid>{' '}
+						</Grid>
 						<Grid
 							item
 							xxs={12}

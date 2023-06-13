@@ -92,12 +92,6 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 								onChange={(e) => setEmail(e.target.value)}
 								variant='outlined'
 								size='small'
-								inputProps={{
-									style: {
-										padding: '8px',
-										fontFamily: 'Lato',
-									},
-								}}
 							/>
 						</Grid>
 						<Typography
@@ -119,12 +113,6 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 								autoComplete='new-password'
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
-								InputProps={{
-									style: {
-										padding: '0',
-										fontFamily: 'Lato',
-									},
-								}}
 							/>
 						</Grid>
 					</Grid>

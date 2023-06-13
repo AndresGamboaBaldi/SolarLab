@@ -450,6 +450,27 @@ const theme = createTheme({
 				},
 			},
 		},
+		MuiTextField: {
+			styleOverrides: {
+				root: {
+					'& p': {
+						fontFamily: 'lato',
+						fontSize: '0.6rem',
+						'@media (min-width:200px)': {
+							fontSize: '0.8rem',
+						},
+						'@media (min-width:700px)': {
+							fontSize: '16px',
+						},
+						marginLeft: 0,
+					},
+					'& .MuiInputBase-input': {
+						padding: '8px',
+						fontFamily: 'lato',
+					},
+				},
+			},
+		},
 	},
 });
 

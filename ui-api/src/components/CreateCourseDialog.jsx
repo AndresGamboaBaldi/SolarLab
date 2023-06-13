@@ -79,12 +79,6 @@ export default function CreateCourseDialog({ open, handleClose }) {
 							variant='outlined'
 							value={name}
 							onChange={(e) => setName(e.target.value)}
-							inputProps={{
-								style: {
-									padding: '8px',
-									fontFamily: 'Lato',
-								},
-							}}
 						/>
 					</Grid>
 					<Grid item xxs={12} mt={{ xxs: 1, xs: 1, sm: 1 }}>
