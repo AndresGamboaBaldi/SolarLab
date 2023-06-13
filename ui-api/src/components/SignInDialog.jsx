@@ -20,18 +20,29 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 	const [password, setPassword] = useState('');
 
 	const handleAuth = async () => {
-		signIn('credentials', { email: email, password: password, redirect: false })
-			.then((response) => {
-				if (response.ok) {
-					toast.success('Welcome Back!');
-					handleClose();
-				} else {
-					toast.error('Incorrect Email or Password, Verify and Retry');
-				}
+		if (validateFields()) {
+			signIn('credentials', {
+				email: email,
+				password: password,
+				redirect: false,
 			})
-			.catch((error) => {
-				toast.error('Something Went Wrong, Please Retry');
-			});
+				.then((response) => {
+					if (response.ok) {
+						toast.success('Welcome Back!');
+						handleClose();
+					} else {
+						toast.error('Incorrect Email or Password, Verify and Retry');
+					}
+				})
+				.catch((error) => {
+					toast.error('Something Went Wrong, Please Retry');
+				});
+		} else {
+			toast.error('Incorrect Email or Password, Verify and Retry');
+		}
+	};
+	const validateFields = () => {
+		return password && email;
 	};
 
 	return (

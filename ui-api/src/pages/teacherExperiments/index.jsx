@@ -80,7 +80,7 @@ export default function TeacherExperiments() {
 				setSelectedCourseName(answer.courses[0].name);
 				setCourseStudents(answer.courses[0].students);
 				if (answer.courses[0].students.length > 0) {
-					setSelectedStudentName(answer.courses[0].students[0].user.fullname);
+					setSelectedStudentName(answer.courses[0].students[0].user.name);
 					setExperiment(answer.courses[0].students[0].experiments[0]);
 				}
 			}
@@ -102,7 +102,7 @@ export default function TeacherExperiments() {
 	const handleChangeStudent = (event) => {
 		setSelectedStudentName(event.target.value);
 		courseStudents.forEach((student) => {
-			if (student.user.fullname == event.target.value) {
+			if (student.user.name == event.target.value) {
 				setSelectedStudentEmail(student.userEmail);
 				setExperiment(student.experiments[0]);
 			}
@@ -224,12 +224,9 @@ export default function TeacherExperiments() {
 											onChange={handleChangeStudent}
 										>
 											{courseStudents.map((student) => (
-												<MenuItem
-													key={student.id}
-													value={student.user.fullname}
-												>
+												<MenuItem key={student.id} value={student.user.name}>
 													<Typography variant='header3' color='blacky.main'>
-														{student.user.fullname}
+														{student.user.name}
 													</Typography>
 												</MenuItem>
 											))}

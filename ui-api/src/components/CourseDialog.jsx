@@ -107,7 +107,7 @@ export default function CoursesDialog({ open, handleClose, user }) {
 			field: 'teacherId',
 			headerName: 'Teacher',
 			width: 180,
-			valueGetter: (params) => params.row?.teacher?.user?.fullname,
+			valueGetter: (params) => params.row?.teacher?.user?.name,
 		},
 		{
 			field: 'actions',
@@ -210,7 +210,7 @@ export default function CoursesDialog({ open, handleClose, user }) {
 			field: 'teacherId',
 			headerName: 'Teacher',
 			width: 220,
-			valueGetter: (params) => params.row?.teacher?.user?.fullname,
+			valueGetter: (params) => params.row?.teacher?.user?.name,
 		},
 	];
 

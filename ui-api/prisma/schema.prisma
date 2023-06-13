@@ -8,10 +8,10 @@ datasource db {
 }
 
 model User {
-  fullname String
-  code     String
+  name     String
+  code     String?
   email    String   @id @unique
-  password String
+  password String?
   student  Student?
   teacher  Teacher?
 }

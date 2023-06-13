@@ -181,7 +181,7 @@ export default function Courses() {
 			field: 'name',
 			headerName: 'Name',
 			width: 220,
-			valueGetter: (params) => params.row?.user?.fullname,
+			valueGetter: (params) => params.row?.user?.name,
 		},
 
 		{
@@ -206,7 +206,7 @@ export default function Courses() {
 			field: 'name',
 			headerName: 'Name',
 			width: 200,
-			valueGetter: (params) => params.row?.student.user?.fullname,
+			valueGetter: (params) => params.row?.student.user?.name,
 		},
 
 		{

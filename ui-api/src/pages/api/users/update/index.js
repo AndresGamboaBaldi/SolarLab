@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 					email: req.body.email,
 				},
 				data: {
-					fullname: req.body.fullname,
+					name: req.body.name,
 					code: req.body.code,
 				},
 			});

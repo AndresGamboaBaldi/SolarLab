@@ -37,7 +37,7 @@ export default function NavBar() {
 
 					{session ? (
 						<Box sx={{ flexGrow: 0 }}>
-							<UserMenu></UserMenu>
+							<UserMenu session={session}></UserMenu>
 						</Box>
 					) : (
 						<Box>

@@ -23,7 +23,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
-	const [fullname, setFullname] = useState('');
+	const [name, setName] = useState('');
 	const [code, setcode] = useState('');
 	const [isTeacher, setIsTeacher] = useState(false);
 
@@ -37,7 +37,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 		if (session) {
 			loadData();
 		}
-	}, []);
+	}, [open]);
 
 	const handleAuth = async () => {
 		if (validateFields()) {
@@ -52,7 +52,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 						email: email,
 						password: password,
 						code: code,
-						fullname: fullname,
+						name: name,
 						isTeacher: isTeacher,
 					}),
 				});
@@ -83,7 +83,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 		} else {
 			setEmailDisable(true);
 			setEmail(response.user.email);
-			setFullname(response.user.fullname);
+			setName(response.user.name);
 			setcode(response.user.code);
 		}
 	};
@@ -92,7 +92,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 		const updateUser = {
 			email: email,
 			code: code,
-			fullname: fullname,
+			name: name,
 		};
 		try {
 			const response = await fetch(`/api/users/update`, {
@@ -104,7 +104,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 			});
 			const user = await response.json();
 			if (user.email) {
-				setFullname(user.fullname);
+				setName(user.name);
 				setcode(user.code);
 				toast.success('Updated Successfully');
 			} else {
@@ -122,7 +122,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 					setEmail('');
 					setPassword('');
 					setConfirmPassword('');
-					setFullname('');
+					setName('');
 					setcode('');
 				}
 			})
@@ -131,7 +131,7 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 			});
 	};
 	const validateFields = () => {
-		return password && email && fullname && code;
+		return password && email && name && code;
 	};
 
 	const passwordErrorMessage = (
@@ -211,9 +211,9 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								fullWidth
 								size='small'
 								variant='outlined'
-								autoComplete='fullname'
-								value={fullname}
-								onChange={(e) => setFullname(e.target.value)}
+								autoComplete='name'
+								value={name}
+								onChange={(e) => setName(e.target.value)}
 								inputProps={{
 									style: {
 										padding: '8px',

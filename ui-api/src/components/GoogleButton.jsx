@@ -1,5 +1,23 @@
 import { SvgIcon, Typography, Button } from '@mui/material';
+import { signIn } from 'next-auth/react';
+import { toast } from 'react-toastify';
 export default function GoogleButton() {
+	const handleGoogleAuth = async () => {
+		signIn('google', { redirect: false })
+			.then((response) => {
+				if (response.ok) {
+					toast.success('Welcome!');
+					setEmail('');
+					setPassword('');
+					setConfirmPassword('');
+					setName('');
+					setcode('');
+				}
+			})
+			.catch((error) => {
+				toast.info(error);
+			});
+	};
 	return (
 		<Button
 			fullWidth
@@ -9,7 +27,11 @@ export default function GoogleButton() {
 				borderColor: 'gray',
 				color: 'black',
 				textTransform: 'none',
+				'&:hover': {
+					backgroundColor: '#F2F2F2',
+				},
 			}}
+			onClick={handleGoogleAuth}
 		>
 			<SvgIcon sx={{ fontSize: { xxs: 16, xs: 20, sm: 32 }, mr: 2 }}>
 				<path

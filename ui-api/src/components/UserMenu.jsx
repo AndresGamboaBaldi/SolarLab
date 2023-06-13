@@ -15,19 +15,21 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import SignUpDialog from './SignUpDialog';
 import UpdatePasswordDialog from './UpdatePasswordDialog';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import CoursesDialog from './CourseDialog';
+import FinishGoogleRegister from './FinishGoogleRegister';
 
-export default function UserMenu() {
+export default function UserMenu({ session }) {
 	const router = useRouter();
 	const [openSignup, setOpenSignUp] = useState(false);
 	const [openCourses, setOpenCourses] = useState(false);
 	const [openUpdatePassword, setOpenUpdatePassword] = useState(false);
-	const { data: session, status } = useSession();
+	const [openFinishGoogleRegister, setOpenFinishGoogleRegister] =
+		useState(false);
 
 	const [user, setUser] = useState('');
 
@@ -69,6 +71,14 @@ export default function UserMenu() {
 		}
 	};
 
+	const handleCloseFinishGoogle = (event, reason) => {
+		if (reason && reason == 'backdropClick') {
+			toast.error('Please Finish the Register');
+		} else {
+			setOpenFinishGoogleRegister(false);
+		}
+	};
+
 	const loadData = async () => {
 		const response = await fetch(`/api/users/read`, {
 			headers: {
@@ -83,13 +93,14 @@ export default function UserMenu() {
 			toast.error('Something Went Wrong, Please Try Again');
 		} else {
 			setUser(answer.user);
+			if (!answer.user.code) {
+				setOpenFinishGoogleRegister(true);
+			}
 		}
 	};
 
 	useEffect(() => {
-		if (session) {
-			loadData();
-		}
+		loadData();
 	}, []);
 
 	return (
@@ -147,7 +158,7 @@ export default function UserMenu() {
 					},
 				}}
 			>
-				<Typography variant='body1'>{user.fullname}</Typography>
+				<Typography variant='body1'>{user.name}</Typography>
 				<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 					<KeyboardArrowDownIcon
 						sx={{
@@ -227,11 +238,20 @@ export default function UserMenu() {
 					open={openUpdatePassword}
 					handleClose={() => setOpenUpdatePassword(false)}
 				/>
-				<CoursesDialog
-					open={openCourses}
-					handleClose={() => setOpenCourses(false)}
-					user={user}
-				/>
+				{user ? (
+					<Box>
+						<CoursesDialog
+							open={openCourses}
+							handleClose={() => setOpenCourses(false)}
+							user={user}
+						/>
+						<FinishGoogleRegister
+							open={openFinishGoogleRegister}
+							handleClose={handleCloseFinishGoogle}
+							user={user}
+						></FinishGoogleRegister>
+					</Box>
+				) : null}
 			</Menu>
 		</Box>
 	);
