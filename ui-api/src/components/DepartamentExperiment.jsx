@@ -9,7 +9,7 @@ import {
 	Checkbox,
 } from '@mui/material';
 import LineChart from './LineChart';
-
+import Clock from './Clock';
 import React, { useState, useEffect } from 'react';
 import CameraPlayer from '../components/CameraPlayer';
 
@@ -26,10 +26,8 @@ export default function DepartamentExperiment({
 	const [uvaRadiation, setUvaRadiation] = useState(200);
 	const [radiation, setRadiation] = useState(0);
 	const [efficiencyTest, setEfficiencyTest] = useState([]);
-	const [time, setTime] = useState(0);
-	const [timezone, setTimezone] = useState(
-		Intl.DateTimeFormat().resolvedOptions().timeZone
-	);
+
+	const [isPrivate, setIsPrivate] = useState(false);
 
 	const sendMqttMessage = async (action) => {
 		var department = name;
@@ -48,10 +46,6 @@ export default function DepartamentExperiment({
 	};
 
 	useEffect(() => {
-		const timer = setTimeout(() => {
-			const datetime = new Date().toLocaleString();
-			setTime(datetime.split(',')[1].split(' ')[1]);
-		}, 900);
 		departmentData.forEach((department) => {
 			if (department.departmentName === name) {
 				setAngle(department.panelangle);
@@ -61,8 +55,10 @@ export default function DepartamentExperiment({
 				setEfficiencyTest(department.efficiencyTest);
 			}
 		});
-		return () => clearTimeout(timer);
-	}, [time]);
+		setIsPrivate(
+			JSON.parse(window.localStorage.getItem('SESSION_DATA')).isPrivate
+		);
+	}, []);
 
 	const handleChange = (event) => {
 		setSyncPanels(event.target.checked);
@@ -112,14 +108,7 @@ export default function DepartamentExperiment({
 							}}
 							justifyContent={{ sm: 'left', md: 'flex-end' }}
 						>
-							<Typography variant='titleDepartment' color='primary.700'>
-								Local Time:
-							</Typography>
-							<Typography ml={1} variant='dataDepartment' color='blacky.main'>
-								{time} {'   ('}
-								{timezone}
-								{')'}
-							</Typography>
+							<Clock></Clock>
 						</Grid>
 						<Grid
 							item
@@ -173,84 +162,90 @@ export default function DepartamentExperiment({
 									{angle}°
 								</Typography>
 							</Grid>
-							<Grid item sx={{ display: 'flex' }} justifyContent='center'>
-								<Box width='70%'>
-									<Slider
-										size='medium'
-										value={angle}
-										valueLabelDisplay='auto'
-										onChange={(_, value) => setAngle(value)}
-										max={180}
-									/>
-								</Box>
-							</Grid>
-							<Grid
-								item
-								sx={{ display: 'flex' }}
-								mb={{ xxs: 0, xs: 0, s: 0, sm: 1, md: 1 }}
-								justifyContent='center'
-							>
-								<FormControlLabel
-									control={
-										<Checkbox
-											checked={syncPanels}
-											onChange={handleChange}
-											color='secondary'
+							{isPrivate ? (
+								<Box>
+									<Grid item sx={{ display: 'flex' }} justifyContent='center'>
+										<Box width='70%'>
+											<Slider
+												size='medium'
+												value={angle}
+												valueLabelDisplay='auto'
+												onChange={(_, value) => setAngle(value)}
+												max={180}
+											/>
+										</Box>
+									</Grid>
+									<Grid
+										item
+										sx={{ display: 'flex' }}
+										mb={{ xxs: 0, xs: 0, s: 0, sm: 1, md: 1 }}
+										justifyContent='center'
+									>
+										<FormControlLabel
+											control={
+												<Checkbox
+													checked={syncPanels}
+													onChange={handleChange}
+													color='secondary'
+												/>
+											}
+											label={
+												<Typography variant='header3'>
+													Sync all Panels
+												</Typography>
+											}
 										/>
-									}
-									label={
-										<Typography variant='header3'>Sync all Panels</Typography>
-									}
-								/>
-							</Grid>
+									</Grid>
 
-							<Grid item textAlign='center'>
-								<Button
-									variant='contained'
-									color='white'
-									sx={{
-										textTransform: 'none',
-										border: 1,
-										borderColor: 'primary.700',
-										mr: 1,
-									}}
-									onClick={() => {
-										sendMqttMessage('ANGLE');
-									}}
-								>
-									<Typography
-										variant='titleDepartment'
-										color='primary.700'
-										sx={{
-											'&:hover': {
-												color: '#fff',
-											},
-										}}
-									>
-										Move
-									</Typography>
-								</Button>
-								<Button
-									variant='contained'
-									sx={{
-										bgcolor: 'primary.700',
-										textTransform: 'none',
-									}}
-									onClick={() => {
-										sendMqttMessage('START');
-									}}
-								>
-									<Typography
-										sx={{
-											mx: { xxs: 0, xs: 0, s: 1, sm: 1, md: 1, lg: 1 },
-										}}
-										variant='titleDepartment'
-										color='white'
-									>
-										Start
-									</Typography>
-								</Button>
-							</Grid>
+									<Grid item textAlign='center'>
+										<Button
+											variant='contained'
+											color='white'
+											sx={{
+												textTransform: 'none',
+												border: 1,
+												borderColor: 'primary.700',
+												mr: 1,
+											}}
+											onClick={() => {
+												sendMqttMessage('ANGLE');
+											}}
+										>
+											<Typography
+												variant='titleDepartment'
+												color='primary.700'
+												sx={{
+													'&:hover': {
+														color: '#fff',
+													},
+												}}
+											>
+												Move
+											</Typography>
+										</Button>
+										<Button
+											variant='contained'
+											sx={{
+												bgcolor: 'primary.700',
+												textTransform: 'none',
+											}}
+											onClick={() => {
+												sendMqttMessage('START');
+											}}
+										>
+											<Typography
+												sx={{
+													mx: { xxs: 0, xs: 0, s: 1, sm: 1, md: 1, lg: 1 },
+												}}
+												variant='titleDepartment'
+												color='white'
+											>
+												Start
+											</Typography>
+										</Button>
+									</Grid>
+								</Box>
+							) : null}
 						</Grid>
 						<Grid
 							item

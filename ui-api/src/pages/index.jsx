@@ -34,7 +34,12 @@ export default function Home() {
 			const urlParams = new URLSearchParams(window.location.search);
 			const accessKey = urlParams.get('access_key');
 			if (accessKey != null) {
+				var isPrivateSession = true;
 				const pwd = urlParams.get('pwd');
+				if (!pwd) {
+					console.log('public');
+					isPrivateSession = false;
+				}
 				const message = { access_key: accessKey, pwd: pwd };
 				const response = await fetch(`/api/booking`, {
 					headers: {
@@ -48,7 +53,11 @@ export default function Home() {
 					toast.info('Your Session Has Started');
 					window.localStorage.setItem(
 						'SESSION_DATA',
-						JSON.stringify(data.data)
+						JSON.stringify({
+							start_date: data.data.start_date,
+							end_date: data.data.end_date,
+							isPrivate: isPrivateSession,
+						})
 					);
 				} else {
 					toast.warn('Your Session Has Not Started Yet', {
