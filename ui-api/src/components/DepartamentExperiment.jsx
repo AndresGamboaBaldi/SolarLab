@@ -35,7 +35,7 @@ export default function DepartamentExperiment({
 			department = 'All';
 		}
 		const message = { action: action, angle: angle, department: department };
-		const response = await fetch(`/api/mqtt`, {
+		const response = await fetch(`/api/mqtt/send`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},

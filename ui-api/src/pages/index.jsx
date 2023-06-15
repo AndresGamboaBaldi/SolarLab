@@ -37,7 +37,6 @@ export default function Home() {
 				var isPrivateSession = true;
 				const pwd = urlParams.get('pwd');
 				if (!pwd) {
-					console.log('public');
 					isPrivateSession = false;
 				}
 				const message = { access_key: accessKey, pwd: pwd };

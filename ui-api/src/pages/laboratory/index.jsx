@@ -151,6 +151,21 @@ export default function Laboratory() {
 
 	const [isMobile, setIsMobile] = useState(false);
 
+	const connectMQTT = async () => {
+		const request = await fetch(`/api/mqtt/connect`, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'GET',
+		});
+		const response = await request.json();
+		if (!response.status) {
+			toast.error('Error Comunicating with Panel Control, Try Again Later');
+		} else {
+			//toast.success('Connected to MQTT');
+		}
+	};
+
 	const handleResize = () => {
 		if (window.innerWidth < 960) {
 			setIsMobile(true);
@@ -196,6 +211,7 @@ export default function Laboratory() {
 
 	useEffect(() => {
 		checkAccess();
+		//connectMQTT();
 		handleResize();
 		window.addEventListener('resize', handleResize);
 	}, []);

@@ -129,8 +129,6 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 			});
 	};
 	const validateFields = () => {
-		console.log(emailError);
-		console.log(email);
 		return (
 			!emailError &&
 			!nameError &&
