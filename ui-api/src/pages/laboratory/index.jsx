@@ -23,6 +23,7 @@ import SignInDialog from '../../components/SignInDialog';
 import SignUpDialog from '../../components/SignUpDialog';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
+import { io } from 'socket.io-client';
 
 const testLpz = [
 	{
@@ -134,7 +135,6 @@ export default function Laboratory() {
 	const [syncPanels, setSyncPanels] = useState(true);
 
 	const [selectedCities, setSelectedCities] = React.useState(['Cochabamba']);
-
 	const cities = ['Cochabamba', 'La Paz', 'Santa Cruz'];
 
 	const ITEM_HEIGHT = 48;
@@ -187,6 +187,7 @@ export default function Laboratory() {
 
 	const [openSignIn, setOpenSignIn] = useState(false);
 	const [openSignup, setOpenSignUp] = useState(false);
+
 	const handleOpenSignUpFromSignIn = () => {
 		setOpenSignIn(false);
 		setOpenSignUp(true);
@@ -208,12 +209,20 @@ export default function Laboratory() {
 			setOpenSignIn(true);
 		}
 	};
-
 	useEffect(() => {
 		checkAccess();
-		//connectMQTT();
 		handleResize();
 		window.addEventListener('resize', handleResize);
+	}, []);
+	useEffect(() => {
+		connectMQTT();
+		const socket = io('ws://localhost:4000');
+		socket.on('esp32', (...args) => {
+			console.log(args);
+		});
+		return () => {
+			socket.disconnect();
+		};
 	}, []);
 
 	const handleChangeCheckbox = (event) => {

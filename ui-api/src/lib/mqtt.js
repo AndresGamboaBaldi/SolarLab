@@ -2,16 +2,18 @@ import * as mqtt from 'mqtt';
 
 const globalForMqtt = global;
 
+import socket from './socket';
+
 const connectMqtt = () => {
 	const client = mqtt.connect(`mqtt://${process.env.HOST}`, {
 		clientId: 'SolarLab',
 	});
 	client.on('connect', function () {
-		console.log('Subscribing');
+		console.log('MQTT Broker Connected');
 		mqttClient.subscribe('solarlab/server');
 	});
 	client.on('message', function (topic, message) {
-		console.log(message.toString());
+		socket.emit('esp32', message.toString());
 	});
 	return client;
 };

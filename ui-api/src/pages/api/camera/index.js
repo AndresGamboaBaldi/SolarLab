@@ -45,7 +45,7 @@ export default async function handler(req, res) {
 			return res.status(500).json({ error: 'HTTP Method not Valid' });
 		}
 	} else {
-		console.log('socket.io already running');
+		console.log('Camera socket is already running');
 		return res.status(200).json({ status: true });
 	}
 }

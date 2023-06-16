@@ -1,4 +1,4 @@
-import mqttClient from '@/lib/mqtt';
+import socket from '@/lib/socketclient';
 
 export default function handler(req, res) {
 	if (req.method === 'GET') {
