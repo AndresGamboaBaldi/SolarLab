@@ -28,7 +28,6 @@ export default function TeacherExperiments() {
 
 	const { data: session, status } = useSession();
 	const [experiment, setExperiment] = useState({});
-	const [efficiencyTest, setEfficiencyTest] = useState([]);
 
 	const [openExperimentsList, setOpenExperimentsList] = useState(false);
 
@@ -111,7 +110,7 @@ export default function TeacherExperiments() {
 
 	useEffect(() => {
 		checkSession();
-	}, [status, efficiencyTest]);
+	}, [status]);
 
 	const router = useRouter();
 

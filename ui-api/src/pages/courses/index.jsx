@@ -31,6 +31,10 @@ export default function Courses() {
 	const [courseRequests, setCourseRequests] = useState({});
 	const [reRender, setReRender] = useState(false);
 
+	useEffect(() => {
+		checkSession();
+	}, [status, openCreateCourseDialog, reRender]);
+
 	const checkSession = async () => {
 		if (status === 'authenticated') {
 			await loadCourses();
@@ -125,12 +129,6 @@ export default function Courses() {
 			}
 		});
 	};
-
-	useEffect(() => {
-		checkSession();
-	}, [status, openCreateCourseDialog, reRender]);
-
-	const router = useRouter();
 
 	const handleRequest = async (params, status) => {
 		if (status == 'Denied') {

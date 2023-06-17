@@ -13,24 +13,24 @@ import Head from 'next/head';
 
 export default function Experiments() {
 	const [noExperiments, setNoExperiments] = useState(true);
-
 	const { data: session, status } = useSession();
 	const [experiment, setExperiment] = useState({});
-	const [efficiencyTest, setEfficiencyTest] = useState([]);
-
 	const [openSignIn, setOpenSignIn] = useState(false);
 	const [openSignup, setOpenSignUp] = useState(false);
-	const handleOpenSignUpFromSignIn = () => {
-		setOpenSignIn(false);
-		setOpenSignUp(true);
-	};
-
-	const handleOpenSignInFromSignUp = () => {
-		setOpenSignUp(false);
-		setOpenSignIn(true);
-	};
-
 	const [openExperimentsList, setOpenExperimentsList] = useState(false);
+
+	useEffect(() => {
+		checkSession();
+	}, [status, openExperimentsList]);
+
+	const router = useRouter();
+	const handleEnterRemoteLab = () => {
+		if (!window.localStorage.getItem('SESSION_DATA')) {
+			toast.error('You Dont have a Session. Book One!');
+		} else {
+			router.push('/laboratory');
+		}
+	};
 
 	const checkSession = async () => {
 		if (status === 'authenticated') {
@@ -97,17 +97,14 @@ export default function Experiments() {
 		}
 	};
 
-	useEffect(() => {
-		checkSession();
-	}, [status, openExperimentsList, efficiencyTest]);
+	const handleOpenSignUpFromSignIn = () => {
+		setOpenSignIn(false);
+		setOpenSignUp(true);
+	};
 
-	const router = useRouter();
-	const handleEnterRemoteLab = () => {
-		if (!window.localStorage.getItem('SESSION_DATA')) {
-			toast.error('You Dont have a Session. Book One!');
-		} else {
-			router.push('/laboratory');
-		}
+	const handleOpenSignInFromSignUp = () => {
+		setOpenSignUp(false);
+		setOpenSignIn(true);
 	};
 
 	return (

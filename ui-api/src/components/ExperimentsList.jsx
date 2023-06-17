@@ -107,6 +107,9 @@ export default function SaveExperimentDialog({
 	useEffect(() => {
 		handleResize();
 		window.addEventListener('resize', handleResize);
+	}, []);
+
+	useEffect(() => {
 		checkSession();
 	}, [open]);
 

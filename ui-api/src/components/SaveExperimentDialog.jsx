@@ -38,7 +38,7 @@ export default function SaveExperimentDialog({
 				selectedCities.includes(department.departmentName)
 			)
 		);
-	}, [selectedCities, open]);
+	}, [open]);
 
 	const saveExperiment = async () => {
 		if (selectedCities.length > 0) {

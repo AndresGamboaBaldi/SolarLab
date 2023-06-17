@@ -130,13 +130,6 @@ export default function Laboratory() {
 			fontSize: { xxs: '24px', xs: '30px', sm: '32px' },
 		},
 	};
-	const [openSaveExperiment, setOpenSaveExperiment] = useState(false);
-	const [canAccess, setCanAccess] = useState(false);
-	const [syncPanels, setSyncPanels] = useState(true);
-
-	const [selectedCities, setSelectedCities] = React.useState(['Cochabamba']);
-	const cities = ['Cochabamba', 'La Paz', 'Santa Cruz'];
-
 	const ITEM_HEIGHT = 48;
 	const ITEM_PADDING_TOP = 8;
 
@@ -149,29 +142,39 @@ export default function Laboratory() {
 		},
 	};
 
+	const { data: session, status } = useSession();
+
+	const [openSignIn, setOpenSignIn] = useState(false);
+	const [openSignup, setOpenSignUp] = useState(false);
+
+	const [openSaveExperiment, setOpenSaveExperiment] = useState(false);
+	const [canAccess, setCanAccess] = useState(false);
+	const [syncPanels, setSyncPanels] = useState(true);
+
+	const [selectedCities, setSelectedCities] = React.useState(['Cochabamba']);
+	const cities = ['Cochabamba', 'La Paz', 'Santa Cruz'];
+
 	const [isMobile, setIsMobile] = useState(false);
 
-	const connectMQTT = async () => {
-		const request = await fetch(`/api/mqtt/connect`, {
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			method: 'GET',
-		});
-		const response = await request.json();
-		if (!response.status) {
-			toast.error('Error Comunicating with Panel Control, Try Again Later');
-		} else {
-			//toast.success('Connected to MQTT');
-		}
-	};
+	useEffect(() => {
+		checkAccess();
+		handleResize();
+		window.addEventListener('resize', handleResize);
+	}, []);
 
-	const handleResize = () => {
-		if (window.innerWidth < 960) {
-			setIsMobile(true);
-		} else {
-			setIsMobile(false);
-		}
+	useEffect(() => {
+		connectMQTT();
+		const socket = io('ws://localhost:4000');
+		socket.on('esp32', (...args) => {
+			console.log(args);
+		});
+		return () => {
+			socket.disconnect();
+		};
+	}, []);
+
+	const connectMQTT = async () => {
+		await fetch(`/api/mqtt/connect`);
 	};
 
 	const checkAccess = () => {
@@ -183,10 +186,13 @@ export default function Laboratory() {
 		}
 	};
 
-	const { data: session, status } = useSession();
-
-	const [openSignIn, setOpenSignIn] = useState(false);
-	const [openSignup, setOpenSignUp] = useState(false);
+	const handleResize = () => {
+		if (window.innerWidth < 960) {
+			setIsMobile(true);
+		} else {
+			setIsMobile(false);
+		}
+	};
 
 	const handleOpenSignUpFromSignIn = () => {
 		setOpenSignIn(false);
@@ -209,21 +215,6 @@ export default function Laboratory() {
 			setOpenSignIn(true);
 		}
 	};
-	useEffect(() => {
-		checkAccess();
-		handleResize();
-		window.addEventListener('resize', handleResize);
-	}, []);
-	useEffect(() => {
-		connectMQTT();
-		const socket = io('ws://localhost:4000');
-		socket.on('esp32', (...args) => {
-			console.log(args);
-		});
-		return () => {
-			socket.disconnect();
-		};
-	}, []);
 
 	const handleChangeCheckbox = (event) => {
 		if (event.target.checked) {

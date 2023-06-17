@@ -57,7 +57,7 @@ export default function ShowDepartamentData({ departmentData, name }) {
 			rowSpacing={{ xxs: 1, xs: 2, s: 3, sm: 3 }}
 			columnSpacing={2}
 		>
-			<Grid item xxs={12} xs={12} mb={{ xxs: 1, xs: 1, sm: 1 }}>
+			<Grid item xxs={12} xs={12} my={{ xxs: 1, xs: 1, sm: 1 }}>
 				<Typography variant='header2' color='blacky.main'>
 					{name}
 				</Typography>
@@ -135,7 +135,16 @@ export default function ShowDepartamentData({ departmentData, name }) {
 					Power
 				</Typography>
 			</Grid>
-			<Grid item xxs={12} xs={12} s={12} sm={6} md={4} sx={{ gridDataStyle }}>
+			<Grid
+				item
+				xxs={12}
+				xs={12}
+				s={12}
+				sm={6}
+				md={4}
+				sx={{ gridDataStyle }}
+				mb={{ xxs: 0, xs: 0, s: 0, sm: 1 }}
+			>
 				<Typography variant='titleDialog' color='primary.700'>
 					UVA Radiation:
 				</Typography>
@@ -147,7 +156,16 @@ export default function ShowDepartamentData({ departmentData, name }) {
 					{uvaRadiation} W/m2
 				</Typography>
 			</Grid>
-			<Grid item xxs={12} xs={12} s={12} sm={6} md={4} sx={{ gridDataStyle }}>
+			<Grid
+				item
+				xxs={12}
+				xs={12}
+				s={12}
+				sm={6}
+				md={4}
+				sx={{ gridDataStyle }}
+				mb={{ xxs: 0, xs: 0, s: 0, sm: 1 }}
+			>
 				<Typography variant='titleDialog' color='primary.700'>
 					Radiation:
 				</Typography>
@@ -159,7 +177,16 @@ export default function ShowDepartamentData({ departmentData, name }) {
 					{radiation} W/m2
 				</Typography>
 			</Grid>
-			<Grid item xxs={12} xs={12} s={12} sm={12} md={4} sx={{ gridDataStyle }}>
+			<Grid
+				item
+				xxs={12}
+				xs={12}
+				s={12}
+				sm={12}
+				md={4}
+				sx={{ gridDataStyle }}
+				mb={{ xxs: 0, xs: 0, s: 0, sm: 1 }}
+			>
 				<Typography variant='titleDialog' color='primary.700'>
 					Panel Angle:
 				</Typography>
