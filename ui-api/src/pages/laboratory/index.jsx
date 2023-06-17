@@ -157,13 +157,14 @@ export default function Laboratory() {
 	const [isMobile, setIsMobile] = useState(false);
 
 	useEffect(() => {
-		checkAccess();
 		handleResize();
 		window.addEventListener('resize', handleResize);
 	}, []);
 
 	useEffect(() => {
+		checkAccess();
 		connectMQTT();
+		connectCameras();
 		const socket = io('ws://localhost:4000');
 		socket.on('esp32', (...args) => {
 			console.log(args);
@@ -175,6 +176,10 @@ export default function Laboratory() {
 
 	const connectMQTT = async () => {
 		await fetch(`/api/mqtt/connect`);
+	};
+
+	const connectCameras = async () => {
+		await fetch(`/api/camera`);
 	};
 
 	const checkAccess = () => {

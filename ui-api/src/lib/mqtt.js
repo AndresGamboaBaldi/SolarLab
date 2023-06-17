@@ -9,7 +9,6 @@ const connectMqtt = () => {
 		clientId: 'SolarLab',
 	});
 	client.on('connect', function () {
-		console.log('MQTT Broker Connected');
 		mqttClient.subscribe('solarlab/server');
 	});
 	client.on('message', function (topic, message) {

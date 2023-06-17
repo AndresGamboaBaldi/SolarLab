@@ -9,11 +9,6 @@ const connectSocket = () => {
 		},
 	});
 	io.listen(4000);
-	io.on('connect', async (socket) => {
-		socket.on('disconnect', (reason) => {
-			console.log('Socket Client Disconnected');
-		});
-	});
 
 	return io;
 };
