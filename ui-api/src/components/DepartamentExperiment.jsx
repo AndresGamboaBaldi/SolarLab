@@ -20,6 +20,15 @@ export default function DepartamentExperiment({
 	setSyncPanels,
 }) {
 	const [angle, setAngle] = useState(0);
+	const [selectedAngle, setSelectedAngle] = useState(
+		departmentData.map((department) => {
+			if (department.name === name) {
+				return department.angle;
+			} else {
+				return 0;
+			}
+		})
+	);
 	const [voltage, setVoltage] = useState(0);
 	const [current, setCurrent] = useState(0);
 	const [power, setPower] = useState(100);
@@ -50,9 +59,12 @@ export default function DepartamentExperiment({
 			if (department.departmentName === name) {
 				setAngle(department.panelangle);
 				setCurrent(department.current);
+				setPower(department.power);
+				setUvaRadiation(department.uvaRadiation);
 				setVoltage(department.voltage);
 				setRadiation(department.radiation);
 				setEfficiencyTest(department.efficiencyTest);
+				setSelectedAngle(department.panelangle);
 			}
 		});
 		setIsPrivate(
@@ -149,7 +161,7 @@ export default function DepartamentExperiment({
 										verticalAlign: 'middle',
 									}}
 								>
-									Panel Angle:
+									Current Angle:
 								</Typography>
 								<Typography
 									variant='titleDepartment'
@@ -168,9 +180,9 @@ export default function DepartamentExperiment({
 										<Box width='70%'>
 											<Slider
 												size='medium'
-												value={angle}
+												value={selectedAngle}
 												valueLabelDisplay='auto'
-												onChange={(_, value) => setAngle(value)}
+												onChange={(_, value) => setSelectedAngle(value)}
 												max={180}
 											/>
 										</Box>

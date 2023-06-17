@@ -44,6 +44,8 @@ export default function ShowDepartamentData({ departmentData, name }) {
 				setAngle(department.panelangle);
 				setCurrent(department.current);
 				setVoltage(department.voltage);
+				setPower(department.power);
+				setUvaRadiation(department.uvaRadiation);
 				setRadiation(department.radiation);
 				setDate(department.experimentDate);
 				setTime(department.experimentTime);

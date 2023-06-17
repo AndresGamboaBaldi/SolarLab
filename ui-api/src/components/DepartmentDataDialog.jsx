@@ -19,6 +19,8 @@ export default function DepartmentDataDialog({ departmentData, name }) {
 				setAngle(department.panelangle);
 				setCurrent(department.current);
 				setVoltage(department.voltage);
+				setPower(department.power);
+				setUvaRadiation(department.uvaRadiation);
 				setRadiation(department.radiation);
 			}
 		});

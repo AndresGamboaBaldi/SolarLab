@@ -71,6 +71,8 @@ model DepartmentLab {
   panelangle     Int
   current        Float
   voltage        Float
+  power          Float
+  uvaRadiation   Float
   radiation      Float
   experiment     Experiment?  @relation(fields: [experimentId], references: [id], onDelete: Cascade)
   experimentId   Int?
