@@ -56,16 +56,16 @@ export default function ShowDepartamentData({ departmentData, name }) {
 	return (
 		<Grid
 			container
-			rowSpacing={{ xxs: 1, xs: 2, s: 3, sm: 3 }}
+			rowSpacing={{ xxs: 1, xs: 1, s: 2, sm: 2 }}
 			columnSpacing={2}
 		>
-			<Grid item xxs={12} xs={12} my={{ xxs: 1, xs: 1, sm: 1 }}>
-				<Typography variant='header2' color='blacky.main'>
+			<Grid item xxs={12} xs={12} my={2}>
+				<Typography variant='header12' color='blacky.main'>
 					{name}
 				</Typography>
 			</Grid>
 
-			<Grid item xxs={4} xs={4} s={4}>
+			<Grid item xxs={4} xs={4} s={4} mb={1}>
 				<Box sx={progressBarStyle}>
 					<CircularProgressbar
 						value={voltage}
@@ -89,7 +89,13 @@ export default function ShowDepartamentData({ departmentData, name }) {
 					Voltage
 				</Typography>
 			</Grid>
-			<Grid item xxs={4} xs={4} s={4}>
+			<Grid
+				item
+				xxs={4}
+				xs={4}
+				s={4}
+				mb={{ xxs: 2, xs: 2, s: 1, sm: 1, md: 1 }}
+			>
 				<Box sx={progressBarStyle}>
 					<CircularProgressbar
 						value={current}
@@ -187,7 +193,7 @@ export default function ShowDepartamentData({ departmentData, name }) {
 				sm={12}
 				md={4}
 				sx={{ gridDataStyle }}
-				mb={{ xxs: 0, xs: 0, s: 0, sm: 1 }}
+				mb={1}
 			>
 				<Typography variant='titleDialog' color='primary.700'>
 					Panel Angle:

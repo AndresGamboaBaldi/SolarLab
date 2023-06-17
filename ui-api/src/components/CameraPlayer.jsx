@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { Box } from '@mui/material';
+import { toast } from 'react-toastify';
 export default function StreamPlayer({ name }) {
 	let player;
 
 	const handlerPlayer = () => {
 		if (name === 'Cochabamba') {
 			const { JSMpeg } = require('../scripts/jsmpeg.min.js');
-			player = new JSMpeg.Player(`ws://localhost:8888`, {
+			player = new JSMpeg.Player(`ws://192.168.124.84:8888`, {
 				canvas: streamRef.current,
 			});
 		} else if (name === 'Santa Cruz') {
 			const { JSMpeg } = require('../scripts/jsmpeg.min.js');
-			player = new JSMpeg.Player(`ws://localhost:9999`, {
+			player = new JSMpeg.Player(`ws://192.168.124.84:9999`, {
 				canvas: streamRef.current,
 			});
 		} else {

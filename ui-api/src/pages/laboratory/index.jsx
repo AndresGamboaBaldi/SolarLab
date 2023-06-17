@@ -25,6 +25,24 @@ import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import { io } from 'socket.io-client';
 
+const checkBoxStyle = {
+	color: 'primary.700',
+	'& .MuiSvgIcon-root': {
+		fontSize: { xxs: '24px', xs: '30px', sm: '32px' },
+	},
+};
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+
+const MenuProps = {
+	PaperProps: {
+		style: {
+			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+			width: 250,
+		},
+	},
+};
+
 const testLpz = [
 	{
 		voltage: 1,
@@ -95,7 +113,7 @@ const testCbba = [
 	},
 ];
 
-const departmentData = [
+const initialData = [
 	{
 		departmentName: 'Cochabamba',
 		voltage: 12,
@@ -130,37 +148,57 @@ const departmentData = [
 
 export default function Laboratory() {
 	const router = useRouter();
-	const checkBoxStyle = {
-		color: 'primary.700',
-		'& .MuiSvgIcon-root': {
-			fontSize: { xxs: '24px', xs: '30px', sm: '32px' },
-		},
-	};
-	const ITEM_HEIGHT = 48;
-	const ITEM_PADDING_TOP = 8;
-
-	const MenuProps = {
-		PaperProps: {
-			style: {
-				maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-				width: 250,
-			},
-		},
-	};
-
 	const { data: session, status } = useSession();
-
 	const [openSignIn, setOpenSignIn] = useState(false);
 	const [openSignup, setOpenSignUp] = useState(false);
-
 	const [openSaveExperiment, setOpenSaveExperiment] = useState(false);
 	const [canAccess, setCanAccess] = useState(false);
 	const [syncPanels, setSyncPanels] = useState(true);
+	const [departmentData, setDepartmentData] = useState(initialData);
 
 	const [selectedCities, setSelectedCities] = React.useState(['Cochabamba']);
 	const cities = ['Cochabamba', 'La Paz', 'Santa Cruz'];
 
 	const [isMobile, setIsMobile] = useState(false);
+
+	useEffect(() => {
+		const isTesting = true;
+		const socket = io('ws://192.168.124.84:4000');
+		socket.on('esp32', (...args) => {
+			const newData = departmentData.map((department) => {
+				if (department.departmentName === 'Cochabamba') {
+					if (isTesting) {
+						return {
+							...department,
+							voltage: 32,
+							current: 10,
+							power: 320,
+							uvaRadiation: 350,
+							radiation: 50,
+							panelangle: 65,
+							efficiencyTest: testLpz,
+						};
+					} else {
+						return {
+							...department,
+							voltage: 21,
+							current: 7,
+							power: 147,
+							uvaRadiation: 150,
+							radiation: 75,
+							panelangle: 55,
+						};
+					}
+				} else {
+					return department;
+				}
+			});
+			setDepartmentData(newData);
+		});
+		return () => {
+			socket.disconnect();
+		};
+	}, [departmentData]);
 
 	useEffect(() => {
 		handleResize();
@@ -171,13 +209,6 @@ export default function Laboratory() {
 		checkAccess();
 		connectMQTT();
 		connectCameras();
-		const socket = io('ws://localhost:4000');
-		socket.on('esp32', (...args) => {
-			console.log(args);
-		});
-		return () => {
-			socket.disconnect();
-		};
 	}, []);
 
 	const connectMQTT = async () => {
@@ -445,7 +476,7 @@ export default function Laboratory() {
 									bgcolor: 'primary.700',
 									mr: { xxs: 1, xs: 1, s: 2, sm: 3 },
 								}}
-								onClick={() => setOpenSaveExperiment(true)}
+								onClick={handleOpenSaveExperiment}
 							>
 								<Typography
 									color='white.main'

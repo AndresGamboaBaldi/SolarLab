@@ -80,6 +80,7 @@ export default function TeacherExperiments() {
 				setCourseStudents(answer.courses[0].students);
 				if (answer.courses[0].students.length > 0) {
 					setSelectedStudentName(answer.courses[0].students[0].user.name);
+					setSelectedStudentEmail(answer.courses[0].students[0].user.email);
 					setExperiment(answer.courses[0].students[0].experiments[0]);
 				}
 			}

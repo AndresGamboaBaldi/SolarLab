@@ -20,15 +20,7 @@ export default function DepartamentExperiment({
 	setSyncPanels,
 }) {
 	const [angle, setAngle] = useState(0);
-	const [selectedAngle, setSelectedAngle] = useState(
-		departmentData.map((department) => {
-			if (department.name === name) {
-				return department.angle;
-			} else {
-				return 0;
-			}
-		})
-	);
+	const [selectedAngle, setSelectedAngle] = useState(0);
 	const [voltage, setVoltage] = useState(0);
 	const [current, setCurrent] = useState(0);
 	const [power, setPower] = useState(100);
@@ -70,7 +62,7 @@ export default function DepartamentExperiment({
 		setIsPrivate(
 			JSON.parse(window.localStorage.getItem('SESSION_DATA')).isPrivate
 		);
-	}, []);
+	}, [departmentData]);
 
 	const handleChange = (event) => {
 		setSyncPanels(event.target.checked);
@@ -190,7 +182,7 @@ export default function DepartamentExperiment({
 									<Grid
 										item
 										sx={{ display: 'flex' }}
-										mb={{ xxs: 0, xs: 0, s: 0, sm: 1, md: 1 }}
+										mb={1}
 										justifyContent='center'
 									>
 										<FormControlLabel
@@ -202,7 +194,7 @@ export default function DepartamentExperiment({
 												/>
 											}
 											label={
-												<Typography variant='header3'>
+												<Typography variant='titleDepartment'>
 													Sync all Panels
 												</Typography>
 											}

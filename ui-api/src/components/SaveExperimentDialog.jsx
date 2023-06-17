@@ -30,9 +30,14 @@ export default function SaveExperimentDialog({
 
 	const [departmentsToSave, setDepartmentsToSave] = useState([]);
 	useEffect(() => {
-		const datetime = new Date().toLocaleString();
-		setDate(datetime.split(',')[0]);
-		setTime(datetime.split(',')[1].split(' ')[1]);
+		const date = new Date().toLocaleString(navigator.language);
+		const time = new Date().toLocaleString(navigator.language, {
+			hour: '2-digit',
+			minute: '2-digit',
+			hour12: false,
+		});
+		setDate(date.split(',')[0]);
+		setTime(time);
 		setDepartmentsToSave(
 			departmentData.filter((department) =>
 				selectedCities.includes(department.departmentName)

@@ -5,7 +5,7 @@ import ExperimentActions from '../components/ExperimentActions';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 
-export default function SaveExperimentDialog({
+export default function ExperimentList({
 	open,
 	handleClose,
 	email,
@@ -71,7 +71,11 @@ export default function SaveExperimentDialog({
 			type: 'actions',
 			width: 200,
 			renderCell: (params) => (
-				<ExperimentActions params={params} handleClose={handleClose} />
+				<ExperimentActions
+					params={params}
+					handleClose={handleClose}
+					setExperiment={setExperiment}
+				/>
 			),
 		},
 	];
@@ -273,6 +277,7 @@ export default function SaveExperimentDialog({
 					direction='row'
 					justifyContent='end'
 					mt={{ xxs: 2, xs: 3, sm: 4 }}
+					mb={1}
 				>
 					<Button
 						color='white'

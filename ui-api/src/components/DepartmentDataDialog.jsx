@@ -26,7 +26,7 @@ export default function DepartmentDataDialog({ departmentData, name }) {
 		});
 	}, []);
 	return (
-		<Grid container columnSpacing={1}>
+		<Grid container columnSpacing={1} my={1}>
 			<Grid item xxs={12} xs={12}>
 				<Typography variant='titleDialog' color='secondary.main'>
 					{name}
