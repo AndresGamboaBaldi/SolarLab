@@ -8,12 +8,12 @@ export default function StreamPlayer({ name }) {
 	const handlerPlayer = () => {
 		if (name === 'Cochabamba') {
 			const { JSMpeg } = require('../scripts/jsmpeg.min.js');
-			player = new JSMpeg.Player(`ws://192.168.124.84:8888`, {
+			player = new JSMpeg.Player(`ws://192.168.100.7:8888`, {
 				canvas: streamRef.current,
 			});
 		} else if (name === 'Santa Cruz') {
 			const { JSMpeg } = require('../scripts/jsmpeg.min.js');
-			player = new JSMpeg.Player(`ws://192.168.124.84:9999`, {
+			player = new JSMpeg.Player(`ws://192.168.100.7:9999`, {
 				canvas: streamRef.current,
 			});
 		} else {

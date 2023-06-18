@@ -162,31 +162,42 @@ export default function Laboratory() {
 	const [isMobile, setIsMobile] = useState(false);
 
 	useEffect(() => {
-		const isTesting = true;
-		const socket = io('ws://192.168.124.84:4000');
-		socket.on('esp32', (...args) => {
+		const socket = io('ws://192.168.100.7:4000');
+		socket.on('esp32', (...msg) => {
+			const JSONMessage = JSON.parse(msg);
+			const {
+				departmentName,
+				voltage,
+				current,
+				power,
+				uvaRadiation,
+				radiation,
+				panelangle,
+				efficiencyTest,
+				isTesting,
+			} = JSONMessage;
 			const newData = departmentData.map((department) => {
-				if (department.departmentName === 'Cochabamba') {
+				if (department.departmentName === departmentName) {
 					if (isTesting) {
 						return {
 							...department,
-							voltage: 32,
-							current: 10,
-							power: 320,
-							uvaRadiation: 350,
-							radiation: 50,
-							panelangle: 65,
-							efficiencyTest: testLpz,
+							voltage: voltage,
+							current: current,
+							power: power,
+							uvaRadiation: uvaRadiation,
+							radiation: radiation,
+							panelangle: panelangle,
+							efficiencyTest: efficiencyTest,
 						};
 					} else {
 						return {
 							...department,
-							voltage: 21,
-							current: 7,
-							power: 147,
-							uvaRadiation: 150,
-							radiation: 75,
-							panelangle: 55,
+							voltage: voltage,
+							current: current,
+							power: power,
+							uvaRadiation: uvaRadiation,
+							radiation: radiation,
+							panelangle: panelangle,
 						};
 					}
 				} else {

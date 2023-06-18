@@ -191,6 +191,11 @@ export default function DepartamentExperiment({
 													checked={syncPanels}
 													onChange={handleChange}
 													color='secondary'
+													sx={{
+														'& .MuiSvgIcon-root': {
+															fontSize: { xxs: '24px', xs: '30px', sm: '32px' },
+														},
+													}}
 												/>
 											}
 											label={

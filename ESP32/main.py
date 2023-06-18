@@ -4,6 +4,7 @@ OFF = 0
 UP = 1
 DOWN = 2
 state = OFF
+msg=""
 
 relayPowerA = machine.Pin(21, machine.Pin.OUT)
 relayPowerB= machine.Pin(22, machine.Pin.OUT)
@@ -15,53 +16,6 @@ relayPowerA.value(1)
 relayPowerB.value(1)
 relayMoveA.value(1)
 relayMoveB.value(1)
-
-def setState(newState):
-  global state, oled
-  state = newState
-  oled.fill(0)
-  if (state == OFF):
-    oled.text('MOTOR OFF', 0, 0)
-    oled.text('Press the Button', 0, 20)
-    oled.text('to Move the', 0, 30)
-    oled.text('Motor UP', 0, 40)
-  
-  elif (state == UP):
-    oled.text('Motor Moving UP', 0, 0)
-    oled.text('Press the Button', 0, 20)
-    oled.text('to Move the', 0, 30)
-    oled.text('Motor DOWN', 0, 40)
-
-  elif (state == DOWN):
-    oled.text('Motor Moving DOWN', 0, 0)
-    oled.text('Press the Button', 0, 20)
-    oled.text('to Move TURN OFF', 0, 30)
-    oled.text('the Motor', 0, 40)
-
-  oled.show()
-
-"""def get_datalogger_angle():
-    # TCP Slave setup
-    slave_tcp_port = 502            # port to listen to
-    slave_addr = 0                 # bus address of client
-    slave_ip = '192.168.100.7' 
-    try:
-      host = ModbusTCPMaster(
-          slave_ip=slave_ip,
-          slave_port=slave_tcp_port,
-          timeout=1)   
-      hreg_address = 0
-      register_qty = 1
-      register_value = host.read_holding_registers(
-        slave_addr=slave_addr,
-        starting_addr=hreg_address,
-        register_qty=register_qty,
-        signed=False)
-      return register_value[0]
-    except Exception:
-      return "-1"
-
-      """
 
 def moveUp():
   relayPowerA.value(1)
@@ -98,58 +52,122 @@ def messageAngle(currentAngle, newAngle):
   oled.text(str(newAngle), 0, 50)
   oled.show()
 
-def sub_cb(topic, msg):
+def setState(newState):
+  global state, oled
+  state = newState
+  oled.fill(0)
+  if (state == OFF):
+    oled.text('MOTOR OFF', 0, 0)
+    oled.text('Press the Button', 0, 20)
+    oled.text('to Move the', 0, 30)
+    oled.text('Motor UP', 0, 40)
+  
+  elif (state == UP):
+    oled.text('Motor Moving UP', 0, 0)
+    oled.text('Press the Button', 0, 20)
+    oled.text('to Move the', 0, 30)
+    oled.text('Motor DOWN', 0, 40)
+
+  elif (state == DOWN):
+    oled.text('Motor Moving DOWN', 0, 0)
+    oled.text('Press the Button', 0, 20)
+    oled.text('to Move TURN OFF', 0, 30)
+    oled.text('the Motor', 0, 40)
+
+  oled.show()
+
+def get_datalogger_angle():
+  # TCP Slave setup
+  slave_tcp_port = 9955            # port to listen to
+  slave_addr = 0                 # bus address of client
+  slave_ip = 'research.upb.edu' 
   try:
-    received_msg = json.loads(msg)
+    host = ModbusTCPMaster(
+        slave_ip=slave_ip,
+        slave_port=slave_tcp_port,
+        timeout=2)   
+    hreg_address = 0
+    register_qty = 18
+    register_value = host.read_holding_registers(
+      slave_addr=slave_addr,
+      starting_addr=hreg_address,
+      register_qty=register_qty,
+      signed=False)
+    return register_value[0]
   except Exception:
-    pass
+    return "-1"
+
+def sendData():
+  global topic_pub, client
+  msg = {
+  "departmentName": "Cochabamba",
+  "voltage": random.randrange(10,21),
+  "current": random.randrange(0,9),
+  "power": random.randrange(10,40,5),
+  "uvaRadiation": random.randrange(80,250,20),
+  "radiation": random.randrange(80,250,20),
+  "panelangle": random.randrange(0,180,10),
+  "efficiencyTest": [],
+  "isTesting": False
+  }
+  message = json.dumps(msg)
+  client.publish(topic_pub, str(message))
+
+
+def sub_cb(topic, msg):
+  if(topic == b'test/upb'):
+    sendData()
   else:
-    action = received_msg['action']
-    print(action)
-    if topic == b'test/upb' and action == 'UP':
-      moveUp()
-      setState(UP) 
-    elif topic == b'test/upb' and action == 'DOWN':
-      moveDown()
-      setState(DOWN)  
-    elif topic == b'test/upb' and action == 'OFF':
-      turnOff()
-      setState(OFF)
-    """elif topic == b'test/upb' and action == "ANGLE":
-      newAngle = received_msg['angle']
-      currentAngle = get_datalogger_angle() 
-      print("New Requested Angle: ", newAngle)
-      print('Current Panel Angle: {}'.format(currentAngle))
-      messageAngle(currentAngle, newAngle)
-      movingUp = False
-      movingDown = False
-      while abs(int(newAngle) - int(currentAngle)) > 1:
-        print(abs(int(newAngle) - int(currentAngle)))
-        if int(newAngle) > int(currentAngle):
-          movingDown = False
-          if(not movingUp):
-            moveUp()
-            movingUp = True
-        else:
-          movingUp = False
-          if(not movingDown):
-            moveDown()
-            movingDown = True
-        sleep(1)
+    try:
+      received_msg = json.loads(msg)
+    except Exception:
+      pass
+    else:
+      action = received_msg['action']
+      print(action)
+      if topic == topic_sub and action == 'UP' and state != UP:
+        moveUp()
+        setState(UP) 
+      elif topic == topic_sub and action == 'DOWN'and state != DOWN:
+        moveDown()
+        setState(DOWN)  
+      elif topic == topic_sub and action == 'OFF'and state != OFF:
+        turnOff()
+        setState(OFF)
+      elif topic == topic_sub and action == "ANGLE":
+        newAngle = received_msg['angle']
         currentAngle = get_datalogger_angle() 
-        print("Current: ", str(currentAngle))
-        print("New: ", str(newAngle))
+        print("New Requested Angle: ", newAngle)
+        print('Current Panel Angle: {}'.format(currentAngle))
         messageAngle(currentAngle, newAngle)
-      turnOff()"""
+        movingUp = False
+        movingDown = False
+        while abs(int(newAngle) - int(currentAngle)) > 1:
+          print(abs(int(newAngle) - int(currentAngle)))
+          if int(newAngle) > int(currentAngle):
+            movingDown = False
+            if(not movingUp):
+              moveUp()
+              movingUp = True
+          else:
+            movingUp = False
+            if(not movingDown):
+              moveDown()
+              movingDown = True
+          sleep(1)
+          currentAngle = get_datalogger_angle() 
+          print("Current: ", str(currentAngle))
+          print("New: ", str(newAngle))
+          messageAngle(currentAngle, newAngle)
+        turnOff()
 
       
-
-
 def connect_and_subscribe():
   global client_id, mqtt_server, topic_sub
   client.set_callback(sub_cb)
   client.connect()
   client.subscribe(topic_sub)
+  client.subscribe(b'test/upb')
   print('Connected to %s MQTT broker, subscribed to %s topic' % (mqtt_server, topic_sub))
   #Display messages
   oled.fill(0)
@@ -159,9 +177,7 @@ def connect_and_subscribe():
   oled.text('to Move the', 0, 30)
   oled.text('Motor UP', 0, 40)
   oled.show()
-
   return client
-
 
 def restart_and_reconnect():
   print('Failed to connect to MQTT broker. Restarting...')
