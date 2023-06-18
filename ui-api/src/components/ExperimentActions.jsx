@@ -43,7 +43,7 @@ export default function ExperimentActions({
 			<Grid container>
 				<Grid
 					item
-					mr={{ xxs: 1, xs: 2, s: 2, sm: 4 }}
+					mr={{ xxs: 0, xs: 0, s: 1, sm: 4 }}
 					sx={{
 						display: 'flex',
 						alignItems: 'center',
@@ -57,11 +57,11 @@ export default function ExperimentActions({
 					>
 						<Launch
 							sx={{
-								fontSize: { xxs: '20px', xs: '24px', sm: '30px' },
+								fontSize: { xxs: '16px', xs: '20px', sm: '30px' },
 							}}
 						/>
 					</IconButton>
-					<Typography>Open</Typography>
+					<Typography color='blacky.main'>Open</Typography>
 				</Grid>
 				<Grid
 					onClick={deleteExperiment}
@@ -82,7 +82,7 @@ export default function ExperimentActions({
 							}}
 						/>
 					</IconButton>
-					<Typography>Delete</Typography>
+					<Typography color='blacky.main'>Delete</Typography>
 				</Grid>
 			</Grid>
 		</Box>

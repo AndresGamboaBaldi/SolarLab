@@ -31,13 +31,16 @@ export default function SignInDialog({ open, handleClose, onClickSignup }) {
 						toast.success('Welcome Back!');
 						handleClose();
 					} else {
+						setPassword('');
 						toast.error('Incorrect Email or Password, Verify and Retry');
 					}
 				})
 				.catch((error) => {
+					setPassword('');
 					toast.error('Something Went Wrong, Please Retry');
 				});
 		} else {
+			setPassword('');
 			toast.error('Incorrect Email or Password, Verify and Retry');
 		}
 	};

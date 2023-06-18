@@ -26,17 +26,11 @@ export default function ExperimentList({
 		{
 			field: 'modified',
 			headerName: 'Modified',
-			width: 130,
+			width: 110,
 			valueFormatter: (params) =>
 				new Date(params?.value).toLocaleDateString('en-US'),
 		},
 
-		{
-			field: 'studentEmail',
-			headerName: 'Owner',
-			width: 200,
-			valueFormatter: (params) => params?.value.split('@')[0],
-		},
 		{
 			field: 'actions',
 			headerName: '',
@@ -62,14 +56,14 @@ export default function ExperimentList({
 		{
 			field: 'experimentDate',
 			headerName: 'Date',
-			width: 90,
+			width: 95,
 		},
 
 		{
 			field: 'actions',
 			headerName: '',
 			type: 'actions',
-			width: 200,
+			width: 185,
 			renderCell: (params) => (
 				<ExperimentActions
 					params={params}
@@ -143,7 +137,7 @@ export default function ExperimentList({
 				}}
 			>
 				<Grid container>
-					<Grid item xxs={12} xs={12} mb={{ xxs: 1, xs: 2, s: 3, sm: 5 }}>
+					<Grid item xxs={12} xs={12} mb={{ xxs: 1, xs: 2, s: 2, sm: 4 }}>
 						<Typography variant='header1' color='secondary'>
 							Saved{' '}
 						</Typography>
@@ -155,6 +149,7 @@ export default function ExperimentList({
 				<Box height='100%'>
 					{isMobile ? (
 						<DataGrid
+							rowHeight={40}
 							disableColumnSelector={true}
 							columnVisibilityModel={{
 								id: false,
@@ -176,18 +171,24 @@ export default function ExperimentList({
 							sx={{
 								display: 'flex',
 								border: 'none',
-								'& .MuiDataGrid-cell': {
+								'& .MuiDataGrid-cellContent': {
 									color: 'blacky.main',
 									fontFamily: 'Lato',
-									fontSize: '0.7rem',
+									fontSize: '0.8rem',
 									'@media (min-width:306px)': {
-										fontSize: '0.7rem',
+										fontSize: '0.8rem',
 									},
 									'@media (min-width:412px)': {
 										fontSize: '0.8rem',
 									},
 									'@media (min-width:512px)': {
 										fontSize: '0.9rem',
+									},
+									'@media (min-width:644px)': {
+										fontSize: '1.0rem',
+									},
+									'@media (min-width:900px)': {
+										fontSize: '1.1rem',
 									},
 								},
 								'& .MuiDataGrid-columnHeader': {
@@ -213,6 +214,7 @@ export default function ExperimentList({
 						/>
 					) : (
 						<DataGrid
+							rowHeight={40}
 							disableColumnSelector={true}
 							columnVisibilityModel={{
 								id: false,
@@ -236,10 +238,19 @@ export default function ExperimentList({
 
 								boxShadow: 0,
 								border: 'none',
-								'& .MuiDataGrid-cell': {
+								'& .MuiDataGrid-cellContent': {
 									color: 'blacky.main',
 									fontFamily: 'Lato',
-									fontSize: '0.7rem',
+									fontSize: '0.8rem',
+									'@media (min-width:306px)': {
+										fontSize: '0.8rem',
+									},
+									'@media (min-width:412px)': {
+										fontSize: '0.8rem',
+									},
+									'@media (min-width:512px)': {
+										fontSize: '0.9rem',
+									},
 									'@media (min-width:644px)': {
 										fontSize: '1.0rem',
 									},
@@ -276,7 +287,7 @@ export default function ExperimentList({
 				<Stack
 					direction='row'
 					justifyContent='end'
-					mt={{ xxs: 2, xs: 3, sm: 4 }}
+					mt={{ xxs: 1, xs: 1, sm: 3 }}
 					mb={1}
 				>
 					<Button

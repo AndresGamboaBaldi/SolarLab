@@ -101,18 +101,18 @@ export default function CoursesDialog({ open, handleClose, user }) {
 		{
 			field: 'name',
 			headerName: 'Name',
-			width: 180,
+			minWidth: 185,
 		},
 		{
 			field: 'teacherId',
 			headerName: 'Teacher',
-			width: 180,
+			minWidth: 170,
 			valueGetter: (params) => params.row?.teacher?.user?.name,
 		},
 		{
 			field: 'actions',
 			headerName: 'Status',
-			width: 180,
+			minWidth: 120,
 			renderCell: (params) => {
 				var checkRequest;
 				studentRequests.forEach((request) => {
@@ -140,7 +140,9 @@ export default function CoursesDialog({ open, handleClose, user }) {
 												color: '#F6BD2B',
 											}}
 										/>
-										<Typography ml={1}>{checkRequest.status}</Typography>
+										<Typography color='blacky.main' ml={1}>
+											{checkRequest.status}
+										</Typography>
 									</Grid>
 								) : (
 									<Grid
@@ -157,7 +159,9 @@ export default function CoursesDialog({ open, handleClose, user }) {
 												color: '#DF2E21',
 											}}
 										/>
-										<Typography ml={1}>{checkRequest.status}</Typography>
+										<Typography color='blacky.main' ml={1}>
+											{checkRequest.status}
+										</Typography>
 									</Grid>
 								)}
 							</Grid>
@@ -189,7 +193,7 @@ export default function CoursesDialog({ open, handleClose, user }) {
 											}}
 										/>
 									</IconButton>
-									<Typography>Request To Join</Typography>
+									<Typography color='blacky.main'>Request To Join</Typography>
 								</Grid>
 							</Grid>
 						</Box>
@@ -204,12 +208,12 @@ export default function CoursesDialog({ open, handleClose, user }) {
 		{
 			field: 'name',
 			headerName: 'Name',
-			width: 220,
+			minWidth: 185,
 		},
 		{
 			field: 'teacherId',
 			headerName: 'Teacher',
-			width: 220,
+			minWidth: 170,
 			valueGetter: (params) => params.row?.teacher?.user?.name,
 		},
 	];
@@ -247,6 +251,7 @@ export default function CoursesDialog({ open, handleClose, user }) {
 					{studentCourses.length > 0 ? (
 						<Box height='80%' width='100%' mt={{ xxs: 1, xs: 1, s: 2, sm: 2 }}>
 							<DataGrid
+								rowHeight={40}
 								columnVisibilityModel={{
 									id: false,
 								}}
@@ -269,10 +274,19 @@ export default function CoursesDialog({ open, handleClose, user }) {
 
 									boxShadow: 0,
 									border: 'none',
-									'& .MuiDataGrid-cell': {
+									'& .MuiDataGrid-cellContent': {
 										color: 'blacky.main',
 										fontFamily: 'Lato',
-										fontSize: '1.0rem',
+										fontSize: '0.8rem',
+										'@media (min-width:306px)': {
+											fontSize: '0.8rem',
+										},
+										'@media (min-width:412px)': {
+											fontSize: '0.8rem',
+										},
+										'@media (min-width:512px)': {
+											fontSize: '0.9rem',
+										},
 										'@media (min-width:644px)': {
 											fontSize: '1.0rem',
 										},
@@ -287,7 +301,13 @@ export default function CoursesDialog({ open, handleClose, user }) {
 									'& .MuiDataGrid-columnHeaderTitle': {
 										fontFamily: 'Lato',
 										fontWeight: 700,
-										fontSize: '1.1rem',
+										fontSize: '0.7rem',
+										'@media (min-width:306px)': {
+											fontSize: '1.0rem',
+										},
+										'@media (min-width:412px)': {
+											fontSize: '1.1rem',
+										},
 										'@media (min-width:644px)': {
 											fontSize: '1.2rem',
 										},
@@ -311,12 +331,13 @@ export default function CoursesDialog({ open, handleClose, user }) {
 						</Typography>
 					)}
 				</Grid>
-				<Grid item xxs={12} xs={12}>
+				<Grid item xxs={12} xs={12} mt={1}>
 					<Typography variant='header2'>Available Courses:</Typography>
 				</Grid>
 				{availableCourses.length > 0 ? (
 					<Box height='80%' width='100%' mt={{ xxs: 1, xs: 1, s: 2, sm: 2 }}>
 						<DataGrid
+							rowHeight={40}
 							disableColumnSelector={true}
 							columnVisibilityModel={{
 								id: false,
@@ -340,10 +361,19 @@ export default function CoursesDialog({ open, handleClose, user }) {
 
 								boxShadow: 0,
 								border: 'none',
-								'& .MuiDataGrid-cell': {
+								'& .MuiDataGrid-cellContent': {
 									color: 'blacky.main',
 									fontFamily: 'Lato',
-									fontSize: '1.0rem',
+									fontSize: '0.8rem',
+									'@media (min-width:306px)': {
+										fontSize: '0.8rem',
+									},
+									'@media (min-width:412px)': {
+										fontSize: '0.8rem',
+									},
+									'@media (min-width:512px)': {
+										fontSize: '0.9rem',
+									},
 									'@media (min-width:644px)': {
 										fontSize: '1.0rem',
 									},
@@ -358,7 +388,13 @@ export default function CoursesDialog({ open, handleClose, user }) {
 								'& .MuiDataGrid-columnHeaderTitle': {
 									fontFamily: 'Lato',
 									fontWeight: 700,
-									fontSize: '1.1rem',
+									fontSize: '0.7rem',
+									'@media (min-width:306px)': {
+										fontSize: '1.0rem',
+									},
+									'@media (min-width:412px)': {
+										fontSize: '1.1rem',
+									},
 									'@media (min-width:644px)': {
 										fontSize: '1.2rem',
 									},

@@ -172,20 +172,20 @@ export default function Courses() {
 		{
 			field: 'code',
 			headerName: 'Code',
-			width: 80,
+			width: 70,
 			valueGetter: (params) => params.row?.user?.code,
 		},
 		{
 			field: 'name',
 			headerName: 'Name',
-			width: 220,
+			width: 200,
 			valueGetter: (params) => params.row?.user?.name,
 		},
 
 		{
 			field: 'experiments',
 			headerName: 'Experiments',
-			width: 140,
+			width: 130,
 			valueGetter: (params) => {
 				return params.row.experiments.length;
 			},
@@ -217,7 +217,7 @@ export default function Courses() {
 						<Grid container>
 							<Grid
 								item
-								mr={{ xxs: 1, xs: 2, s: 2, sm: 4 }}
+								mr={{ xxs: 1, xs: 1, s: 1, sm: 4 }}
 								sx={{
 									display: 'flex',
 									alignItems: 'center',
@@ -231,11 +231,11 @@ export default function Courses() {
 								>
 									<CheckIcon
 										sx={{
-											fontSize: { xxs: '20px', xs: '24px', sm: '30px' },
+											fontSize: { xxs: '16px', xs: '20px', sm: '30px' },
 										}}
 									/>
 								</IconButton>
-								<Typography>Aprove</Typography>
+								<Typography color='blacky.main'>Aprove</Typography>
 							</Grid>
 							<Grid
 								onClick={() => {
@@ -254,11 +254,11 @@ export default function Courses() {
 								>
 									<BlockIcon
 										sx={{
-											fontSize: { xxs: '20px', xs: '24px', sm: '30px' },
+											fontSize: { xxs: '16px', xs: '20px', sm: '30px' },
 										}}
 									/>
 								</IconButton>
-								<Typography>Deny</Typography>
+								<Typography color='blacky.main'>Deny</Typography>
 							</Grid>
 						</Grid>
 					</Box>
@@ -349,7 +349,6 @@ export default function Courses() {
 									textTransform: 'none',
 									bgcolor: 'primary.700',
 									ml: { xxs: 0, xs: 0, s: 0, sm: 3 },
-									py: { xxs: 0, xs: 0, s: 0, sm: 1 },
 								}}
 								onClick={() => setOpenCreateCourseDialog(true)}
 							>
@@ -380,7 +379,7 @@ export default function Courses() {
 						>
 							<Grid
 								container
-								rowSpacing={2}
+								rowSpacing={{ xxs: 1, xs: 1, s: 1, sm: 2, md: 2 }}
 								columnSpacing={{ sm: 0, md: 4, lg: 5, xl: 6 }}
 							>
 								<Grid
@@ -430,6 +429,7 @@ export default function Courses() {
 									{courseStudents.length > 0 ? (
 										<Box height='100%' width='100%'>
 											<DataGrid
+												rowHeight={40}
 												columnVisibilityModel={{
 													id: false,
 												}}
@@ -453,10 +453,19 @@ export default function Courses() {
 
 													boxShadow: 0,
 													border: 'none',
-													'& .MuiDataGrid-cell': {
+													'& .MuiDataGrid-cellContent': {
 														color: 'blacky.main',
 														fontFamily: 'Lato',
-														fontSize: '1.0rem',
+														fontSize: '0.8rem',
+														'@media (min-width:306px)': {
+															fontSize: '0.8rem',
+														},
+														'@media (min-width:412px)': {
+															fontSize: '0.8rem',
+														},
+														'@media (min-width:512px)': {
+															fontSize: '0.9rem',
+														},
 														'@media (min-width:644px)': {
 															fontSize: '1.0rem',
 														},
@@ -471,7 +480,13 @@ export default function Courses() {
 													'& .MuiDataGrid-columnHeaderTitle': {
 														fontFamily: 'Lato',
 														fontWeight: 700,
-														fontSize: '1.1rem',
+														fontSize: '0.7rem',
+														'@media (min-width:306px)': {
+															fontSize: '1.0rem',
+														},
+														'@media (min-width:412px)': {
+															fontSize: '1.1rem',
+														},
 														'@media (min-width:644px)': {
 															fontSize: '1.2rem',
 														},
@@ -490,7 +505,11 @@ export default function Courses() {
 											/>
 										</Box>
 									) : (
-										<Grid container justify='center' rowSpacing={2}>
+										<Grid
+											container
+											justify='center'
+											rowSpacing={{ xxs: 1, xs: 1, s: 1, sm: 2, md: 2 }}
+										>
 											<Grid
 												item
 												xxs={12}
@@ -542,6 +561,7 @@ export default function Courses() {
 									{courseRequests.length > 0 ? (
 										<Box height='100%' width='100%'>
 											<DataGrid
+												rowHeight={40}
 												columnVisibilityModel={{
 													id: false,
 												}}
@@ -565,10 +585,19 @@ export default function Courses() {
 
 													boxShadow: 0,
 													border: 'none',
-													'& .MuiDataGrid-cell': {
+													'& .MuiDataGrid-cellContent': {
 														color: 'blacky.main',
 														fontFamily: 'Lato',
-														fontSize: '1.0rem',
+														fontSize: '0.8rem',
+														'@media (min-width:306px)': {
+															fontSize: '0.8rem',
+														},
+														'@media (min-width:412px)': {
+															fontSize: '0.8rem',
+														},
+														'@media (min-width:512px)': {
+															fontSize: '0.9rem',
+														},
 														'@media (min-width:644px)': {
 															fontSize: '1.0rem',
 														},
@@ -583,7 +612,13 @@ export default function Courses() {
 													'& .MuiDataGrid-columnHeaderTitle': {
 														fontFamily: 'Lato',
 														fontWeight: 700,
-														fontSize: '1.1rem',
+														fontSize: '0.7rem',
+														'@media (min-width:306px)': {
+															fontSize: '1.0rem',
+														},
+														'@media (min-width:412px)': {
+															fontSize: '1.1rem',
+														},
 														'@media (min-width:644px)': {
 															fontSize: '1.2rem',
 														},

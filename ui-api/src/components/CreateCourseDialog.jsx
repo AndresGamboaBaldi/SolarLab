@@ -6,7 +6,6 @@ import {
 	Typography,
 	Button,
 } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
