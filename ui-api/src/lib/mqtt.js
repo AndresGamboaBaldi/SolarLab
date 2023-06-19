@@ -5,7 +5,7 @@ const globalForMqtt = global;
 import socket from './socket';
 
 const connectMqtt = () => {
-	const client = mqtt.connect(`mqtt://${process.env.HOST}`, {
+	const client = mqtt.connect(`mqtt://${process.env.REACT_APP_HOST}`, {
 		clientId: 'SolarLab',
 	});
 	client.on('connect', function () {

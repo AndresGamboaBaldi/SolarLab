@@ -14,6 +14,7 @@ import {
 import React, { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
+import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
 export default function SignUpDialog({ open, handleClose, onClickSignIn }) {

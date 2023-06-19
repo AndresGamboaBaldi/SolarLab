@@ -14,7 +14,7 @@ export const authOptions = {
 				};
 
 				const response = await fetch(
-					`http://${process.env.HOST}:3000/api/login`,
+					`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/login`,
 					{
 						headers: {
 							'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ export const authOptions = {
 		async signIn({ account, profile }) {
 			if (account.provider == 'google') {
 				const response = await fetch(
-					`http://${process.env.HOST}:3000/api/users/exists`,
+					`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/users/exists`,
 					{
 						headers: {
 							'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export const authOptions = {
 						return true;
 					} else {
 						const response = await fetch(
-							`http://${process.env.HOST}:3000/api/google/create`,
+							`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/google/create`,
 							{
 								headers: {
 									'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
+import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 export default function Clock() {
 	const [time, setTime] = useState(

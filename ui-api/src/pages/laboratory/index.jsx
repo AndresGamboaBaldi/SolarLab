@@ -22,6 +22,7 @@ import { useRouter } from 'next/router';
 import SignInDialog from '../../components/SignInDialog';
 import SignUpDialog from '../../components/SignUpDialog';
 import { useSession } from 'next-auth/react';
+import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import { io } from 'socket.io-client';
 
@@ -162,7 +163,8 @@ export default function Laboratory() {
 	const [isMobile, setIsMobile] = useState(false);
 
 	useEffect(() => {
-		const socket = io('ws://192.168.100.7:4000');
+		//envvariable
+		const socket = io(`ws://192.168.124.82:4000`);
 		socket.on('esp32', (...msg) => {
 			const JSONMessage = JSON.parse(msg);
 			const {

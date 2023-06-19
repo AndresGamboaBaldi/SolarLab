@@ -10,6 +10,7 @@ import {
 import React, { useState, useEffect } from 'react';
 import DepartmentDataDialog from './DepartmentDataDialog';
 import { useSession } from 'next-auth/react';
+import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import LineChart from './LineChart';
 import { v4 as uuidv4 } from 'uuid';

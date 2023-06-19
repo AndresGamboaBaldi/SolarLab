@@ -18,6 +18,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { signOut } from 'next-auth/react';
 import SignUpDialog from './SignUpDialog';
 import UpdatePasswordDialog from './UpdatePasswordDialog';
+import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import CoursesDialog from './CourseDialog';

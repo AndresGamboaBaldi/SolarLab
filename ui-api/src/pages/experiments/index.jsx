@@ -1,4 +1,5 @@
 import { Box, Grid, Card, Typography, Stack, Button } from '@mui/material';
+import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import ExperimentsListDialog from '../../components/ExperimentsList';
 import React, { useState, useEffect } from 'react';

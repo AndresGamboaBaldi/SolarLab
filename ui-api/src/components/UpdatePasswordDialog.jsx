@@ -8,6 +8,7 @@ import {
 	Button,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import { useSession } from 'next-auth/react';
 

@@ -1,6 +1,7 @@
 import { Box, IconButton, Typography, Grid } from '@mui/material';
 import { Close, Launch } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 export default function ExperimentActions({
 	params,

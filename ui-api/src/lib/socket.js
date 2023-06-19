@@ -8,7 +8,7 @@ const connectSocket = () => {
 			origin: 'http://localhost:3000',
 		},
 	});
-	io.listen(4000);
+	io.listen(process.env.REACT_APP_WS_SERVER_PORT);
 
 	return io;
 };

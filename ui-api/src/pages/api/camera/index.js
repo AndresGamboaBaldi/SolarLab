@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 				const streamCbba = await new Stream({
 					name: 'SolarLabCameraCBBA',
 					streamUrl: process.env.CAMERACBBA,
-					wsPort: process.env.WSPORTCBBA,
+					wsPort: process.env.REACT_APP_WSPORTCBBA,
 					ffmpegOptions: {
 						'-f': 'mpegts', // output file format.
 						'-codec:v': 'mpeg1video', // video codec
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
 				const streamLpz = await new Stream({
 					name: 'SolarLabCameraLPZ',
 					streamUrl: process.env.CAMERALPZ,
-					wsPort: process.env.WSPORTLPZ,
+					wsPort: process.env.REACT_APP_WSPORTLPZ,
 					ffmpegOptions: {
 						'-f': 'mpegts', // output file format.
 						'-codec:v': 'mpeg1video', // video codec
@@ -57,7 +57,7 @@ export default async function handler(req, res) {
 				const streamScz = await new Stream({
 					name: 'SolarLabCameraSCZ',
 					streamUrl: process.env.CAMERASCZ,
-					wsPort: process.env.WSPORTSCZ,
+					wsPort: process.env.REACT_APP_WSPORTSCZ,
 					ffmpegOptions: {
 						'-f': 'mpegts', // output file format.
 						'-codec:v': 'mpeg1video', // video codec

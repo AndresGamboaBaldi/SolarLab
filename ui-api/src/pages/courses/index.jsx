@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import BlockIcon from '@mui/icons-material/Block';
+import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import CreateCourseDialog from '../../components/CreateCourseDialog';
 import React, { useState, useEffect } from 'react';

@@ -1,5 +1,6 @@
 import { SvgIcon, Typography, Button } from '@mui/material';
 import { signIn } from 'next-auth/react';
+import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 export default function GoogleButton() {
 	const handleGoogleAuth = async () => {

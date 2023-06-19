@@ -6,8 +6,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import { Lato } from 'next/font/google';
 import NavBar from '../components/NavBar';
 import React from 'react';
+import 'react-toastify/dist/ReactToastify.min.css';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const lato = Lato({
 	subsets: ['latin'],
@@ -40,4 +40,3 @@ export default function App({ Component, pageProps }) {
 		</>
 	);
 }
-

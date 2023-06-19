@@ -3,6 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import React, { useState, useEffect } from 'react';
 import ExperimentActions from '../components/ExperimentActions';
 import { useSession } from 'next-auth/react';
+import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
 export default function ExperimentList({

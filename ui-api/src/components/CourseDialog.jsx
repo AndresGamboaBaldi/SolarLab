@@ -11,6 +11,7 @@ import { Send } from '@mui/icons-material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import BlockIcon from '@mui/icons-material/Block';
@@ -414,7 +415,7 @@ export default function CoursesDialog({ open, handleClose, user }) {
 					</Box>
 				) : (
 					<Typography variant='header3' color='info.main'>
-						There is no Course Available to Join
+						There are no Courses Available to Join
 					</Typography>
 				)}
 			</Box>

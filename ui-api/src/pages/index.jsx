@@ -9,6 +9,7 @@ import {
 	Typography,
 	Button,
 } from '@mui/material';
+import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 

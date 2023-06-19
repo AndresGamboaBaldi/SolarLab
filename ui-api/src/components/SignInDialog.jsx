@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
+import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
 export default function SignInDialog({ open, handleClose, onClickSignup }) {
