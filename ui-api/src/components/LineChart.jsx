@@ -4,6 +4,13 @@ import { useState, useEffect } from 'react';
 
 export default function LineChart({ chartData, minimize, names }) {
 	const [isMobile, setIsMobile] = useState(false);
+
+	// create an event listener
+	useEffect(() => {
+		handleResize();
+		window.addEventListener('resize', handleResize);
+	}, []);
+
 	//choose the screen size
 	const handleResize = () => {
 		if (window.innerWidth < 900) {
@@ -27,12 +34,11 @@ export default function LineChart({ chartData, minimize, names }) {
 					text: 'Voltage (V)',
 					font: {
 						family: 'Lato',
-						size: 20,
+						size: 18,
 						style: 'normal',
 						lineHeight: 1.2,
 						weight: 'bold',
 					},
-					padding: { top: 5, left: 0, right: 0, bottom: 0 },
 				},
 			},
 			y: {
@@ -41,12 +47,11 @@ export default function LineChart({ chartData, minimize, names }) {
 					text: 'Current (A)',
 					font: {
 						family: 'Lato',
-						size: 20,
+						size: 18,
 						style: 'normal',
 						lineHeight: 1.2,
 						weight: 'bold',
 					},
-					padding: { top: 15, left: 0, right: 0, bottom: 0 },
 				},
 				min: 0,
 				max: 12,
@@ -112,11 +117,6 @@ export default function LineChart({ chartData, minimize, names }) {
 		datasets: getDatasets(),
 	};
 
-	// create an event listener
-	useEffect(() => {
-		handleResize();
-		window.addEventListener('resize', handleResize);
-	}, []);
 	if (isMobile || minimize) {
 		return <Line data={data} options={mobileOptions}></Line>;
 	} else {

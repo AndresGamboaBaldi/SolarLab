@@ -166,47 +166,7 @@ export default function Laboratory() {
 		//envvariable
 		const socket = io(`ws://192.168.124.82:4000`);
 		socket.on('esp32', (...msg) => {
-			const JSONMessage = JSON.parse(msg);
-			const {
-				departmentName,
-				voltage,
-				current,
-				power,
-				uvaRadiation,
-				radiation,
-				panelangle,
-				efficiencyTest,
-				isTesting,
-			} = JSONMessage;
-			const newData = departmentData.map((department) => {
-				if (department.departmentName === departmentName) {
-					if (isTesting) {
-						return {
-							...department,
-							voltage: voltage,
-							current: current,
-							power: power,
-							uvaRadiation: uvaRadiation,
-							radiation: radiation,
-							panelangle: panelangle,
-							efficiencyTest: efficiencyTest,
-						};
-					} else {
-						return {
-							...department,
-							voltage: voltage,
-							current: current,
-							power: power,
-							uvaRadiation: uvaRadiation,
-							radiation: radiation,
-							panelangle: panelangle,
-						};
-					}
-				} else {
-					return department;
-				}
-			});
-			setDepartmentData(newData);
+			dataHandler(msg);
 		});
 		return () => {
 			socket.disconnect();
@@ -230,6 +190,50 @@ export default function Laboratory() {
 
 	const connectCameras = async () => {
 		await fetch(`/api/camera`);
+	};
+
+	const dataHandler = (msg) => {
+		const JSONMessage = JSON.parse(msg);
+		const {
+			departmentName,
+			voltage,
+			current,
+			power,
+			uvaRadiation,
+			radiation,
+			panelangle,
+			efficiencyTest,
+			isTesting,
+		} = JSONMessage;
+		const newData = departmentData.map((department) => {
+			if (department.departmentName === departmentName) {
+				if (isTesting) {
+					return {
+						...department,
+						voltage: voltage,
+						current: current,
+						power: power,
+						uvaRadiation: uvaRadiation,
+						radiation: radiation,
+						panelangle: panelangle,
+						efficiencyTest: efficiencyTest,
+					};
+				} else {
+					return {
+						...department,
+						voltage: voltage,
+						current: current,
+						power: power,
+						uvaRadiation: uvaRadiation,
+						radiation: radiation,
+						panelangle: panelangle,
+					};
+				}
+			} else {
+				return department;
+			}
+		});
+		setDepartmentData(newData);
 	};
 
 	const checkAccess = () => {

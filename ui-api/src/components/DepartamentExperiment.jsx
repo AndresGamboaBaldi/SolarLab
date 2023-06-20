@@ -7,11 +7,15 @@ import {
 	Slider,
 	FormControlLabel,
 	Checkbox,
+	IconButton,
+	Popover,
 } from '@mui/material';
 import LineChart from './LineChart';
 import Clock from './Clock';
+import RadiationChart from './RadiationChart';
 import React, { useState, useEffect } from 'react';
 import CameraPlayer from '../components/CameraPlayer';
+import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 
 export default function DepartamentExperiment({
 	name,
@@ -27,8 +31,9 @@ export default function DepartamentExperiment({
 	const [uvaRadiation, setUvaRadiation] = useState(200);
 	const [radiation, setRadiation] = useState(0);
 	const [efficiencyTest, setEfficiencyTest] = useState([]);
-
 	const [isPrivate, setIsPrivate] = useState(false);
+	const [anchorElRadiation, setAnchorElRadiation] = React.useState(null);
+	const [anchorElUVA, setAnchorElUVA] = React.useState(null);
 
 	const sendMqttMessage = async (action) => {
 		var department = name;
@@ -67,6 +72,27 @@ export default function DepartamentExperiment({
 	const handleChange = (event) => {
 		setSyncPanels(event.target.checked);
 	};
+
+	const handleClickUVARadiation = (event) => {
+		setAnchorElUVA(event.currentTarget);
+	};
+
+	const handleCloseUVARadiation = () => {
+		setAnchorElUVA(null);
+	};
+
+	const openUVA = Boolean(anchorElUVA);
+
+	const handleClickRadiation = (event) => {
+		setAnchorElRadiation(event.currentTarget);
+	};
+
+	const handleCloseRadiation = () => {
+		setAnchorElRadiation(null);
+	};
+
+	const open = Boolean(anchorElRadiation);
+
 	return (
 		<Box my={{ xxs: 2, xs: 2, s: 2, sm: 3 }}>
 			<Card
@@ -79,7 +105,7 @@ export default function DepartamentExperiment({
 				}}
 			>
 				<Box
-					my={{ xxs: 2, xs: 3, s: 3, sm: 5 }}
+					my={{ xxs: 3, xs: 4, s: 4, sm: 5 }}
 					mx={{ xxs: 3, xs: 3, s: 4, sm: 5 }}
 				>
 					<Grid container>
@@ -239,7 +265,7 @@ export default function DepartamentExperiment({
 												textTransform: 'none',
 											}}
 											onClick={() => {
-												sendMqttMessage('START');
+												sendMqttMessage('TEST');
 											}}
 										>
 											<Typography
@@ -325,7 +351,17 @@ export default function DepartamentExperiment({
 											{power} W
 										</Typography>
 									</Grid>
-									<Grid item xxs={6} sm={6}>
+									<Grid
+										item
+										xxs={12}
+										sm={6}
+										sx={{
+											alignItems: 'center',
+											display: 'flex',
+											verticalAlign: 'middle',
+											lineHeight: 'normal',
+										}}
+									>
 										<Typography variant='titleDepartment' color='primary.700'>
 											Radiation:
 										</Typography>
@@ -336,8 +372,50 @@ export default function DepartamentExperiment({
 										>
 											{radiation} W/m2
 										</Typography>
+										<IconButton
+											onClick={handleClickRadiation}
+											sx={{
+												py: 0,
+												color: 'secondary.main',
+											}}
+										>
+											<ExpandCircleDownIcon
+												sx={{
+													fontSize: { xxs: '16px', xs: '20px', sm: '30px' },
+												}}
+											/>
+										</IconButton>
+										<Popover
+											open={open}
+											anchorEl={anchorElRadiation}
+											anchorOrigin={{
+												vertical: 'top',
+												horizontal: 'center',
+											}}
+											transformOrigin={{
+												vertical: 'bottom',
+												horizontal: 'center',
+											}}
+											onClose={handleCloseRadiation}
+											disableRestoreFocus
+										>
+											<RadiationChart
+												title='24 Hrs Solar Radiation'
+												city={name}
+											></RadiationChart>
+										</Popover>
 									</Grid>
-									<Grid item xxs={12} sm={6}>
+									<Grid
+										item
+										xxs={12}
+										sm={6}
+										sx={{
+											alignItems: 'center',
+											display: 'flex',
+											verticalAlign: 'middle',
+											lineHeight: 'normal',
+										}}
+									>
 										<Typography variant='titleDepartment' color='primary.700'>
 											UVA Radiation:
 										</Typography>
@@ -348,6 +426,38 @@ export default function DepartamentExperiment({
 										>
 											{uvaRadiation} W/m2
 										</Typography>
+										<IconButton
+											onClick={handleClickUVARadiation}
+											sx={{
+												py: 0,
+												color: 'secondary.main',
+											}}
+										>
+											<ExpandCircleDownIcon
+												sx={{
+													fontSize: { xxs: '16px', xs: '20px', sm: '30px' },
+												}}
+											/>
+										</IconButton>
+										<Popover
+											open={openUVA}
+											anchorEl={anchorElUVA}
+											anchorOrigin={{
+												vertical: 'top',
+												horizontal: 'center',
+											}}
+											transformOrigin={{
+												vertical: 'bottom',
+												horizontal: 'center',
+											}}
+											onClose={handleCloseUVARadiation}
+											disableRestoreFocus
+										>
+											<RadiationChart
+												title='24 Hrs UVA Radiation'
+												city={name}
+											></RadiationChart>
+										</Popover>
 									</Grid>
 								</Grid>
 							</Grid>

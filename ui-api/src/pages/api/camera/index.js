@@ -21,9 +21,7 @@ export default async function handler(req, res) {
 					},
 				});
 				res.socket.server['cbba'] = true;
-			} catch (error) {
-				console.log(error);
-			}
+			} catch (error) {}
 		} else {
 			console.log('CBBA Camera Socket Already Running');
 		}
@@ -46,9 +44,7 @@ export default async function handler(req, res) {
 					},
 				});
 				res.socket.server['lpz'] = true;
-			} catch (error) {
-				console.log(error);
-			}
+			} catch (error) {}
 		} else {
 			console.log('LPZ Camera Socket Already Running');
 		}
@@ -71,15 +67,12 @@ export default async function handler(req, res) {
 					},
 				});
 				res.socket.server['scz'] = true;
-			} catch (error) {
-				console.log(error);
-			}
+			} catch (error) {}
 		} else {
 			console.log('SCZ Camera Socket Already Running');
 		}
 		return res.status(200).json({ status: true });
 	} else {
-		console.log('HTTP Method not Valid');
 		return res.status(500).json({ error: 'HTTP Method not Valid' });
 	}
 }

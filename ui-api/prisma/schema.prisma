@@ -86,3 +86,10 @@ model TestRecord {
   departmentlab   DepartmentLab? @relation(fields: [departmentlabId], references: [id], onDelete: Cascade)
   departmentlabId String?
 }
+
+model Radiation {
+  id        Int    @id @default(autoincrement())
+  date      String
+  time      String
+  radiation Float
+}
