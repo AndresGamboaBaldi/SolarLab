@@ -15,7 +15,9 @@ import Clock from './Clock';
 import RadiationChart from './RadiationChart';
 import React, { useState, useEffect } from 'react';
 import CameraPlayer from '../components/CameraPlayer';
-import InfoIcon from '@mui/icons-material/Help';
+import HelpIcon from '@mui/icons-material/Help';
+import InfoIcon from '@mui/icons-material/Info';
+import ShowSpecs from './ShowSpecs';
 
 export default function DepartamentExperiment({
 	name,
@@ -34,6 +36,7 @@ export default function DepartamentExperiment({
 	const [isPrivate, setIsPrivate] = useState(false);
 	const [anchorElRadiation, setAnchorElRadiation] = React.useState(null);
 	const [anchorElUVA, setAnchorElUVA] = React.useState(null);
+	const [anchorElSpecs, setAnchorElSpecs] = React.useState(null);
 
 	const sendMqttMessage = async (action) => {
 		var department = name;
@@ -93,6 +96,16 @@ export default function DepartamentExperiment({
 
 	const open = Boolean(anchorElRadiation);
 
+	const handleOpenSpecs = (event) => {
+		setAnchorElSpecs(event.currentTarget);
+	};
+
+	const handleCloseSpecs = () => {
+		setAnchorElSpecs(null);
+	};
+
+	const openSpecs = Boolean(anchorElSpecs);
+
 	return (
 		<Box my={{ xxs: 2, xs: 2, s: 2, sm: 3 }}>
 			<Card
@@ -117,10 +130,44 @@ export default function DepartamentExperiment({
 							sm={12}
 							md={6}
 							mb={{ xxs: 1, xs: 1, s: 1, sm: 2, md: 3 }}
+							sx={{
+								alignItems: 'center',
+								display: 'flex',
+								verticalAlign: 'middle',
+							}}
 						>
-							<Typography variant='header1' color='blacky.main'>
+							<Typography variant='header1' color='blacky.main' mr={1}>
 								{name}
 							</Typography>
+							<IconButton
+								onClick={handleOpenSpecs}
+								sx={{
+									py: 0,
+									color: 'info.main',
+								}}
+							>
+								<InfoIcon
+									sx={{
+										fontSize: { xxs: '16px', xs: '20px', sm: '30px' },
+									}}
+								/>
+							</IconButton>
+							<Popover
+								open={openSpecs}
+								anchorEl={anchorElSpecs}
+								anchorOrigin={{
+									vertical: 'center',
+									horizontal: 'right',
+								}}
+								transformOrigin={{
+									vertical: 'center',
+									horizontal: 'left',
+								}}
+								onClose={handleCloseSpecs}
+								disableRestoreFocus
+							>
+								<ShowSpecs city={name}></ShowSpecs>
+							</Popover>
 						</Grid>
 						<Grid
 							item
@@ -378,7 +425,7 @@ export default function DepartamentExperiment({
 												color: 'secondary.main',
 											}}
 										>
-											<InfoIcon
+											<HelpIcon
 												sx={{
 													fontSize: { xxs: '16px', xs: '20px', sm: '30px' },
 												}}
@@ -432,7 +479,7 @@ export default function DepartamentExperiment({
 												color: 'secondary.main',
 											}}
 										>
-											<InfoIcon
+											<HelpIcon
 												sx={{
 													fontSize: { xxs: '16px', xs: '20px', sm: '30px' },
 												}}
