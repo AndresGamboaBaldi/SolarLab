@@ -43,7 +43,11 @@ export default function DepartamentExperiment({
 		if (syncPanels) {
 			department = 'ALL';
 		}
-		const message = { action: action, angle: angle, department: department };
+		const message = {
+			action: action,
+			angle: selectedAngle,
+			department: department,
+		};
 		const response = await fetch(`/api/mqtt/send`, {
 			headers: {
 				'Content-Type': 'application/json',

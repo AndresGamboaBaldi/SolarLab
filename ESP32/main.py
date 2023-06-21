@@ -106,26 +106,17 @@ def sub_cb(topic, msg):
   else:
     action = received_msg['action']
     print(action)
-    if topic == topic_sub and action == 'UP' and state != UP:
-      moveUp()
-      #setState(UP) 
-    elif topic == topic_sub and action == 'DOWN'and state != DOWN:
-      moveDown()
-      #setState(DOWN)  
-    elif topic == topic_sub and action == 'OFF':
-      turnOff()
-      #setState(OFF)
-    elif topic == topic_sub and action == "ANGLE":
+  
+    if topic == topic_sub and action == "ANGLE":
       newAngle = received_msg['angle']
-      #currentAngle = get_datalogger_data() 
-      print(get_datalogger_data())
-      '''print("New Requested Angle: ", newAngle)
+      currentAngle = get_datalogger_data()[2]
+      print("New Requested Angle: ", newAngle)
       print('Current Panel Angle: {}'.format(currentAngle))
-      messageAngle(currentAngle, newAngle)
       movingUp = False
       movingDown = False
+      notMovingCount = 0
+      previousAngle = currentAngle
       while abs(int(newAngle) - int(currentAngle)) > 1:
-        print(abs(int(newAngle) - int(currentAngle)))
         if int(newAngle) > int(currentAngle):
           movingDown = False
           if(not movingUp):
@@ -137,11 +128,18 @@ def sub_cb(topic, msg):
             moveDown()
             movingDown = True
         sleep(1)
-        currentAngle = get_datalogger_data() 
+        currentAngle = get_datalogger_data()[2] 
         print("Current: ", str(currentAngle))
-        print("New: ", str(newAngle))
-        messageAngle(currentAngle, newAngle)
-      turnOff()'''
+        if(abs(int(currentAngle) - int(previousAngle))<1):
+          notMovingCount +=1
+          if(notMovingCount>3):
+            print("Error Moving Panel") 
+            break
+        else: 
+          notMovingCount=0
+      print("Moved To: ", str(currentAngle)) 
+      turnOff()
+      sendData(get_datalogger_data())
     elif topic == topic_sub and action == 'DATA':
       sendData(get_datalogger_data())
 
