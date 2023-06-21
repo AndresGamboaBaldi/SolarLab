@@ -117,12 +117,12 @@ const testCbba = [
 const initialData = [
 	{
 		departmentName: 'Cochabamba',
-		voltage: 12,
-		current: 5,
-		power: 60,
-		uvaRadiation: 100,
-		radiation: 100,
-		panelangle: 45,
+		voltage: 0,
+		current: 0,
+		power: 0,
+		uvaRadiation: 0,
+		radiation: 0,
+		panelangle: 0,
 		efficiencyTest: testCbba,
 	},
 	{
@@ -174,6 +174,7 @@ export default function Laboratory() {
 	}, [departmentData]);
 
 	useEffect(() => {
+		requestDataESP();
 		handleResize();
 		window.addEventListener('resize', handleResize);
 	}, []);
@@ -190,6 +191,18 @@ export default function Laboratory() {
 
 	const connectCameras = async () => {
 		await fetch(`/api/camera`);
+	};
+
+	const requestDataESP = async () => {
+		const message = { action: 'DATA', department: 'ALL' };
+		const response = await fetch(`/api/mqtt/send`, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+			body: JSON.stringify(message),
+		});
+		const data = await response.json();
 	};
 
 	const dataHandler = (msg) => {

@@ -12,7 +12,7 @@ export default function handler(req, res) {
 				responseESP(req.body, topicLpz);
 			} else if (req.body.department == 'Santa Cruz') {
 				responseESP(req.body, topicScz);
-			} else if (req.body.department == 'All') {
+			} else if (req.body.department == 'ALL') {
 				responseESP(req.body, topicCbba);
 				responseESP(req.body, topicLpz);
 				responseESP(req.body, topicScz);

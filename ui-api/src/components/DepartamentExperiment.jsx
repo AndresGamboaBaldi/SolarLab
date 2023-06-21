@@ -15,7 +15,7 @@ import Clock from './Clock';
 import RadiationChart from './RadiationChart';
 import React, { useState, useEffect } from 'react';
 import CameraPlayer from '../components/CameraPlayer';
-import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
+import InfoIcon from '@mui/icons-material/Help';
 
 export default function DepartamentExperiment({
 	name,
@@ -38,7 +38,7 @@ export default function DepartamentExperiment({
 	const sendMqttMessage = async (action) => {
 		var department = name;
 		if (syncPanels) {
-			department = 'All';
+			department = 'ALL';
 		}
 		const message = { action: action, angle: angle, department: department };
 		const response = await fetch(`/api/mqtt/send`, {
@@ -231,7 +231,6 @@ export default function DepartamentExperiment({
 											}
 										/>
 									</Grid>
-
 									<Grid item textAlign='center'>
 										<Button
 											variant='contained'
@@ -265,7 +264,7 @@ export default function DepartamentExperiment({
 												textTransform: 'none',
 											}}
 											onClick={() => {
-												sendMqttMessage('TEST');
+												sendMqttMessage('DATA');
 											}}
 										>
 											<Typography
@@ -379,7 +378,7 @@ export default function DepartamentExperiment({
 												color: 'secondary.main',
 											}}
 										>
-											<ExpandCircleDownIcon
+											<InfoIcon
 												sx={{
 													fontSize: { xxs: '16px', xs: '20px', sm: '30px' },
 												}}
@@ -433,7 +432,7 @@ export default function DepartamentExperiment({
 												color: 'secondary.main',
 											}}
 										>
-											<ExpandCircleDownIcon
+											<InfoIcon
 												sx={{
 													fontSize: { xxs: '16px', xs: '20px', sm: '30px' },
 												}}
