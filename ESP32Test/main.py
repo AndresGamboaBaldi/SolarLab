@@ -91,27 +91,26 @@ def sub_cb(topic, msg):
 
 
 def readSensors():
-    mVperAmp = 66  # this the 5A version of the ACS712 -use 100 for 20A Module and 66 for 30A Module
-    voltage = 0
-    vrms = 0
-    AmpsRMS = 0
 
     # VOLTAGE TEST
-    voltage = voltage_sensor.read()
-    print(round(voltage, 2), "Readed Voltage Sensor")
-    # voltage = voltage * (5 / 3.3)
+    # voltage = voltage_sensor.read()
+    # print(round(voltage, 2), "Readed Voltage Sensor")
+    # voltage = (voltage / 4095 / 0.87739 * 21.6)
     # print(round(voltage, 2), "V")
-    voltage = voltage * (3.3 / 4096)
-    print(round(voltage, 2), "V")
 
     # CURRENT
-    current = current_sensor.read()
-    print(round(current, 2), "Readed Current Sensor")
-    vrms = (voltage/2.0) * 0.707  # root 2 is 0.707
-    # 0.3 is the error I got for my sensor
-    AmpsRMS = ((vrms * 1000)/mVperAmp)-0.3
-    print(round(AmpsRMS, 2), "A")
-    time.sleep_ms(2000)
+    AcsValue = voltage_sensor.read()
+    current = (2.5 - (AcsValue * (3.3 / 4095.0)))/0.066
+
+    print(current, "A")
+    sleep(1)
+
+
+def getVPP():
+    result = 0
+    readValue = voltage_sensor.read()
+    result = (readValue * 3.3)/4096.0  # ESP32 ADC resolution 4096
+    return result
 
 
 def connect_and_subscribe():

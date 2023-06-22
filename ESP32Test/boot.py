@@ -13,6 +13,7 @@ from time import sleep
 # 34 voltage
 voltage_pin = machine.Pin(34, mode=machine.Pin.IN)
 voltage_sensor = ADC(voltage_pin)
+voltage_sensor.atten(machine.ADC.ATTN_11DB)
 
 current_pin = machine.Pin(35, mode=machine.Pin.IN)
 current_sensor = ADC(current_pin)
