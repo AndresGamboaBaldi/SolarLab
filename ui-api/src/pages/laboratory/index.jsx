@@ -155,6 +155,7 @@ export default function Laboratory() {
 	const [openSaveExperiment, setOpenSaveExperiment] = useState(false);
 	const [canAccess, setCanAccess] = useState(false);
 	const [syncPanels, setSyncPanels] = useState(true);
+	const [selectedAngle, setSelectedAngle] = useState(0);
 	const [departmentData, setDepartmentData] = useState(initialData);
 
 	const [selectedCities, setSelectedCities] = React.useState(['Cochabamba']);
@@ -429,6 +430,8 @@ export default function Laboratory() {
 							departmentData={departmentData}
 							syncPanels={syncPanels}
 							setSyncPanels={setSyncPanels}
+							selectedAngle={selectedAngle}
+							setSelectedAngle={setSelectedAngle}
 						></DepartamentExperiment>
 					))}
 					<Box>

@@ -415,7 +415,7 @@ const theme = createTheme({
 						},
 					},
 					'& .MuiSlider-valueLabel': {
-						fontSize: 12,
+						fontSize: 20,
 						fontWeight: 'normal',
 						top: -6,
 						backgroundColor: '#000',

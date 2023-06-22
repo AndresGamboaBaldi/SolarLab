@@ -5,7 +5,7 @@ const globalForSocket = global;
 const connectSocket = () => {
 	const io = new Server({
 		cors: {
-			origin: `http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}`,
+			origin: `http://localhost:3000`,
 		},
 	});
 	io.listen(process.env.REACT_APP_WS_SERVER_PORT);

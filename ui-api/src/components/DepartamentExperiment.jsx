@@ -24,14 +24,16 @@ export default function DepartamentExperiment({
 	departmentData,
 	syncPanels,
 	setSyncPanels,
+	selectedAngle,
+	setSelectedAngle,
 }) {
 	const [angle, setAngle] = useState(0);
-	const [selectedAngle, setSelectedAngle] = useState(0);
 	const [voltage, setVoltage] = useState(0);
 	const [current, setCurrent] = useState(0);
 	const [power, setPower] = useState(100);
 	const [uvaRadiation, setUvaRadiation] = useState(200);
 	const [radiation, setRadiation] = useState(0);
+	const [departmentSelectedAngle, setDepartmentSelectedAngle] = useState(0);
 	const [efficiencyTest, setEfficiencyTest] = useState([]);
 	const [isPrivate, setIsPrivate] = useState(false);
 	const [anchorElRadiation, setAnchorElRadiation] = React.useState(null);
@@ -68,7 +70,7 @@ export default function DepartamentExperiment({
 				setVoltage(department.voltage);
 				setRadiation(department.radiation);
 				setEfficiencyTest(department.efficiencyTest);
-				setSelectedAngle(department.panelangle);
+				setDepartmentSelectedAngle(department.panelangle);
 			}
 		});
 		setIsPrivate(
@@ -247,13 +249,27 @@ export default function DepartamentExperiment({
 								<Box>
 									<Grid item sx={{ display: 'flex' }} justifyContent='center'>
 										<Box width='70%'>
-											<Slider
-												size='medium'
-												value={selectedAngle}
-												valueLabelDisplay='auto'
-												onChange={(_, value) => setSelectedAngle(value)}
-												max={180}
-											/>
+											{syncPanels ? (
+												<Slider
+													size='medium'
+													value={selectedAngle}
+													valueLabelDisplay='auto'
+													onChange={(_, value) => {
+														setSelectedAngle(value);
+													}}
+													max={90}
+												/>
+											) : (
+												<Slider
+													size='medium'
+													value={departmentSelectedAngle}
+													valueLabelDisplay='auto'
+													onChange={(_, value) => {
+														setDepartmentSelectedAngle(value);
+													}}
+													max={90}
+												/>
+											)}
 										</Box>
 									</Grid>
 									<Grid
