@@ -9,7 +9,6 @@ datasource db {
 
 model User {
   name     String
-  code     String?
   email    String   @id @unique
   password String?
   student  Student?
@@ -26,20 +25,24 @@ model Student {
 }
 
 model Teacher {
-  id        Int      @id @default(autoincrement())
-  courses   Course[]
-  user      User     @relation(fields: [userEmail], references: [email])
-  userEmail String   @unique
+  id         Int      @id @default(autoincrement())
+  courses    Course[]
+  user       User     @relation(fields: [userEmail], references: [email])
+  userEmail  String   @unique
+  authorized Boolean
 }
 
 model Course {
-  id         Int          @id @default(autoincrement())
-  name       String
-  teacher    Teacher?     @relation(fields: [teacherId], references: [userEmail])
-  teacherId  String?
-  students   Student[]
-  requests   Request[]
-  Experiment Experiment[]
+  id          Int          @id @default(autoincrement())
+  name        String
+  teacher     Teacher?     @relation(fields: [teacherId], references: [userEmail])
+  teacherId   String?
+  students    Student[]
+  requests    Request[]
+  Experiment  Experiment[]
+  startDate   String
+  endDate     String
+  description String
 }
 
 model Request {
@@ -83,6 +86,8 @@ model TestRecord {
   id              Int            @id @default(autoincrement())
   current         Float
   voltage         Float
+  power           Float
+  city            String
   departmentlab   DepartmentLab? @relation(fields: [departmentlabId], references: [id], onDelete: Cascade)
   departmentlabId String?
 }
@@ -92,4 +97,12 @@ model Radiation {
   date      String
   time      String
   radiation Float
+}
+
+model UVARadiation {
+  id           Int    @id @default(autoincrement())
+  date         String
+  time         String
+  uvaRadiation Float
+  city         String
 }

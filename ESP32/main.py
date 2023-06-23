@@ -128,7 +128,9 @@ def sub_cb(topic, msg):
             moveDown()
             movingDown = True
         sleep(1)
-        currentAngle = get_datalogger_data()[2] 
+        dataloggerData = get_datalogger_data()
+        currentAngle = dataloggerData[2] 
+        sendData(dataloggerData)
         print("Current: ", str(currentAngle))
         if(abs(int(currentAngle) - int(previousAngle))<1):
           notMovingCount +=1
@@ -139,9 +141,8 @@ def sub_cb(topic, msg):
           notMovingCount=0
       print("Moved To: ", str(currentAngle)) 
       turnOff()
-      sendData(get_datalogger_data())
-    elif topic == topic_sub and action == 'DATA':
-      sendData(get_datalogger_data())
+    #elif topic == topic_sub and action == 'DATA':
+     #sendData(get_datalogger_data())
 
       
 def connect_and_subscribe():
@@ -168,6 +169,9 @@ except OSError as e:
 while True:
   #try:
     client.check_msg()
+    sendData(get_datalogger_data())
+    sleep(1)
+
     
   #except OSError as e:
    # restart_and_reconnect()

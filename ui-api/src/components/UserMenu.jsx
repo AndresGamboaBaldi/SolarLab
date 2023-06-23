@@ -23,10 +23,13 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import CoursesDialog from './CourseDialog';
 import FinishGoogleRegister from './FinishGoogleRegister';
+import VerifiedIcon from '@mui/icons-material/Verified';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 
 export default function UserMenu({ session }) {
 	const router = useRouter();
 	const [openSignup, setOpenSignUp] = useState(false);
+	const [isTeacher, setIsTeacher] = useState(false);
 	const [openCourses, setOpenCourses] = useState(false);
 	const [openUpdatePassword, setOpenUpdatePassword] = useState(false);
 	const [openFinishGoogleRegister, setOpenFinishGoogleRegister] =
@@ -94,7 +97,12 @@ export default function UserMenu({ session }) {
 			toast.error('Something Went Wrong, Please Try Again');
 		} else {
 			setUser(answer.user);
-			if (!answer.user.code) {
+			if (answer.user.teacher) {
+				setIsTeacher(true);
+			} else {
+				setIsTeacher(false);
+			}
+			if (!answer.user.student && !answer.user.teacher) {
 				setOpenFinishGoogleRegister(true);
 			}
 		}
@@ -153,13 +161,56 @@ export default function UserMenu({ session }) {
 				sx={{
 					verticalAlign: 'middle',
 					display: 'none',
-
+					lineHeight: 'normal',
 					'@media (min-width:700px)': {
 						display: 'inline-flex',
 					},
 				}}
 			>
-				<Typography variant='body1'>{user.name}</Typography>
+				{isTeacher ? (
+					<Box>
+						{user.teacher.authorized ? (
+							<Tooltip
+								title='Verified Teacher'
+								enterTouchDelay={0}
+								arrow
+								sx={{
+									mr: { xxs: 0, xs: 0, sm: 1 },
+								}}
+							>
+								<VerifiedIcon
+									sx={{
+										mt: '2px',
+										fontSize: { xxs: '16px', xs: '18px', sm: '22px' },
+										color: '#D4AF37',
+									}}
+								/>
+							</Tooltip>
+						) : (
+							<Tooltip
+								title='Pending Teacher Verification'
+								enterTouchDelay={0}
+								arrow
+								sx={{
+									mr: { xxs: 0, xs: 0, sm: 1 },
+								}}
+							>
+								<AccessTimeFilledIcon
+									sx={{
+										mt: '4px',
+										fontSize: { xxs: '12px', xs: '16px', sm: '20px' },
+										color: '#F6D015',
+									}}
+								/>
+							</Tooltip>
+						)}
+					</Box>
+				) : null}
+
+				<Typography variant='body1' ml={1}>
+					{user.name}
+				</Typography>
+
 				<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 					<KeyboardArrowDownIcon
 						sx={{

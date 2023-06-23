@@ -170,12 +170,7 @@ export default function Courses() {
 
 	const columns = [
 		{ field: 'id', headerName: 'ID', width: 70, visible: true },
-		{
-			field: 'code',
-			headerName: 'Code',
-			width: 70,
-			valueGetter: (params) => params.row?.user?.code,
-		},
+
 		{
 			field: 'name',
 			headerName: 'Name',
@@ -195,12 +190,7 @@ export default function Courses() {
 
 	const requestColumns = [
 		{ field: 'id', headerName: 'ID', width: 70, visible: true },
-		{
-			field: 'code',
-			headerName: 'Code',
-			width: 80,
-			valueGetter: (params) => params.row?.student.user?.code,
-		},
+
 		{
 			field: 'name',
 			headerName: 'Name',

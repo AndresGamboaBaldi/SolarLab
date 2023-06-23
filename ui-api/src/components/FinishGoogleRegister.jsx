@@ -16,7 +16,6 @@ export default function FinishGoogleRegister({ open, handleClose, user }) {
 	const [emailDisable, setEmailDisable] = useState(true);
 	const [email, setEmail] = useState('');
 	const [name, setName] = useState('');
-	const [code, setcode] = useState('');
 	const [isTeacher, setIsTeacher] = useState(false);
 
 	const handleChange = (event) => {
@@ -32,7 +31,6 @@ export default function FinishGoogleRegister({ open, handleClose, user }) {
 		if (validateFields()) {
 			const updateUser = {
 				email: email,
-				code: code,
 				name: name,
 				isTeacher: isTeacher,
 			};
@@ -61,7 +59,7 @@ export default function FinishGoogleRegister({ open, handleClose, user }) {
 	};
 
 	const validateFields = () => {
-		return email && name && code;
+		return email && name;
 	};
 
 	return (
@@ -113,13 +111,11 @@ export default function FinishGoogleRegister({ open, handleClose, user }) {
 							onChange={(e) => setEmail(e.target.value)}
 						/>
 					</Grid>
-					<Grid item xxs={8} xs={8}>
+					<Grid item xxs={12} xs={12}>
 						<Typography variant='header3'>Full Name</Typography>
 					</Grid>
-					<Grid item xxs={4} xs={4}>
-						<Typography variant='header3'>Code</Typography>
-					</Grid>
-					<Grid item xxs={8} xs={8}>
+
+					<Grid item xxs={12} xs={12}>
 						<TextField
 							required
 							fullWidth
@@ -128,17 +124,6 @@ export default function FinishGoogleRegister({ open, handleClose, user }) {
 							autoComplete='name'
 							value={name}
 							onChange={(e) => setName(e.target.value)}
-						/>
-					</Grid>
-
-					<Grid item xxs={4} xs={4}>
-						<TextField
-							required
-							fullWidth
-							size='small'
-							variant='outlined'
-							value={code}
-							onChange={(e) => setcode(e.target.value)}
 						/>
 					</Grid>
 					<Grid item xxs={12} xs={12} mt={1}>

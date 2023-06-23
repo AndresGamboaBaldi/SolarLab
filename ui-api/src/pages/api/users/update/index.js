@@ -9,7 +9,6 @@ export default async function handler(req, res) {
 				},
 				data: {
 					name: req.body.name,
-					code: req.body.code,
 				},
 			});
 			return res.status(200).json(updateUser);

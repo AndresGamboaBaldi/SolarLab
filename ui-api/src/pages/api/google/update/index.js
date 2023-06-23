@@ -9,7 +9,6 @@ export default async function handler(req, res) {
 				},
 				data: {
 					name: req.body.name,
-					code: req.body.code,
 				},
 			});
 			if (req.body.isTeacher) {
@@ -20,6 +19,7 @@ export default async function handler(req, res) {
 								email: req.body.email,
 							},
 						},
+						authorized: false,
 					},
 				});
 			} else {

@@ -25,12 +25,10 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [name, setName] = useState('');
-	const [code, setcode] = useState('');
 	const [isTeacher, setIsTeacher] = useState(false);
 
 	const [emailError, setEmailError] = useState(false);
 	const [nameError, setNameError] = useState(false);
-	const [codeError, setCodeError] = useState(false);
 	const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 	const [passwordError, setPasswordError] = useState(false);
 
@@ -38,7 +36,6 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const [passwordMessage, setPasswordMessage] = useState('');
 	const [confirmPasswordMessage, setConfirmPasswordMessage] = useState('');
 	const [nameMessage, setNameMessage] = useState('');
-	const [codeMessage, setCodeMessage] = useState('');
 
 	useEffect(() => {
 		clearFields();
@@ -57,7 +54,6 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 				body: JSON.stringify({
 					email: email,
 					password: password,
-					code: code,
 					name: name,
 					isTeacher: isTeacher,
 				}),
@@ -87,14 +83,12 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 			setEmailDisable(true);
 			setEmail(response.user.email);
 			setName(response.user.name);
-			setcode(response.user.code);
 		}
 	};
 
 	const handleUpdate = async () => {
 		const updateUser = {
 			email: email,
-			code: code,
 			name: name,
 		};
 		try {
@@ -108,7 +102,6 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 			const user = await response.json();
 			if (user.email) {
 				setName(user.name);
-				setcode(user.code);
 				toast.success('Updated Successfully');
 			} else {
 				toast.error('Update Failed, Please Try Again Later');
@@ -133,12 +126,10 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 		return (
 			!emailError &&
 			!nameError &&
-			!codeError &&
 			!passwordError &&
 			!confirmPasswordError &&
 			email &&
 			name &&
-			code &&
 			password
 		);
 	};
@@ -146,15 +137,12 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 	const clearFields = () => {
 		setName('');
 		setEmail('');
-		setcode('');
 		setPassword('');
 		setConfirmPassword('');
 		setNameMessage('');
 		setEmailMessage('');
-		setCodeMessage('');
 		setPasswordMessage('');
 		setConfirmPasswordMessage('');
-		setCodeError(false);
 		setNameError(false);
 		setEmailError(false);
 		setPasswordError(false);
@@ -186,17 +174,6 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 		} else {
 			setNameMessage('');
 			setNameError(false);
-		}
-	};
-
-	const handleCodeChange = (event) => {
-		setcode(event.target.value);
-		if (event.target.value.length < 2) {
-			setCodeMessage('Code should contain at least 2 characters');
-			setCodeError(true);
-		} else {
-			setCodeMessage('');
-			setCodeError(false);
 		}
 	};
 
@@ -276,17 +253,12 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								helperText={emailMessage}
 							/>
 						</Grid>
-						<Grid item xxs={8} xs={8}>
+						<Grid item xxs={12} xs={12}>
 							<Typography variant='header3' mb={2}>
 								Full Name
 							</Typography>
 						</Grid>
-						<Grid item xxs={4} xs={4}>
-							<Typography variant='header3' sx={{ marginBottom: '2' }}>
-								Code
-							</Typography>
-						</Grid>
-						<Grid item xxs={8} xs={8}>
+						<Grid item xxs={12} xs={12}>
 							<TextField
 								error={nameError}
 								required
@@ -297,19 +269,6 @@ export default function SignUpDialog({ open, handleClose, onClickSignIn }) {
 								value={name}
 								onChange={handleNameChange}
 								helperText={nameMessage}
-							/>
-						</Grid>
-
-						<Grid item xxs={4} xs={4}>
-							<TextField
-								error={codeError}
-								required
-								fullWidth
-								size='small'
-								variant='outlined'
-								value={code}
-								onChange={handleCodeChange}
-								helperText={codeMessage}
 							/>
 						</Grid>
 					</Grid>

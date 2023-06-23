@@ -175,7 +175,6 @@ export default function Laboratory() {
 	}, [departmentData]);
 
 	useEffect(() => {
-		requestDataESP();
 		handleResize();
 		window.addEventListener('resize', handleResize);
 	}, []);
@@ -192,18 +191,6 @@ export default function Laboratory() {
 
 	const connectCameras = async () => {
 		await fetch(`/api/camera`);
-	};
-
-	const requestDataESP = async () => {
-		const message = { action: 'DATA', department: 'ALL' };
-		const response = await fetch(`/api/mqtt/send`, {
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			method: 'POST',
-			body: JSON.stringify(message),
-		});
-		const data = await response.json();
 	};
 
 	const dataHandler = (msg) => {

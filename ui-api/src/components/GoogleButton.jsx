@@ -12,7 +12,6 @@ export default function GoogleButton() {
 					setPassword('');
 					setConfirmPassword('');
 					setName('');
-					setcode('');
 				}
 			})
 			.catch((error) => {

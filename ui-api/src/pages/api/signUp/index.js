@@ -3,7 +3,7 @@ import { hash } from 'bcrypt';
 
 export default async function Post(req, res) {
 	if (req.method === 'POST') {
-		const { email, name, code, password, isTeacher } = req.body;
+		const { email, name, password, isTeacher } = req.body;
 		const userExists = await db.User.findFirst({
 			where: {
 				email: email,
@@ -17,7 +17,6 @@ export default async function Post(req, res) {
 					data: {
 						email: email,
 						name: name,
-						code: code,
 						password: await hash(password, 12),
 					},
 				});
@@ -29,6 +28,7 @@ export default async function Post(req, res) {
 									email: email,
 								},
 							},
+							authorized: false,
 						},
 					});
 				} else {
