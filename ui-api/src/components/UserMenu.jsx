@@ -157,6 +157,52 @@ export default function UserMenu({ session }) {
 					color='white'
 				/>
 			</IconButton>
+
+			{isTeacher ? (
+				<Box
+					sx={{
+						display: 'inline-flex',
+						verticalAlign: 'middle',
+						lineHeight: 'normal',
+					}}
+				>
+					{user.teacher.authorized ? (
+						<Tooltip
+							title='Verified Teacher'
+							enterTouchDelay={0}
+							arrow
+							sx={{
+								mr: { xxs: 0, xs: 0, sm: 1 },
+							}}
+						>
+							<VerifiedIcon
+								sx={{
+									fontSize: { xxs: '16px', xs: '18px', sm: '22px' },
+									color: '#D4AF37',
+								}}
+							/>
+						</Tooltip>
+					) : (
+						<Tooltip
+							title='Pending Teacher Verification'
+							enterTouchDelay={0}
+							arrow
+							sx={{
+								mr: { xxs: 0, xs: 0, sm: 1 },
+							}}
+						>
+							<AccessTimeFilledIcon
+								sx={{
+									mt: '2px',
+									fontSize: { xxs: '12px', xs: '16px', sm: '20px' },
+									color: '#F6D015',
+								}}
+							/>
+						</Tooltip>
+					)}
+				</Box>
+			) : null}
+
 			<Box
 				sx={{
 					verticalAlign: 'middle',
@@ -167,46 +213,6 @@ export default function UserMenu({ session }) {
 					},
 				}}
 			>
-				{isTeacher ? (
-					<Box>
-						{user.teacher.authorized ? (
-							<Tooltip
-								title='Verified Teacher'
-								enterTouchDelay={0}
-								arrow
-								sx={{
-									mr: { xxs: 0, xs: 0, sm: 1 },
-								}}
-							>
-								<VerifiedIcon
-									sx={{
-										mt: '2px',
-										fontSize: { xxs: '16px', xs: '18px', sm: '22px' },
-										color: '#D4AF37',
-									}}
-								/>
-							</Tooltip>
-						) : (
-							<Tooltip
-								title='Pending Teacher Verification'
-								enterTouchDelay={0}
-								arrow
-								sx={{
-									mr: { xxs: 0, xs: 0, sm: 1 },
-								}}
-							>
-								<AccessTimeFilledIcon
-									sx={{
-										mt: '4px',
-										fontSize: { xxs: '12px', xs: '16px', sm: '20px' },
-										color: '#F6D015',
-									}}
-								/>
-							</Tooltip>
-						)}
-					</Box>
-				) : null}
-
 				<Typography variant='body1' ml={1}>
 					{user.name}
 				</Typography>

@@ -1,8 +1,10 @@
 const Stream = require('node-rtsp-stream');
 
+const globalForCameras = global;
+
 export default async function handler(req, res) {
 	if (req.method === 'GET') {
-		if (!res.socket.server['cbba']) {
+		if (!globalForCameras.cbba) {
 			try {
 				const streamCbba = await new Stream({
 					name: 'SolarLabCameraCBBA',
@@ -20,12 +22,19 @@ export default async function handler(req, res) {
 						//'-c': 'copy',
 					},
 				});
-				res.socket.server['cbba'] = true;
+				streamCbba.on('exitWithError', function () {
+					streamCbba.mpeg1Muxer.stream.kill();
+					globalForCameras.cbba = false;
+					console.log('error');
+				});
+				streamCbba.wsServer.on('connection', function () {
+					globalForCameras.cbba = true;
+				});
 			} catch (error) {}
 		} else {
 			console.log('CBBA Camera Socket Already Running');
 		}
-		if (!res.socket.server['lpz']) {
+		if (!globalForCameras.lpz) {
 			try {
 				const streamLpz = await new Stream({
 					name: 'SolarLabCameraLPZ',
@@ -43,12 +52,19 @@ export default async function handler(req, res) {
 						//'-c': 'copy',
 					},
 				});
-				res.socket.server['lpz'] = true;
+				streamLpz.on('exitWithError', function () {
+					streamLpz.mpeg1Muxer.stream.kill();
+					streamLpz.stop();
+					globalForCameras.lpz = false;
+				});
+				streamLpz.wsServer.on('connection', function () {
+					globalForCameras.lpz = true;
+				});
 			} catch (error) {}
 		} else {
 			console.log('LPZ Camera Socket Already Running');
 		}
-		if (!res.socket.server['scz']) {
+		if (!globalForCameras.scz) {
 			try {
 				const streamScz = await new Stream({
 					name: 'SolarLabCameraSCZ',
@@ -66,7 +82,14 @@ export default async function handler(req, res) {
 						//'-c': 'copy',
 					},
 				});
-				res.socket.server['scz'] = true;
+				streamScz.on('exitWithError', function () {
+					streamScz.mpeg1Muxer.stream.kill();
+					streamScz.stop();
+					globalForCameras.scz = false;
+				});
+				streamScz.wsServer.on('connection', function () {
+					globalForCameras.scz = true;
+				});
 			} catch (error) {}
 		} else {
 			console.log('SCZ Camera Socket Already Running');
