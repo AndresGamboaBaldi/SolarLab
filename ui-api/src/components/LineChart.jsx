@@ -1,64 +1,10 @@
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS } from 'chart.js/auto';
 import { useState, useEffect } from 'react';
+import { Typography, Box, Grid } from '@mui/material';
 
 export default function LineChart({ chartData, minimize, names }) {
-	const [isMobile, setIsMobile] = useState(false);
-
-	// create an event listener
-	useEffect(() => {
-		handleResize();
-		window.addEventListener('resize', handleResize);
-	}, []);
-
-	//choose the screen size
-	const handleResize = () => {
-		if (window.innerWidth < 900) {
-			setIsMobile(true);
-		} else {
-			setIsMobile(false);
-		}
-	};
 	const options = {
-		responsive: true,
-		maintainAspectRatio: false,
-		plugins: {
-			legend: {
-				position: 'right',
-			},
-		},
-		scales: {
-			x: {
-				title: {
-					display: true,
-					text: 'Voltage (V)',
-					font: {
-						family: 'Lato',
-						size: 18,
-						style: 'normal',
-						lineHeight: 1.2,
-						weight: 'bold',
-					},
-				},
-			},
-			y: {
-				title: {
-					display: true,
-					text: 'Current (A)',
-					font: {
-						family: 'Lato',
-						size: 18,
-						style: 'normal',
-						lineHeight: 1.2,
-						weight: 'bold',
-					},
-				},
-				min: 0,
-				max: 12,
-			},
-		},
-	};
-	const mobileOptions = {
 		responsive: true,
 		maintainAspectRatio: false,
 		plugins: {
@@ -117,9 +63,59 @@ export default function LineChart({ chartData, minimize, names }) {
 		datasets: getDatasets(),
 	};
 
-	if (isMobile || minimize) {
-		return <Line data={data} options={mobileOptions}></Line>;
-	} else {
-		return <Line data={data} options={options}></Line>;
-	}
+	return (
+		<Grid container justify='center'>
+			<Grid
+				item
+				xxs={12}
+				xs={12}
+				sx={{
+					display: 'flex',
+					alignItems: 'center',
+				}}
+				justifyContent='center'
+			>
+				<Box
+					sx={{
+						width: '100%',
+						'@media (min-width:900px)': {
+							height: '35vh',
+						},
+						'@media (min-width:1100px)': {
+							height: '35vh',
+						},
+						height: '23vh',
+					}}
+				>
+					<Line data={data} options={options}></Line>
+				</Box>
+			</Grid>
+			<Grid
+				item
+				xxs={6}
+				xs={6}
+				sx={{
+					display: 'flex',
+				}}
+				justifyContent='center'
+			>
+				<Typography variant='header3' color='blacky.main'>
+					X: Voltage (V)
+				</Typography>
+			</Grid>
+			<Grid
+				item
+				xxs={6}
+				xs={6}
+				sx={{
+					display: 'flex',
+				}}
+				justifyContent='center'
+			>
+				<Typography variant='header3' color='blacky.main'>
+					Y: Current (A)
+				</Typography>
+			</Grid>
+		</Grid>
+	);
 }

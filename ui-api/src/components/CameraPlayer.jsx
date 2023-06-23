@@ -48,12 +48,12 @@ export default function StreamPlayer({ name }) {
 	}, []);
 
 	return (
-		<Box>
+		<Box maxWidth='100%'>
 			<canvas
 				ref={streamRef}
 				id='stream-canvas'
 				width='240px'
-				height='240px'
+				height='264px'
 			></canvas>
 		</Box>
 	);

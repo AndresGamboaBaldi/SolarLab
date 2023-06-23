@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 						'-codec:v': 'mpeg1video', // video codec
 						'-b:v': '1000k', // video bit rate
 						'-r': 25, // frame rate
-						'-s': '240x240', // video size
+						'-s': '240x264', // video size
 						'-bf': 0,
 						'-loglevel': 'panic',
 						'-filter:v': 'fps=fps=15',
@@ -45,7 +45,7 @@ export default async function handler(req, res) {
 						'-codec:v': 'mpeg1video', // video codec
 						'-b:v': '1000k', // video bit rate
 						'-r': 25, // frame rate
-						'-s': '240x240', // video size
+						'-s': '240x264', // video size
 						'-bf': 0,
 						'-loglevel': 'panic',
 						'-filter:v': 'fps=fps=15',
@@ -75,7 +75,7 @@ export default async function handler(req, res) {
 						'-codec:v': 'mpeg1video', // video codec
 						'-b:v': '1000k', // video bit rate
 						'-r': 25, // frame rate
-						'-s': '240x240', // video size
+						'-s': '240x264', // video size
 						'-bf': 0,
 						'-loglevel': 'panic',
 						'-filter:v': 'fps=fps=15',

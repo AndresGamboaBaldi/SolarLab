@@ -203,17 +203,18 @@ export default function DepartamentExperiment({
 							md={4}
 							lg={3}
 							mb={{ xxs: 1, xs: 2, s: 2, sm: 2, md: 0 }}
+							columnSpacing={2}
 						>
 							<Grid
 								item
-								mb={{ xxs: 2, xs: 2, s: 2, sm: 2, md: 2 }}
+								mb={2}
 								sx={{ display: 'flex' }}
 								justifyContent='center'
 							>
 								<Box
 									sx={{
 										width: '240px',
-										height: '240px',
+										height: '264px',
 										backgroundColor: 'black',
 									}}
 								>
@@ -306,7 +307,6 @@ export default function DepartamentExperiment({
 												textTransform: 'none',
 												border: 1,
 												borderColor: 'primary.700',
-												mr: 1,
 											}}
 											onClick={() => {
 												sendMqttMessage('ANGLE');
@@ -319,29 +319,10 @@ export default function DepartamentExperiment({
 													'&:hover': {
 														color: '#fff',
 													},
+													mx: { xxs: 3, xs: 3, s: 3, sm: 4, md: 4, lg: 4 },
 												}}
 											>
 												Move
-											</Typography>
-										</Button>
-										<Button
-											variant='contained'
-											sx={{
-												bgcolor: 'primary.700',
-												textTransform: 'none',
-											}}
-											onClick={() => {
-												sendMqttMessage('DATA');
-											}}
-										>
-											<Typography
-												sx={{
-													mx: { xxs: 0, xs: 0, s: 1, sm: 1, md: 1, lg: 1 },
-												}}
-												variant='titleDepartment'
-												color='white'
-											>
-												Start
 											</Typography>
 										</Button>
 									</Grid>
@@ -358,173 +339,188 @@ export default function DepartamentExperiment({
 							md={8}
 							lg={9}
 						>
-							<Grid item xs mb={{ xxs: 1, xs: 2, s: 2, sm: 2 }}>
-								<Box
-									sx={{
-										width: '79vw',
-										'@media (min-width:900px)': {
-											width: '55vw',
-											height: '35vh',
-										},
-										'@media (min-width:1100px)': {
-											width: '65vw',
-											height: '35vh',
-										},
-										height: '23vh',
-									}}
-								>
+							<Grid container columnSpacing={1} rowSpacing={1}>
+								<Grid item xxs={12} xs={12}>
 									<LineChart
 										names={[name]}
 										chartData={[efficiencyTest]}
 									></LineChart>
-								</Box>
-							</Grid>
-							<Grid item>
-								<Grid container columnSpacing={1} rowSpacing={2}>
-									<Grid item xxs={6} sm={4}>
-										<Typography variant='titleDepartment' color='primary.700'>
-											Voltage:
-										</Typography>
-										<Typography
-											ml={1}
-											variant='dataDepartment'
-											color='blacky.main'
-										>
-											{voltage} V
-										</Typography>
-									</Grid>
-									<Grid item xxs={6} sm={4}>
-										<Typography variant='titleDepartment' color='primary.700'>
-											Current:
-										</Typography>
-										<Typography
-											ml={1}
-											variant='dataDepartment'
-											color='blacky.main'
-										>
-											{current} A
-										</Typography>
-									</Grid>
-									<Grid item xxs={6} sm={4}>
-										<Typography variant='titleDepartment' color='primary.700'>
-											Power:
-										</Typography>
-										<Typography
-											ml={1}
-											variant='dataDepartment'
-											color='blacky.main'
-										>
-											{power} W
-										</Typography>
-									</Grid>
-									<Grid
-										item
-										xxs={12}
-										sm={6}
+								</Grid>
+								<Grid
+									item
+									xxs={12}
+									xs={12}
+									justifyContent='center'
+									sx={{
+										display: 'flex',
+										alignItems: 'center',
+									}}
+									mb={1}
+								>
+									<Button
+										variant='contained'
 										sx={{
-											alignItems: 'center',
-											display: 'flex',
-											verticalAlign: 'middle',
-											lineHeight: 'normal',
+											bgcolor: 'primary.700',
+											textTransform: 'none',
+										}}
+										onClick={() => {
+											sendMqttMessage('DATA');
 										}}
 									>
-										<Typography variant='titleDepartment' color='primary.700'>
-											Radiation:
-										</Typography>
 										<Typography
-											ml={1}
-											variant='dataDepartment'
-											color='blacky.main'
-										>
-											{radiation} W/m2
-										</Typography>
-										<IconButton
-											onClick={handleClickRadiation}
 											sx={{
-												py: 0,
-												color: 'secondary.main',
+												mx: { xxs: 3, xs: 3, s: 3, sm: 4, md: 4, lg: 4 },
 											}}
+											variant='titleDepartment'
+											color='white'
 										>
-											<HelpIcon
-												sx={{
-													fontSize: { xxs: '16px', xs: '20px', sm: '30px' },
-												}}
-											/>
-										</IconButton>
-										<Popover
-											open={open}
-											anchorEl={anchorElRadiation}
-											anchorOrigin={{
-												vertical: 'top',
-												horizontal: 'center',
-											}}
-											transformOrigin={{
-												vertical: 'bottom',
-												horizontal: 'center',
-											}}
-											onClose={handleCloseRadiation}
-											disableRestoreFocus
-										>
-											<RadiationChart
-												title='24 Hrs Solar Radiation'
-												city={name}
-											></RadiationChart>
-										</Popover>
-									</Grid>
-									<Grid
-										item
-										xxs={12}
-										sm={6}
+											Start
+										</Typography>
+									</Button>
+								</Grid>
+								<Grid item xxs={6} sm={4}>
+									<Typography variant='titleDepartment' color='primary.700'>
+										Voltage:
+									</Typography>
+									<Typography
+										ml={1}
+										variant='dataDepartment'
+										color='blacky.main'
+									>
+										{voltage} V
+									</Typography>
+								</Grid>
+								<Grid item xxs={6} sm={4}>
+									<Typography variant='titleDepartment' color='primary.700'>
+										Current:
+									</Typography>
+									<Typography
+										ml={1}
+										variant='dataDepartment'
+										color='blacky.main'
+									>
+										{current} A
+									</Typography>
+								</Grid>
+								<Grid item xxs={6} sm={4}>
+									<Typography variant='titleDepartment' color='primary.700'>
+										Power:
+									</Typography>
+									<Typography
+										ml={1}
+										variant='dataDepartment'
+										color='blacky.main'
+									>
+										{power} W
+									</Typography>
+								</Grid>
+								<Grid
+									item
+									xxs={12}
+									sm={6}
+									sx={{
+										alignItems: 'center',
+										display: 'flex',
+										verticalAlign: 'middle',
+										lineHeight: 'normal',
+									}}
+								>
+									<Typography variant='titleDepartment' color='primary.700'>
+										Radiation:
+									</Typography>
+									<Typography
+										ml={1}
+										variant='dataDepartment'
+										color='blacky.main'
+									>
+										{radiation} W/m2
+									</Typography>
+									<IconButton
+										onClick={handleClickRadiation}
 										sx={{
-											alignItems: 'center',
-											display: 'flex',
-											verticalAlign: 'middle',
-											lineHeight: 'normal',
+											py: 0,
+											color: 'secondary.main',
 										}}
 									>
-										<Typography variant='titleDepartment' color='primary.700'>
-											UVA Radiation:
-										</Typography>
-										<Typography
-											ml={1}
-											variant='dataDepartment'
-											color='blacky.main'
-										>
-											{uvaRadiation} W/m2
-										</Typography>
-										<IconButton
-											onClick={handleClickUVARadiation}
+										<HelpIcon
 											sx={{
-												py: 0,
-												color: 'secondary.main',
+												fontSize: { xxs: '16px', xs: '20px', sm: '30px' },
 											}}
-										>
-											<HelpIcon
-												sx={{
-													fontSize: { xxs: '16px', xs: '20px', sm: '30px' },
-												}}
-											/>
-										</IconButton>
-										<Popover
-											open={openUVA}
-											anchorEl={anchorElUVA}
-											anchorOrigin={{
-												vertical: 'top',
-												horizontal: 'center',
+										/>
+									</IconButton>
+									<Popover
+										open={open}
+										anchorEl={anchorElRadiation}
+										anchorOrigin={{
+											vertical: 'top',
+											horizontal: 'center',
+										}}
+										transformOrigin={{
+											vertical: 'bottom',
+											horizontal: 'center',
+										}}
+										onClose={handleCloseRadiation}
+										disableRestoreFocus
+									>
+										<RadiationChart
+											title='24 Hrs Solar Radiation'
+											city={name}
+										></RadiationChart>
+									</Popover>
+								</Grid>
+								<Grid
+									item
+									xxs={12}
+									sm={6}
+									sx={{
+										alignItems: 'center',
+										display: 'flex',
+										verticalAlign: 'middle',
+										lineHeight: 'normal',
+									}}
+								>
+									<Typography variant='titleDepartment' color='primary.700'>
+										UVA Radiation:
+									</Typography>
+									<Typography
+										ml={1}
+										variant='dataDepartment'
+										color='blacky.main'
+									>
+										{uvaRadiation} W/m2
+									</Typography>
+									<IconButton
+										onClick={handleClickUVARadiation}
+										sx={{
+											py: 0,
+											color: 'secondary.main',
+										}}
+									>
+										<HelpIcon
+											sx={{
+												fontSize: { xxs: '16px', xs: '20px', sm: '30px' },
 											}}
-											transformOrigin={{
-												vertical: 'bottom',
-												horizontal: 'center',
-											}}
-											onClose={handleCloseUVARadiation}
-											disableRestoreFocus
-										>
-											<RadiationChart
-												title='24 Hrs UVA Radiation'
-												city={name}
-											></RadiationChart>
-										</Popover>
-									</Grid>
+										/>
+									</IconButton>
+									<Popover
+										open={openUVA}
+										anchorEl={anchorElUVA}
+										anchorOrigin={{
+											vertical: 'top',
+											horizontal: 'center',
+										}}
+										transformOrigin={{
+											vertical: 'bottom',
+											horizontal: 'center',
+										}}
+										onClose={handleCloseUVARadiation}
+										disableRestoreFocus
+									>
+										<RadiationChart
+											title='24 Hrs UVA Radiation'
+											city={name}
+										></RadiationChart>
+									</Popover>
 								</Grid>
 							</Grid>
 						</Grid>
