@@ -33,10 +33,6 @@ export default function ExperimentActions({
 	};
 	const openExperiment = () => {
 		setExperiment(params.row);
-		window.localStorage.setItem(
-			'EXPERIMENT',
-			JSON.stringify({ id: params.id })
-		);
 		handleClose();
 	};
 	return (

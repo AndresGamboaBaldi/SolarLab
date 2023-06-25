@@ -21,7 +21,7 @@ export default function SessionTimer() {
 		}, 900);
 		if (remaingTime.minutes <= 0 && remaingTime.seconds <= 0) {
 			window.localStorage.removeItem('SESSION_DATA');
-			toast.info('Your Session has Ended');
+			toast.warn('Your Session has Ended');
 			router.push('/');
 		} else if (remaingTime.minutes == 5 && remaingTime.seconds <= 0) {
 			toast.warn('5 Minutes Remaining... Save your progress', {

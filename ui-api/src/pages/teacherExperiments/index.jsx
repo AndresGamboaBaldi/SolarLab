@@ -21,10 +21,10 @@ import Head from 'next/head';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 export default function TeacherExperiments() {
-	const [selectedCourseName, setSelectedCourseName] = useState('');
 	const [selectedStudentName, setSelectedStudentName] = useState('');
 	const [selectedStudentEmail, setSelectedStudentEmail] = useState('');
 	const [courseStudents, setCourseStudents] = useState({});
+	const [selectedCourse, setSelectedCourse] = useState('');
 	const [teacherCourses, setTeacherCourses] = useState([]);
 
 	const { data: session, status } = useSession();
@@ -77,7 +77,7 @@ export default function TeacherExperiments() {
 		} else {
 			setTeacherCourses(answer.courses);
 			if (answer.courses.length > 0) {
-				setSelectedCourseName(answer.courses[0].name);
+				setSelectedCourse(answer.courses[0].id);
 				setCourseStudents(answer.courses[0].students);
 				if (answer.courses[0].students.length > 0) {
 					setSelectedStudentName(answer.courses[0].students[0].user.name);
@@ -92,7 +92,7 @@ export default function TeacherExperiments() {
 		setSelectedStudentName('');
 		setSelectedStudentEmail('');
 		setExperiment(undefined);
-		setSelectedCourseName(event.target.value);
+		setSelectedCourse(event.target.value);
 		teacherCourses.forEach((course) => {
 			if (course.name === event.target.value) {
 				setCourseStudents(course.students);
@@ -171,13 +171,24 @@ export default function TeacherExperiments() {
 											</Typography>
 										</InputLabel>
 										<Select
-											value={selectedCourseName}
+											fullWidth
+											value={selectedCourse}
 											onChange={handleChangeCourse}
+											displayEmpty
+											renderValue={() => {
+												let value = '';
+												teacherCourses.forEach((course) => {
+													if (selectedCourse == course.id) {
+														value = course.name + ' - ' + course.startDate;
+													}
+												});
+												return value;
+											}}
 										>
 											{teacherCourses.map((course) => (
-												<MenuItem key={course.id} value={course.name}>
+												<MenuItem key={course.id} value={course.id}>
 													<Typography variant='header3' color='blacky.main'>
-														{course.name}
+														{course.name} {'- '} {course.startDate}
 													</Typography>
 												</MenuItem>
 											))}
@@ -266,6 +277,13 @@ export default function TeacherExperiments() {
 									<Typography color='white.main' variant='buttonsExperiments'>
 										View Student Experiments
 									</Typography>
+									<ExperimentsListDialog
+										open={openExperimentsList}
+										handleClose={() => setOpenExperimentsList(false)}
+										email={selectedStudentEmail}
+										setExperiment={setExperiment}
+										courseId={selectedCourse}
+									/>
 								</Button>
 							) : (
 								<Button
@@ -435,12 +453,6 @@ export default function TeacherExperiments() {
 						</Box>
 					</Card>
 				</Box>
-				<ExperimentsListDialog
-					open={openExperimentsList}
-					handleClose={() => setOpenExperimentsList(false)}
-					email={selectedStudentEmail}
-					setExperiment={setExperiment}
-				/>
 			</Box>
 		</main>
 	);

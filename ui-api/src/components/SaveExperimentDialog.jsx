@@ -6,6 +6,10 @@ import {
 	TextField,
 	Typography,
 	Stack,
+	Select,
+	MenuItem,
+	FormControl,
+	InputLabel,
 } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import DepartmentDataDialog from './DepartmentDataDialog';
@@ -30,6 +34,8 @@ export default function SaveExperimentDialog({
 	);
 
 	const [departmentsToSave, setDepartmentsToSave] = useState([]);
+	const [studentCourses, setStudentCourses] = useState([]);
+	const [selectedCourse, setSelectedCourse] = useState('');
 	useEffect(() => {
 		const date = new Date().toLocaleString(navigator.language);
 		const time = new Date().toLocaleString(navigator.language, {
@@ -45,6 +51,34 @@ export default function SaveExperimentDialog({
 			)
 		);
 	}, [open]);
+	useEffect(() => {
+		checkSession();
+	}, [status]);
+
+	const checkSession = async () => {
+		if (status === 'authenticated') {
+			await loadStudentCourses();
+		} else if (status === 'loading') {
+		} else {
+		}
+	};
+
+	const loadStudentCourses = async () => {
+		const response = await fetch(`/api/courses/readfiltered`, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+			body: JSON.stringify({ email: session.user.email }),
+		});
+		const answer = await response.json();
+
+		if (!answer.status) {
+			toast.error('Something Went Wrong, Please Try Again');
+		} else {
+			setStudentCourses(answer.courses);
+		}
+	};
 
 	const saveExperiment = async () => {
 		if (selectedCities.length > 0) {
@@ -76,11 +110,13 @@ export default function SaveExperimentDialog({
 							experimentDate: date,
 							experimentTime: time,
 							timezone: timezone,
+							courseId: selectedCourse,
 						}),
 					});
 					const answer = await response.json();
 					if (answer.status) {
 						setExperimentName('');
+						setSelectedCourse('');
 						handleClose();
 						toast.success('Saved Successfully!');
 					} else {
@@ -90,7 +126,7 @@ export default function SaveExperimentDialog({
 					toast.error('A City is Missing a Test, Please Start it First');
 				}
 			} else {
-				toast.error('Please Give the Experiment a Name before Saving');
+				toast.error('Please Review Name and Course');
 			}
 		} else {
 			toast.error('Select Cities for the Experiment');
@@ -98,13 +134,17 @@ export default function SaveExperimentDialog({
 	};
 
 	const validateFields = () => {
-		return experimentName;
+		return experimentName && selectedCourse;
 	};
 	const validateEfficiencyTests = () => {
 		for (let i = 0; i < departmentsToSave.length; i++) {
 			if (departmentsToSave[i].efficiencyTest.length == 0) return false;
 		}
 		return true;
+	};
+
+	const handleChange = (event) => {
+		setSelectedCourse(event.target.value);
 	};
 
 	return (
@@ -139,7 +179,6 @@ export default function SaveExperimentDialog({
 						</Typography>
 					</Grid>
 					<Grid item xxs={12} xs={12} mb={1}>
-						{' '}
 						<TextField
 							required
 							hiddenLabel
@@ -158,14 +197,63 @@ export default function SaveExperimentDialog({
 							}}
 						/>
 					</Grid>
+					<Grid item xxs={12} xs={12} mb={1}>
+						<Typography variant='titleDialog' color='primary.700'>
+							Course
+						</Typography>
+					</Grid>
+					<Grid item xxs={12} xs={12} mb={1}>
+						{studentCourses.length > 0 ? (
+							<FormControl sx={{ minWidth: '100%' }} size='small'>
+								<InputLabel>
+									<Typography variant='header3' color='blacky.main'>
+										Select a Course
+									</Typography>
+								</InputLabel>
+								<Select
+									fullWidth
+									value={selectedCourse}
+									onChange={handleChange}
+									displayEmpty
+									renderValue={() => {
+										let value = '';
+										studentCourses.forEach((course) => {
+											if (selectedCourse == course.id) {
+												value =
+													course.name +
+													' - ' +
+													course.teacher.user.name +
+													' - ' +
+													course.startDate;
+											}
+										});
+										return value;
+									}}
+								>
+									{studentCourses.map((course) => (
+										<MenuItem key={course.id} value={course.id}>
+											<Typography variant='header3' color='blacky.main'>
+												{course.name} {'- '}
+												{course.teacher.user.name} {'- '} {course.startDate}
+											</Typography>
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						) : (
+							<Typography variant='header3' color='info.main'>
+								Not Member of any Course
+							</Typography>
+						)}
+					</Grid>
 
 					<Grid item xxs={4} xs={4}>
-						<Typography variant='buttonsExperiments' color='primary.700'>
+						<Typography variant='titleDialog' color='primary.700'>
 							Date
 						</Typography>
 					</Grid>
 					<Grid item xxs={8} xs={8}>
-						<Typography variant='buttonsExperiments' color='primary.700'>
+						<Typography variant='titleDialog' color='primary.700'>
 							Time
 						</Typography>
 					</Grid>

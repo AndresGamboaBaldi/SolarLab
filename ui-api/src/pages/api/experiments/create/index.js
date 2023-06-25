@@ -17,6 +17,11 @@ export default async function handler(req, res) {
 					departmentLabs: {
 						create: req.body.departments,
 					},
+					course: {
+						connect: {
+							id: req.body.courseId,
+						},
+					},
 				},
 			});
 			req.body.efficiencyTestRecords.forEach((recordsObject) => {

@@ -5,7 +5,14 @@ export default async function handler(req, res) {
 		try {
 			const experiments = await db.Experiment.findMany({
 				where: {
-					studentEmail: req.body.email,
+					AND: [
+						{
+							studentEmail: req.body.email,
+						},
+						{
+							courseId: req.body.courseId,
+						},
+					],
 				},
 				include: {
 					departmentLabs: {

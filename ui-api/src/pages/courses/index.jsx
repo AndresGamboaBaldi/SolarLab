@@ -27,7 +27,6 @@ export default function Courses() {
 
 	const [teacherCourses, setTeacherCourses] = useState([]);
 	const [openCreateCourseDialog, setOpenCreateCourseDialog] = useState(false);
-	const [selectedCourseName, setSelectedCourseName] = useState('');
 	const [selectedCourse, setSelectedCourse] = useState({});
 	const [courseStudents, setCourseStudents] = useState({});
 	const [courseRequests, setCourseRequests] = useState({});
@@ -61,7 +60,6 @@ export default function Courses() {
 			setTeacherCourses(answer.courses);
 			if (!window.localStorage.getItem('COURSE') && answer.courses.length > 0) {
 				setSelectedCourse(answer.courses[0]);
-				setSelectedCourseName(answer.courses[0].name);
 				loadCourseStudents(answer.courses[0].id);
 				loadCourseRequests(answer.courses[0].id);
 				window.localStorage.setItem(
@@ -81,9 +79,6 @@ export default function Courses() {
 				);
 				loadCourseRequests(
 					JSON.parse(window.localStorage.getItem('COURSE')).id
-				);
-				setSelectedCourseName(
-					JSON.parse(window.localStorage.getItem('COURSE')).name
 				);
 			}
 		}
@@ -128,7 +123,6 @@ export default function Courses() {
 	};
 
 	const handleChange = (event) => {
-		setSelectedCourseName(event.target.value);
 		teacherCourses.forEach((course) => {
 			if (course.name === event.target.value) {
 				loadCourseStudents(course.id);
@@ -321,7 +315,7 @@ export default function Courses() {
 							<Box ml={2}>
 								{teacherCourses.length > 0 ? (
 									<FormControl size='small'>
-										<Select value={selectedCourseName} onChange={handleChange}>
+										<Select value={selectedCourse.name} onChange={handleChange}>
 											{teacherCourses.map((course) => (
 												<MenuItem key={course.id} value={course.name}>
 													<Typography variant='header3' color='blacky.main'>
@@ -402,7 +396,7 @@ export default function Courses() {
 									}}
 									order={1}
 								>
-									<Typography variant='buttons1' color='secondary.main'>
+									<Typography variant='buttons1' color='primary.700'>
 										Start Date:
 									</Typography>
 									<Typography variant='header3' color='blacky.main' ml={2}>
@@ -421,7 +415,7 @@ export default function Courses() {
 									}}
 									order={2}
 								>
-									<Typography variant='buttons1' color='secondary.main'>
+									<Typography variant='buttons1' color='primary.700'>
 										End Date:
 									</Typography>
 									<Typography variant='header3' color='blacky.main' ml={2}>
@@ -439,7 +433,7 @@ export default function Courses() {
 									}}
 									order={3}
 								>
-									<Typography variant='buttons1' color='secondary.main'>
+									<Typography variant='buttons1' color='primary.700'>
 										Description:
 									</Typography>
 									<Typography variant='header3' color='blacky.main' ml={2}>
@@ -458,7 +452,7 @@ export default function Courses() {
 									}}
 									order={4}
 								>
-									<Typography variant='buttons1' color='secondary.main'>
+									<Typography variant='buttons1' color='primary.700'>
 										List of Students:
 									</Typography>
 								</Grid>
@@ -474,7 +468,7 @@ export default function Courses() {
 									}}
 									order={{ xxs: 6, xs: 6, s: 6, sm: 6, md: 5 }}
 								>
-									<Typography variant='buttons1' color='secondary.main'>
+									<Typography variant='buttons1' color='primary.700'>
 										Join Requests:
 									</Typography>
 								</Grid>

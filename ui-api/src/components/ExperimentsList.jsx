@@ -11,6 +11,7 @@ export default function ExperimentList({
 	handleClose,
 	email,
 	setExperiment,
+	courseId,
 }) {
 	const columns = [
 		{ field: 'id', headerName: 'ID', width: 70 },
@@ -93,7 +94,7 @@ export default function ExperimentList({
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
-			body: JSON.stringify({ email: email }),
+			body: JSON.stringify({ email: email, courseId: courseId }),
 		});
 		const experiments = await response.json();
 		if (!experiments.status) {
