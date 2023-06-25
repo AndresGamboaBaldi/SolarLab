@@ -48,34 +48,50 @@ const testLpz = [
 	{
 		voltage: 1,
 		current: 8,
+		power: 8,
+		city: 'La Paz',
 	},
 	{
 		voltage: 3,
 		current: 8,
+		power: 24,
+		city: 'La Paz',
 	},
 	{
 		voltage: 5,
 		current: 8,
+		power: 40,
+		city: 'La Paz',
 	},
 	{
 		voltage: 7,
 		current: 8,
+		power: 56,
+		city: 'La Paz',
 	},
 	{
 		voltage: 9,
 		current: 8,
+		power: 72,
+		city: 'La Paz',
 	},
 	{
 		voltage: 11,
 		current: 7,
+		power: 77,
+		city: 'La Paz',
 	},
 	{
 		voltage: 13,
 		current: 0,
+		power: 0,
+		city: 'La Paz',
 	},
 	{
 		voltage: 15,
 		current: 0,
+		power: 0,
+		city: 'La Paz',
 	},
 ];
 
@@ -83,34 +99,50 @@ const testCbba = [
 	{
 		voltage: 1,
 		current: 10,
+		power: 10,
+		city: 'Cochabamba',
 	},
 	{
 		voltage: 3,
 		current: 10,
+		power: 30,
+		city: 'Cochabamba',
 	},
 	{
 		voltage: 5,
 		current: 10,
+		power: 50,
+		city: 'Cochabamba',
 	},
 	{
 		voltage: 7,
 		current: 10,
+		power: 70,
+		city: 'Cochabamba',
 	},
 	{
 		voltage: 9,
 		current: 10,
+		power: 90,
+		city: 'Cochabamba',
 	},
 	{
 		voltage: 11,
 		current: 10,
+		power: 110,
+		city: 'Cochabamba',
 	},
 	{
 		voltage: 13,
 		current: 8.5,
+		power: 110.5,
+		city: 'Cochabamba',
 	},
 	{
 		voltage: 15,
 		current: 0,
+		power: 0,
+		city: 'Cochabamba',
 	},
 ];
 

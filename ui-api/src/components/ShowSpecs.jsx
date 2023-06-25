@@ -8,7 +8,7 @@ function TabPanel(props) {
 		<div role='tabpanel' hidden={value !== index}>
 			{value === index && (
 				<Box p={3} pt={0}>
-					<Typography>{children}</Typography>
+					<Typography component={'span'}>{children}</Typography>
 				</Box>
 			)}
 		</div>
@@ -87,7 +87,12 @@ export default function ShowSpecs({ city }) {
 						}}
 						justifyContent='center'
 					>
-						<Typography variant='titleDepartment' color='primary.700' mt={2}>
+						<Typography
+							variant='titleDepartment'
+							color='primary.700'
+							mt={2}
+							component={'span'}
+						>
 							Specifications
 						</Typography>
 					</Grid>
@@ -108,6 +113,7 @@ export default function ShowSpecs({ city }) {
 										variant='titleDepartment'
 										color='blacky.main'
 										mr={1}
+										component={'span'}
 									>
 										Model:
 									</Typography>

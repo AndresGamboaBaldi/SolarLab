@@ -13,6 +13,8 @@ export default async function handler(req, res) {
 						},
 						voltage: testRecord.voltage,
 						current: testRecord.current,
+						power: testRecord.power,
+						city: testRecord.city,
 					},
 				});
 			});

@@ -111,6 +111,11 @@ export default function CoursesDialog({ open, handleClose, user }) {
 			valueGetter: (params) => params.row?.teacher?.user?.name,
 		},
 		{
+			field: 'startDate',
+			headerName: 'Start Date',
+			minWidth: 110,
+		},
+		{
 			field: 'actions',
 			headerName: 'Status',
 			minWidth: 120,
@@ -226,7 +231,7 @@ export default function CoursesDialog({ open, handleClose, user }) {
 			PaperProps={{
 				sx: {
 					borderRadius: '24px',
-					maxWidth: '660px',
+					maxWidth: '100%',
 				},
 			}}
 		>

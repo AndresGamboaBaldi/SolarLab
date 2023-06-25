@@ -28,6 +28,7 @@ export default function Courses() {
 	const [teacherCourses, setTeacherCourses] = useState([]);
 	const [openCreateCourseDialog, setOpenCreateCourseDialog] = useState(false);
 	const [selectedCourseName, setSelectedCourseName] = useState('');
+	const [selectedCourse, setSelectedCourse] = useState({});
 	const [courseStudents, setCourseStudents] = useState({});
 	const [courseRequests, setCourseRequests] = useState({});
 	const [reRender, setReRender] = useState(false);
@@ -59,6 +60,7 @@ export default function Courses() {
 		} else {
 			setTeacherCourses(answer.courses);
 			if (!window.localStorage.getItem('COURSE') && answer.courses.length > 0) {
+				setSelectedCourse(answer.courses[0]);
 				setSelectedCourseName(answer.courses[0].name);
 				loadCourseStudents(answer.courses[0].id);
 				loadCourseRequests(answer.courses[0].id);
@@ -67,9 +69,13 @@ export default function Courses() {
 					JSON.stringify({
 						name: answer.courses[0].name,
 						id: answer.courses[0].id,
+						startDate: answer.courses[0].startDate,
+						endDate: answer.courses[0].endDate,
+						description: answer.courses[0].description,
 					})
 				);
 			} else if (answer.courses.length > 0) {
+				setSelectedCourse(JSON.parse(window.localStorage.getItem('COURSE')));
 				loadCourseStudents(
 					JSON.parse(window.localStorage.getItem('COURSE')).id
 				);
@@ -96,7 +102,9 @@ export default function Courses() {
 		if (!answer.status) {
 			toast.error('Something Went Wrong, Please Try Again');
 		} else {
-			setCourseStudents(answer.course.students);
+			if (answer.course) {
+				setCourseStudents(answer.course.students);
+			}
 		}
 	};
 
@@ -113,7 +121,9 @@ export default function Courses() {
 		if (!answer.status) {
 			toast.error('Something Went Wrong, Please Try Again');
 		} else {
-			setCourseRequests(answer.requests);
+			if (answer.requests) {
+				setCourseRequests(answer.requests);
+			}
 		}
 	};
 
@@ -125,8 +135,15 @@ export default function Courses() {
 				loadCourseRequests(course.id);
 				window.localStorage.setItem(
 					'COURSE',
-					JSON.stringify({ name: event.target.value, id: course.id })
+					JSON.stringify({
+						name: event.target.value,
+						id: course.id,
+						startDate: course.startDate,
+						endDate: course.endDate,
+						description: course.description,
+					})
 				);
+				setSelectedCourse(course);
 			}
 		});
 	};
@@ -375,6 +392,62 @@ export default function Courses() {
 							>
 								<Grid
 									item
+									xxs={12}
+									xs={12}
+									s={6}
+									sx={{
+										display: 'inline-block',
+										verticalAlign: 'middle',
+										lineHeight: 'normal',
+									}}
+									order={1}
+								>
+									<Typography variant='buttons1' color='secondary.main'>
+										Start Date:
+									</Typography>
+									<Typography variant='header3' color='blacky.main' ml={2}>
+										{selectedCourse.startDate}
+									</Typography>
+								</Grid>
+								<Grid
+									item
+									xxs={12}
+									xs={12}
+									s={6}
+									sx={{
+										display: 'inline-block',
+										verticalAlign: 'middle',
+										lineHeight: 'normal',
+									}}
+									order={2}
+								>
+									<Typography variant='buttons1' color='secondary.main'>
+										End Date:
+									</Typography>
+									<Typography variant='header3' color='blacky.main' ml={2}>
+										{selectedCourse.endDate}
+									</Typography>
+								</Grid>
+								<Grid
+									item
+									xxs={12}
+									xs={12}
+									sx={{
+										display: 'inline-block',
+										verticalAlign: 'middle',
+										lineHeight: 'normal',
+									}}
+									order={3}
+								>
+									<Typography variant='buttons1' color='secondary.main'>
+										Description:
+									</Typography>
+									<Typography variant='header3' color='blacky.main' ml={2}>
+										{selectedCourse.description}
+									</Typography>
+								</Grid>
+								<Grid
+									item
 									xs={12}
 									s={12}
 									sm={12}
@@ -383,9 +456,9 @@ export default function Courses() {
 										display: 'flex',
 										alignItems: 'center',
 									}}
-									order={3}
+									order={4}
 								>
-									<Typography variant='header2' color='secondary.main'>
+									<Typography variant='buttons1' color='secondary.main'>
 										List of Students:
 									</Typography>
 								</Grid>
@@ -399,9 +472,9 @@ export default function Courses() {
 										display: 'flex',
 										alignItems: 'center',
 									}}
-									order={{ xxs: 5, xs: 5, s: 5, sm: 5, md: 4 }}
+									order={{ xxs: 6, xs: 6, s: 6, sm: 6, md: 5 }}
 								>
-									<Typography variant='header2' color='secondary.main'>
+									<Typography variant='buttons1' color='secondary.main'>
 										Join Requests:
 									</Typography>
 								</Grid>
@@ -415,7 +488,7 @@ export default function Courses() {
 										display: 'flex',
 										alignItems: 'center',
 									}}
-									order={{ xxs: 4, xs: 4, s: 4, sm: 4, md: 5 }}
+									order={{ xxs: 5, xs: 5, s: 5, sm: 5, md: 6 }}
 								>
 									{courseStudents.length > 0 ? (
 										<Box height='100%' width='100%'>
@@ -547,7 +620,7 @@ export default function Courses() {
 										display: 'flex',
 										alignItems: 'center',
 									}}
-									order={6}
+									order={7}
 								>
 									{courseRequests.length > 0 ? (
 										<Box height='100%' width='100%'>

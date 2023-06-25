@@ -184,13 +184,7 @@ export default function SaveExperimentDialog({
 
 					<Grid item xxs={12} xs={12}>
 						{' '}
-						<Box
-							sx={{
-								width: '100%',
-								height: '19vh',
-							}}
-							mt={1}
-						>
+						<Box mt={1}>
 							<LineChart
 								chartData={departmentsToSave.map(
 									(department) => department.efficiencyTest

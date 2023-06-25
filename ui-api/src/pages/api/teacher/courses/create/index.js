@@ -2,7 +2,7 @@ import db from '@/lib/db';
 
 export default async function Post(req, res) {
 	if (req.method === 'POST') {
-		const { email, name } = req.body;
+		const { email, name, description, startDate, endDate } = req.body;
 		try {
 			await db.Course.create({
 				data: {
@@ -12,6 +12,9 @@ export default async function Post(req, res) {
 						},
 					},
 					name: name,
+					description: description,
+					startDate: startDate,
+					endDate: endDate,
 				},
 			});
 

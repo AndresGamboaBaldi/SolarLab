@@ -21,7 +21,7 @@ export default function Clock() {
 				hour12: false,
 			});
 			setTime(datetime);
-		}, 29000);
+		}, 30000);
 
 		return () => clearTimeout(timer);
 	}, [time]);

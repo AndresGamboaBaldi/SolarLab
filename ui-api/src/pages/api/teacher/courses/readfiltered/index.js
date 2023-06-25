@@ -33,6 +33,15 @@ export default async function handler(req, res) {
 							},
 						},
 					},
+					requests: {
+						include: {
+							student: {
+								include: {
+									user: true,
+								},
+							},
+						},
+					},
 				},
 			});
 			return res.status(200).json({ courses: courses, status: true });

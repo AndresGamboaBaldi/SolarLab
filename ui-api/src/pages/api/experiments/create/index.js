@@ -30,6 +30,8 @@ export default async function handler(req, res) {
 							},
 							voltage: record.voltage,
 							current: record.current,
+							power: record.power,
+							city: record.city,
 						},
 					});
 				});
