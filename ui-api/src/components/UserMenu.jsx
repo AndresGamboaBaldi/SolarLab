@@ -26,7 +26,7 @@ import FinishGoogleRegister from './FinishGoogleRegister';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 
-export default function UserMenu({ session }) {
+export default function UserMenu({ email }) {
 	const router = useRouter();
 	const [openSignup, setOpenSignUp] = useState(false);
 	const [isTeacher, setIsTeacher] = useState(false);
@@ -89,7 +89,7 @@ export default function UserMenu({ session }) {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
-			body: JSON.stringify({ email: session.user.email }),
+			body: JSON.stringify({ email: email }),
 		});
 		const answer = await response.json();
 

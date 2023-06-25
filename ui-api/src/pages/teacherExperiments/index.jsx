@@ -18,6 +18,8 @@ import LineChart from '../../components/LineChart';
 import ShowDepartamentData from '../../components/ShowDepartamentData';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
+import { CSVLink } from 'react-csv';
+import DownloadIcon from '@mui/icons-material/Download';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 export default function TeacherExperiments() {
@@ -31,6 +33,30 @@ export default function TeacherExperiments() {
 	const [experiment, setExperiment] = useState({});
 
 	const [openExperimentsList, setOpenExperimentsList] = useState(false);
+
+	const camelCase = (str) => {
+		return str.substring(0, 1).toUpperCase() + str.substring(1);
+	};
+
+	const getColumns = () => {
+		// Get column names
+		const columns = ['city', 'voltage', 'current', 'power'];
+		let headers = [];
+		columns.forEach((col, idx) => {
+			headers.push({ label: camelCase(col), key: col });
+		});
+
+		return headers;
+	};
+
+	const getData = (data) => {
+		// Get column names
+		let totalArray = [];
+		data.forEach((array) => {
+			totalArray.push(...array);
+		});
+		return totalArray;
+	};
 
 	const checkSession = async () => {
 		if (status === 'authenticated') {
@@ -326,7 +352,7 @@ export default function TeacherExperiments() {
 								container
 								justify='center'
 								px={2}
-								mb={{ xxs: 1, xs: 1, s: 1, sm: 3 }}
+								mb={{ xxs: 1, xs: 1, s: 1, sm: 2 }}
 							>
 								<Grid
 									item
@@ -348,7 +374,7 @@ export default function TeacherExperiments() {
 								<Grid
 									container
 									justify='center'
-									rowSpacing={{ xxs: 1, xs: 1, s: 1, sm: 3 }}
+									rowSpacing={{ xxs: 1, xs: 1, s: 1, sm: 2 }}
 									px={2}
 								>
 									<Grid
@@ -380,20 +406,7 @@ export default function TeacherExperiments() {
 									</Grid>
 
 									<Grid item xxs={12} align='center'>
-										<Box
-											sx={{
-												width: '65vw',
-												height: '18vh',
-												'@media (min-width:500px)': {
-													width: '65vw',
-													height: '23vh',
-												},
-												'@media (min-width:700px)': {
-													width: '65vw',
-													height: '32vh',
-												},
-											}}
-										>
+										<Box>
 											<LineChart
 												chartData={experiment.departmentLabs.map(
 													(department) => department.efficiencyTest
@@ -403,6 +416,33 @@ export default function TeacherExperiments() {
 												)}
 											></LineChart>
 										</Box>
+									</Grid>
+									<Grid item xxs={12} align='center'>
+										<CSVLink
+											data={getData(
+												experiment.departmentLabs.map(
+													(department) => department.efficiencyTest
+												)
+											)}
+											headers={getColumns()}
+											filename={selectedStudentName + '-Efficiency_Test.csv'}
+										>
+											<Button
+												variant='contained'
+												sx={{
+													textTransform: 'none',
+													bgcolor: 'primary.700',
+												}}
+												endIcon={<DownloadIcon />}
+											>
+												<Typography
+													color='white.main'
+													variant='buttonsExperiments'
+												>
+													Download Data
+												</Typography>
+											</Button>
+										</CSVLink>
 									</Grid>
 									<Grid item xxs={12} align='center' ml={2} mb={3}>
 										{experiment.departmentLabs.map((city) => (

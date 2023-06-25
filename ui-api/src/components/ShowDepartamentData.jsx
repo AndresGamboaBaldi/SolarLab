@@ -10,18 +10,18 @@ const gridDataStyle = {
 };
 
 const progressBarStyle = {
-	width: '95%',
+	width: '85%',
 	'@media (min-width:500px)': {
-		width: '65%',
-	},
-	'@media (min-width:700px)': {
 		width: '55%',
 	},
-	'@media (min-width:1100px)': {
+	'@media (min-width:700px)': {
 		width: '45%',
 	},
-	'@media (min-width:1300px)': {
+	'@media (min-width:1100px)': {
 		width: '35%',
+	},
+	'@media (min-width:1300px)': {
+		width: '30%',
 	},
 };
 
@@ -59,7 +59,17 @@ export default function ShowDepartamentData({ departmentData, name }) {
 			rowSpacing={{ xxs: 1, xs: 1, s: 2, sm: 2 }}
 			columnSpacing={2}
 		>
-			<Grid item xxs={12} xs={12} my={2}>
+			<Grid
+				item
+				xxs={12}
+				xs={12}
+				my={1}
+				sx={{
+					display: 'flex',
+					alignItems: 'center',
+				}}
+				justifyContent={'left'}
+			>
 				<Typography variant='header12' color='blacky.main'>
 					{name}
 				</Typography>

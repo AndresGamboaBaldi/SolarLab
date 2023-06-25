@@ -22,6 +22,8 @@ import SignInDialog from '../../components/SignInDialog';
 import SignUpDialog from '../../components/SignUpDialog';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import Head from 'next/head';
+import { CSVLink } from 'react-csv';
+import DownloadIcon from '@mui/icons-material/Download';
 
 export default function Experiments() {
 	const [noExperiments, setNoExperiments] = useState(true);
@@ -33,9 +35,33 @@ export default function Experiments() {
 	const [openExperimentsList, setOpenExperimentsList] = useState(false);
 	const [selectedCourse, setSelectedCourse] = useState('');
 
+	const camelCase = (str) => {
+		return str.substring(0, 1).toUpperCase() + str.substring(1);
+	};
+
+	const getColumns = () => {
+		// Get column names
+		const columns = ['city', 'voltage', 'current', 'power'];
+		let headers = [];
+		columns.forEach((col, idx) => {
+			headers.push({ label: camelCase(col), key: col });
+		});
+
+		return headers;
+	};
+
+	const getData = (data) => {
+		// Get column names
+		let totalArray = [];
+		data.forEach((array) => {
+			totalArray.push(...array);
+		});
+		return totalArray;
+	};
+
 	useEffect(() => {
 		checkSession();
-	}, [status, openExperimentsList]);
+	}, [status]);
 
 	const router = useRouter();
 	const handleEnterRemoteLab = () => {
@@ -164,7 +190,7 @@ export default function Experiments() {
 				</Box>
 			</div>
 			<Box
-				mt={{ xxs: 10, xs: 10, s: 10, sm: 12 }}
+				mt={{ xxs: 8, xs: 8, s: 8, sm: 10 }}
 				px={{ xxs: 2, xs: 2, s: 3, sm: 4 }}
 			>
 				<Grid container>
@@ -172,6 +198,10 @@ export default function Experiments() {
 						item
 						xxs={12}
 						xs={12}
+						s={12}
+						sm={12}
+						md={6}
+						lg={6}
 						sx={{
 							display: 'flex',
 							alignItems: 'center',
@@ -183,7 +213,7 @@ export default function Experiments() {
 						</Typography>
 						<Box ml={2}>
 							{studentCourses.length > 0 ? (
-								<FormControl size='small' sx={{ minWidth: '300px' }}>
+								<FormControl size='small'>
 									<InputLabel>
 										<Typography variant='header3' color='blacky.main'>
 											Select a Course
@@ -220,9 +250,80 @@ export default function Experiments() {
 							)}
 						</Box>
 					</Grid>
+					{!noExperiments ? (
+						<Grid
+							item
+							xxs={12}
+							xs={12}
+							s={12}
+							sm={12}
+							md={6}
+							lg={6}
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+							}}
+							justifyContent={'flex-end'}
+							mt={2}
+							mb={{ xxs: 2, xs: 3, s: 3, sm: 3 }}
+						>
+							<Button
+								variant='contained'
+								sx={{
+									textTransform: 'none',
+									bgcolor: 'primary.700',
+									mr: { xxs: 1, xs: 1, s: 2, sm: 2 },
+								}}
+								onClick={() => {
+									setOpenExperimentsList(true);
+								}}
+							>
+								<Typography
+									color='white.main'
+									variant='buttonsExperiments'
+									sx={{
+										mx: { xxs: 0, xs: 0, s: 1, sm: 2 },
+									}}
+								>
+									Experiments
+								</Typography>
+							</Button>
+							<Button
+								variant='outlined'
+								sx={{
+									border: 1,
+									textTransform: 'none',
+									borderColor: 'primary.700',
+								}}
+								onClick={handleEnterRemoteLab}
+							>
+								<Typography
+									color='primary.700'
+									variant='buttonsExperiments'
+									sx={{
+										mx: { xxs: 0, xs: 0, s: 1, sm: 1 },
+										'&:hover': {
+											color: '#fff',
+										},
+									}}
+								>
+									Go to Remote Lab
+								</Typography>
+							</Button>
+
+							<ExperimentsListDialog
+								open={openExperimentsList}
+								handleClose={() => setOpenExperimentsList(false)}
+								email={session.user.email}
+								setExperiment={setExperiment}
+								courseId={selectedCourse}
+							/>
+						</Grid>
+					) : null}
 				</Grid>
+
 				{!noExperiments ? (
-					<Box>
+					<Box mb={4}>
 						<Card
 							elevation={5}
 							mx={{ xxs: 2, xs: 2, s: 2, sm: 2 }}
@@ -238,7 +339,7 @@ export default function Experiments() {
 								<Grid
 									container
 									justify='center'
-									rowSpacing={{ xxs: 1, xs: 2, s: 3 }}
+									rowSpacing={{ xxs: 1, xs: 1, s: 2 }}
 								>
 									<Grid
 										item
@@ -269,20 +370,7 @@ export default function Experiments() {
 									</Grid>
 
 									<Grid item xxs={12} align='center'>
-										<Box
-											sx={{
-												width: '65vw',
-												height: '18vh',
-												'@media (min-width:500px)': {
-													width: '65vw',
-													height: '23vh',
-												},
-												'@media (min-width:700px)': {
-													width: '65vw',
-													height: '32vh',
-												},
-											}}
-										>
+										<Box>
 											<LineChart
 												chartData={experiment.departmentLabs.map(
 													(department) => department.efficiencyTest
@@ -293,7 +381,34 @@ export default function Experiments() {
 											></LineChart>
 										</Box>
 									</Grid>
-									<Grid item xxs={12} align='center' mb={5}>
+									<Grid item xxs={12} align='center'>
+										<CSVLink
+											data={getData(
+												experiment.departmentLabs.map(
+													(department) => department.efficiencyTest
+												)
+											)}
+											headers={getColumns()}
+											filename={experiment.name + '-Efficiency_Test.csv'}
+										>
+											<Button
+												variant='contained'
+												sx={{
+													textTransform: 'none',
+													bgcolor: 'primary.700',
+												}}
+												endIcon={<DownloadIcon />}
+											>
+												<Typography
+													color='white.main'
+													variant='buttonsExperiments'
+												>
+													Download Data
+												</Typography>
+											</Button>
+										</CSVLink>
+									</Grid>
+									<Grid item xxs={12} align='center' mb={3}>
 										{experiment.departmentLabs.map((city) => (
 											<ShowDepartamentData
 												departmentData={experiment.departmentLabs}
@@ -305,69 +420,6 @@ export default function Experiments() {
 								</Grid>
 							</Box>
 						</Card>
-
-						<Box>
-							<Stack
-								direction='row'
-								justifyContent='end'
-								my={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
-								sx={{
-									display: 'flex',
-								}}
-							>
-								<Button
-									variant='contained'
-									sx={{
-										textTransform: 'none',
-										bgcolor: 'primary.700',
-										mr: { xxs: 1, xs: 1, s: 2, sm: 3 },
-									}}
-									onClick={() => {
-										setOpenExperimentsList(true);
-									}}
-								>
-									<Typography
-										color='white.main'
-										variant='buttonsHome'
-										sx={{
-											mx: { xxs: 0, xs: 0, s: 1, sm: 1 },
-										}}
-									>
-										Saved Experiments
-									</Typography>
-								</Button>
-								<Button
-									variant='outlined'
-									sx={{
-										textTransform: 'none',
-										border: 1,
-										textTransform: 'none',
-										borderColor: 'primary.700',
-									}}
-									onClick={handleEnterRemoteLab}
-								>
-									<Typography
-										color='primary.700'
-										variant='buttonsHome'
-										sx={{
-											mx: { xxs: 0, xs: 0, s: 1, sm: 1 },
-											'&:hover': {
-												color: '#fff',
-											},
-										}}
-									>
-										Go to Remote Lab
-									</Typography>
-								</Button>
-								<ExperimentsListDialog
-									open={openExperimentsList}
-									handleClose={() => setOpenExperimentsList(false)}
-									email={session.user.email}
-									setExperiment={setExperiment}
-									courseId={selectedCourse}
-								/>
-							</Stack>
-						</Box>
 					</Box>
 				) : (
 					<Box>

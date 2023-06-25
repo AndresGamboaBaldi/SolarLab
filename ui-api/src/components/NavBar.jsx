@@ -1,6 +1,6 @@
 import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import UserButtonsNavBar from '../components/UserButtonsNavBar';
 import UserMenu from '../components/UserMenu';
@@ -10,6 +10,19 @@ import { useRouter } from 'next/router';
 export default function NavBar() {
 	const router = useRouter();
 	const { data: session, status } = useSession();
+	const [authenticated, setAuthenticated] = useState(false);
+	useEffect(() => {
+		checkSession();
+	}, [status]);
+
+	const checkSession = async () => {
+		if (status === 'authenticated') {
+			setAuthenticated(true);
+		} else if (status === 'loading') {
+		} else {
+			setAuthenticated(false);
+		}
+	};
 
 	return (
 		<Box>
@@ -35,9 +48,9 @@ export default function NavBar() {
 						Solar Remote Lab
 					</Typography>
 
-					{session ? (
+					{authenticated ? (
 						<Box sx={{ flexGrow: 0 }}>
-							<UserMenu session={session}></UserMenu>
+							<UserMenu email={session.user.email}></UserMenu>
 						</Box>
 					) : (
 						<Box>

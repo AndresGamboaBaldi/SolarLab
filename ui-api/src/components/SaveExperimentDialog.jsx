@@ -18,6 +18,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import LineChart from './LineChart';
 import { v4 as uuidv4 } from 'uuid';
+import { CSVLink } from 'react-csv';
+import DownloadIcon from '@mui/icons-material/Download';
 
 export default function SaveExperimentDialog({
 	open,
@@ -147,6 +149,30 @@ export default function SaveExperimentDialog({
 		setSelectedCourse(event.target.value);
 	};
 
+	const camelCase = (str) => {
+		return str.substring(0, 1).toUpperCase() + str.substring(1);
+	};
+
+	const getColumns = () => {
+		// Get column names
+		const columns = ['city', 'voltage', 'current', 'power'];
+		let headers = [];
+		columns.forEach((col, idx) => {
+			headers.push({ label: camelCase(col), key: col });
+		});
+
+		return headers;
+	};
+
+	const getData = (data) => {
+		// Get column names
+		let totalArray = [];
+		data.forEach((array) => {
+			totalArray.push(...array);
+		});
+		return totalArray;
+	};
+
 	return (
 		<Dialog
 			open={open}
@@ -154,7 +180,7 @@ export default function SaveExperimentDialog({
 			PaperProps={{
 				sx: {
 					borderRadius: '24px',
-					maxWidth: '660px',
+					maxWidth: '720px',
 				},
 			}}
 		>
@@ -271,7 +297,6 @@ export default function SaveExperimentDialog({
 					</Grid>
 
 					<Grid item xxs={12} xs={12}>
-						{' '}
 						<Box mt={1}>
 							<LineChart
 								chartData={departmentsToSave.map(
@@ -283,6 +308,28 @@ export default function SaveExperimentDialog({
 								minimize={true}
 							></LineChart>
 						</Box>
+					</Grid>
+					<Grid item xxs={12} align='center' mt={1}>
+						<CSVLink
+							data={getData(
+								departmentsToSave.map((department) => department.efficiencyTest)
+							)}
+							headers={getColumns()}
+							filename={'Efficiency_Test.csv'}
+						>
+							<Button
+								variant='contained'
+								sx={{
+									textTransform: 'none',
+									bgcolor: 'primary.700',
+								}}
+								endIcon={<DownloadIcon />}
+							>
+								<Typography color='white.main' variant='buttonsExperiments'>
+									Download Data
+								</Typography>
+							</Button>
+						</CSVLink>
 					</Grid>
 
 					<Grid item xxs={12} xs={12}>

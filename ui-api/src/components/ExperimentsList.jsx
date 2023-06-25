@@ -18,7 +18,7 @@ export default function ExperimentList({
 		{
 			field: 'name',
 			headerName: 'Name',
-			width: 130,
+			width: 140,
 		},
 		{
 			field: 'experimentDate',
@@ -135,7 +135,7 @@ export default function ExperimentList({
 				mx={{ xxs: 3, xs: 4, s: 5, sm: 6 }}
 				sx={{
 					height: '100%',
-					width: 'auto',
+					minWidth: '660px',
 				}}
 			>
 				<Grid container>

@@ -79,10 +79,10 @@ export default function LineChart({ chartData, minimize, names }) {
 					sx={{
 						width: '100%',
 						'@media (min-width:900px)': {
-							height: '35vh',
+							height: '32vh',
 						},
 						'@media (min-width:1100px)': {
-							height: '35vh',
+							height: '32vh',
 						},
 						height: '23vh',
 					}}
