@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import BlockIcon from '@mui/icons-material/Block';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 export default function CoursesDialog({ open, handleClose, user }) {
 	const { data: session, status } = useSession();
@@ -332,9 +333,44 @@ export default function CoursesDialog({ open, handleClose, user }) {
 							/>
 						</Box>
 					) : (
-						<Typography variant='header3' color='info.main'>
-							You Have not Joined Any Course
-						</Typography>
+						<Grid
+							container
+							justify='center'
+							rowSpacing={{ xxs: 1, xs: 1, s: 1, sm: 2, md: 2 }}
+						>
+							<Grid
+								item
+								xxs={12}
+								xs={12}
+								sx={{
+									display: 'flex',
+									alignItems: 'center',
+								}}
+								justifyContent='center'
+							>
+								<ErrorOutlineIcon
+									sx={{
+										fontSize: { xxs: '32px', xs: '48px', sm: '64px' },
+										color: 'warning.main',
+									}}
+								/>
+							</Grid>
+							<Grid
+								item
+								xxs={12}
+								xs={12}
+								sx={{
+									display: 'flex',
+									alignItems: 'center',
+									textAlign: 'center',
+								}}
+								justifyContent='center'
+							>
+								<Typography variant='header3' color='blacky.main'>
+									You are not member of any course
+								</Typography>
+							</Grid>
+						</Grid>
 					)}
 				</Grid>
 				<Grid item xxs={12} xs={12} mt={1}>
@@ -419,9 +455,44 @@ export default function CoursesDialog({ open, handleClose, user }) {
 						/>
 					</Box>
 				) : (
-					<Typography variant='header3' color='info.main'>
-						There are no Courses Available to Join
-					</Typography>
+					<Grid
+						container
+						justify='center'
+						rowSpacing={{ xxs: 1, xs: 1, s: 1, sm: 2, md: 2 }}
+					>
+						<Grid
+							item
+							xxs={12}
+							xs={12}
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+							}}
+							justifyContent='center'
+						>
+							<ErrorOutlineIcon
+								sx={{
+									fontSize: { xxs: '32px', xs: '48px', sm: '64px' },
+									color: 'warning.main',
+								}}
+							/>
+						</Grid>
+						<Grid
+							item
+							xxs={12}
+							xs={12}
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+								textAlign: 'center',
+							}}
+							justifyContent='center'
+						>
+							<Typography variant='header3' color='blacky.main'>
+								There are no available courses to join
+							</Typography>
+						</Grid>
+					</Grid>
 				)}
 			</Box>
 		</Dialog>

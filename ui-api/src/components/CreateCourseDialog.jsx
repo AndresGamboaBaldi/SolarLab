@@ -97,6 +97,9 @@ export default function CreateCourseDialog({ open, handleClose }) {
 			} else {
 				toast.success('Created Successfully!');
 				setName('');
+				setDescription('');
+				setStartDate(dayjs());
+				setEndDate(dayjs().add(1, 'day'));
 				handleClose();
 			}
 		} else {
