@@ -465,6 +465,7 @@ export default function DepartamentExperiment({
 										<RadiationChart
 											title='24 Hrs Solar Radiation'
 											city={name}
+											type='radiation'
 										></RadiationChart>
 									</Popover>
 								</Grid>
@@ -519,6 +520,7 @@ export default function DepartamentExperiment({
 										<RadiationChart
 											title='24 Hrs UVA Radiation'
 											city={name}
+											type='uvaRadiation'
 										></RadiationChart>
 									</Popover>
 								</Grid>

@@ -244,6 +244,7 @@ export default function ShowSpecs({ city }) {
 									<Button
 										variant='contained'
 										href='https://www.pvxchange.com/Solar-Modules/Isofoton/UL-I-75S-12_1-2100261'
+										target='_blank'
 										sx={{
 											bgcolor: 'primary.700',
 											textTransform: 'none',
@@ -332,6 +333,7 @@ export default function ShowSpecs({ city }) {
 									<Button
 										variant='contained'
 										href='https://www.deltaohm.com/wp-content/uploads/document/DeltaOHM-LPUVA02-manual-en.pdf'
+										target='_blank'
 										sx={{
 											bgcolor: 'primary.700',
 											textTransform: 'none',
@@ -421,6 +423,7 @@ export default function ShowSpecs({ city }) {
 									<Button
 										variant='contained'
 										href='https://www.kippzonen.com/Product/12/CMP6-Pyranometer#.Ymw4ztrMJPZ'
+										target='_blank'
 										sx={{
 											bgcolor: 'primary.700',
 											textTransform: 'none',

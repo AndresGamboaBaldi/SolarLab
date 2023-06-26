@@ -97,6 +97,7 @@ model Radiation {
   date      String
   time      String
   radiation Float
+  city      String
 }
 
 model UVARadiation {

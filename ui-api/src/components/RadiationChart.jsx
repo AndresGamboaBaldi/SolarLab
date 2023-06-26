@@ -3,7 +3,7 @@ import { Typography, Box, Grid } from '@mui/material';
 import { Chart as ChartJS } from 'chart.js/auto';
 import { useState, useEffect, use } from 'react';
 
-export default function RadiationChart({ title, city }) {
+export default function RadiationChart({ title, city, type }) {
 	const [loadedData, setLoadedData] = useState(false);
 	const [chartData, setChartData] = useState([]);
 
@@ -13,15 +13,16 @@ export default function RadiationChart({ title, city }) {
 
 	const loadData = async () => {
 		const date = new Date().toLocaleString(navigator.language).split(',')[0];
-		const request = await fetch(`/api/radiation/read`, {
+		const request = await fetch(`/api/${type}/read`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
-			body: JSON.stringify({ date: '6/05/2023' }),
+			body: JSON.stringify({ date: '6/5/2023' }),
 		});
 		const response = await request.json();
 		if (response.status) {
+			console.log(response.data);
 			setChartData({
 				labels: getLabels([response.data]),
 				datasets: getDatasets([response.data]),
@@ -60,7 +61,7 @@ export default function RadiationChart({ title, city }) {
 			if (data[i].length > 0) {
 				const dataset = {
 					label: 'Radiation',
-					data: data[i].map((data) => data.radiation),
+					data: data[i].map((data) => data[type]),
 					backgroundColor: '#000000',
 					borderColor: '#000000',
 					cubicInterpolationMode: 'monotone',

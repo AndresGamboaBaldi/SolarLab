@@ -3,10 +3,10 @@ import db from '@/lib/db';
 export default async function handler(req, res) {
 	if (req.method === 'POST') {
 		try {
-			const data = await db.Radiation.findMany({
+			const data = await db.UVARadiation.findMany({
 				select: {
 					time: true,
-					radiation: true,
+					uvaRadiation: true,
 				},
 				where: {
 					date: {
