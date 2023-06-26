@@ -80,7 +80,11 @@ def get_datalogger_data():
     print(e)
     return get_datalogger_data()
 
-def sendData(dataToSend):
+def sendData(dataToSend, efficiencyTest): 
+  if len(efficiencyTest) > 0:
+    isTesting = True
+  else:
+    isTesting = False
   global topic_pub, client
   msg = {
   "departmentName": "Cochabamba",
@@ -90,8 +94,8 @@ def sendData(dataToSend):
   "uvaRadiation": round(dataToSend[5],2),
   "radiation": round(dataToSend[4],2),
   "panelangle": int(dataToSend[2]),
-  "efficiencyTest": [],
-  "isTesting": False
+  "efficiencyTest": efficiencyTest,
+  "isTesting": isTesting
   }
   message = json.dumps(msg)
   client.publish(topic_pub, str(message))
@@ -130,7 +134,7 @@ def sub_cb(topic, msg):
         sleep(1)
         dataloggerData = get_datalogger_data()
         currentAngle = dataloggerData[2] 
-        sendData(dataloggerData)
+        sendData(dataloggerData, [])
         print("Current: ", str(currentAngle))
         if(abs(int(currentAngle) - int(previousAngle))<1):
           notMovingCount +=1
@@ -141,8 +145,41 @@ def sub_cb(topic, msg):
           notMovingCount=0
       print("Moved To: ", str(currentAngle)) 
       turnOff()
-    #elif topic == topic_sub and action == 'DATA':
-     #sendData(get_datalogger_data())
+    if topic == topic_sub and action == "START":
+      #TODO: TEST
+      testing_values = [{"voltage": 1,
+                          "current":8,
+                          "power": 8,
+                          "city":"Cochabamba"},
+                        {"voltage": 3,
+                         "current":8,
+                         "power": 24,
+                         "city":"Cochabamba"}, 
+                        {"voltage": 5,
+                         "current":8,
+                         "power": 40,
+                         "city":"Cochabamba"},
+                         {"voltage": 7,
+                         "current":8,
+                         "power": 56,
+                         "city":"Cochabamba"},
+                        {"voltage": 9,
+                         "current":8,
+                         "power": 72,
+                         "city":"Cochabamba"},
+                        {"voltage": 11,
+                         "current":7,
+                         "power": 77,
+                         "city":"Cochabamba"},
+                        {"voltage": 13,
+                         "current":0,
+                         "power": 0,
+                         "city":"Cochabamba"},
+                        {"voltage": 15,
+                         "current":0,
+                         "power": 0,
+                         "city":"Cochabamba"}]
+      sendData(get_datalogger_data(), testing_values)
 
       
 def connect_and_subscribe():
@@ -169,7 +206,7 @@ except OSError as e:
 while True:
   #try:
     client.check_msg()
-    sendData(get_datalogger_data())
+    sendData(get_datalogger_data(), [])
     sleep(1)
 
     

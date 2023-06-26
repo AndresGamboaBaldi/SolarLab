@@ -24,6 +24,7 @@ export default async function handler(req, res) {
 				});
 				streamCbba.on('exitWithError', function () {
 					streamCbba.mpeg1Muxer.stream.kill();
+					streamCbba.stop();
 					globalForCameras.cbba = false;
 				});
 				streamCbba.wsServer.on('connection', function () {

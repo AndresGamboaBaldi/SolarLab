@@ -364,7 +364,7 @@ export default function DepartamentExperiment({
 											textTransform: 'none',
 										}}
 										onClick={() => {
-											sendMqttMessage('DATA');
+											sendMqttMessage('START');
 										}}
 									>
 										<Typography
