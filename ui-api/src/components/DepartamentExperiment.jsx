@@ -70,7 +70,6 @@ export default function DepartamentExperiment({
 				setVoltage(department.voltage);
 				setRadiation(department.radiation);
 				setEfficiencyTest(department.efficiencyTest);
-				setDepartmentSelectedAngle(department.panelangle);
 			}
 		});
 		setIsPrivate(
@@ -390,7 +389,15 @@ export default function DepartamentExperiment({
 										{voltage} V
 									</Typography>
 								</Grid>
-								<Grid item xxs={6} sm={4}>
+								<Grid
+									item
+									xxs={6}
+									sm={4}
+									sx={{
+										display: 'flex',
+									}}
+									justifyContent={{ s: 'left', sm: 'center' }}
+								>
 									<Typography variant='titleDepartment' color='primary.700'>
 										Current:
 									</Typography>
@@ -402,7 +409,15 @@ export default function DepartamentExperiment({
 										{current} A
 									</Typography>
 								</Grid>
-								<Grid item xxs={6} sm={4}>
+								<Grid
+									item
+									xxs={6}
+									sm={4}
+									sx={{
+										display: 'flex',
+									}}
+									justifyContent={{ s: 'left', sm: 'flex-end' }}
+								>
 									<Typography variant='titleDepartment' color='primary.700'>
 										Power:
 									</Typography>
@@ -479,6 +494,7 @@ export default function DepartamentExperiment({
 										verticalAlign: 'middle',
 										lineHeight: 'normal',
 									}}
+									justifyContent={{ s: 'left', sm: 'flex-end' }}
 								>
 									<Typography variant='titleDepartment' color='primary.700'>
 										UVA Radiation:
