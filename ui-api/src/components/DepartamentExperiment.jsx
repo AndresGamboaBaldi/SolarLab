@@ -72,9 +72,11 @@ export default function DepartamentExperiment({
 				setEfficiencyTest(department.efficiencyTest);
 			}
 		});
-		setIsPrivate(
-			JSON.parse(window.localStorage.getItem('SESSION_DATA')).isPrivate
-		);
+		if (JSON.parse(window.localStorage.getItem('SESSION_DATA'))) {
+			setIsPrivate(
+				JSON.parse(window.localStorage.getItem('SESSION_DATA')).isPrivate
+			);
+		}
 	}, [departmentData]);
 
 	const handleChange = (event) => {
@@ -478,7 +480,7 @@ export default function DepartamentExperiment({
 										disableRestoreFocus
 									>
 										<RadiationChart
-											title='24 Hrs Solar Radiation'
+											title='Solar Radiation'
 											city={name}
 											type='radiation'
 										></RadiationChart>
@@ -534,7 +536,7 @@ export default function DepartamentExperiment({
 										disableRestoreFocus
 									>
 										<RadiationChart
-											title='24 Hrs UVA Radiation'
+											title='UVA Radiation'
 											city={name}
 											type='uvaRadiation'
 										></RadiationChart>

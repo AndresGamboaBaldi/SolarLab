@@ -1,35 +1,124 @@
 import { Line } from 'react-chartjs-2';
-import { Typography, Box, Grid } from '@mui/material';
+import { Typography, Box, Grid, AppBar, Tabs, Tab } from '@mui/material';
 import { Chart as ChartJS } from 'chart.js/auto';
-import { useState, useEffect, use } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
+
+function TabPanel(props) {
+	const { children, value, index } = props;
+
+	return (
+		<div role='tabpanel' hidden={value !== index}>
+			{value === index && (
+				<Box p={3} pt={0}>
+					<Typography component={'span'}>{children}</Typography>
+				</Box>
+			)}
+		</div>
+	);
+}
+
+TabPanel.propTypes = {
+	children: PropTypes.node,
+	index: PropTypes.number.isRequired,
+	value: PropTypes.number.isRequired,
+};
 
 export default function RadiationChart({ title, city, type }) {
+	const [value, setValue] = React.useState(0);
+
+	const handleChange = (event, newValue) => {
+		setValue(newValue);
+	};
 	const [loadedData, setLoadedData] = useState(false);
-	const [chartData, setChartData] = useState([]);
+	const [loadedSeasonalData, setLoadedSeasonalData] = useState(false);
+	const [todayData, setTodayData] = useState([]);
+	const [seasonalData, setSeasonalData] = useState([]);
 
 	useEffect(() => {
-		loadData();
+		loadTodayData();
+		loadSeasonalData();
 	}, []);
 
-	const loadData = async () => {
-		const date = new Date().toLocaleString(navigator.language).split(',')[0];
-		const request = await fetch(`/api/${type}/read`, {
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			method: 'POST',
-			body: JSON.stringify({ date: '6/5/2023' }),
-		});
-		const response = await request.json();
-		if (response.status) {
-			console.log(response.data);
-			setChartData({
-				labels: getLabels([response.data]),
-				datasets: getDatasets([response.data]),
+	const loadTodayData = async () => {
+		let data = [];
+		const todayDate = new Date()
+			.toLocaleString(navigator.language)
+			.split(',')[0]
+			.replace(/\b0/g, '');
+		const optimalDate = getOptimalDate(todayDate);
+
+		const dates = [
+			{ name: 'Today', date: '6/5/2023' },
+			{ name: 'Optimal', date: optimalDate },
+		];
+		for (const date of dates) {
+			const request = await fetch(`/api/${type}/read`, {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				method: 'POST',
+				body: JSON.stringify({ date: date.date }),
 			});
-			setLoadedData(true);
+			const response = await request.json();
+			if (response.status) {
+				data.push(response.data);
+			}
+		}
+		setTodayData({
+			labels: getLabels(data),
+			datasets: getDatasets(data, dates),
+		});
+		setLoadedData(true);
+	};
+
+	const loadSeasonalData = async () => {
+		let data = [];
+		const seasons = [
+			{ name: 'Spring', date: '11/30/2022' },
+			{ name: 'Summer', date: '2/28/2023' },
+			{ name: 'Autumn', date: '5/21/2023' },
+			{ name: 'Winter', date: '6/9/2023' },
+		];
+		for (const season of seasons) {
+			const request = await fetch(`/api/${type}/read`, {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				method: 'POST',
+				body: JSON.stringify({ date: season.date }),
+			});
+			const response = await request.json();
+			if (response.status) {
+				data.push(response.data);
+			}
+		}
+		setSeasonalData({
+			labels: getLabels(data),
+			datasets: getSeasonalDatasets(data, seasons),
+		});
+		setLoadedSeasonalData(true);
+	};
+
+	const getOptimalDate = (todayDate) => {
+		if (
+			dayjs(todayDate).isAfter('3/20/2023') &&
+			dayjs(todayDate).isBefore('6/21/2023')
+		) {
+			return '5/21/2023';
+		} else if (
+			dayjs(todayDate).isAfter('6/20/2023') &&
+			dayjs(todayDate).isBefore('9/21/2023')
+		) {
+			return '6/9/2023';
+		} else if (
+			dayjs(todayDate).isAfter('9/20/2023') &&
+			dayjs(todayDate).isBefore('12/21/2023')
+		) {
+			return '11/30/2022';
 		} else {
-			toast.error('Something Went Wrong, Please Try Again');
+			return '2/28/2023';
 		}
 	};
 
@@ -38,7 +127,8 @@ export default function RadiationChart({ title, city, type }) {
 		maintainAspectRatio: false,
 		plugins: {
 			legend: {
-				display: false,
+				position: 'right',
+				labels: { boxWidth: 10 },
 			},
 		},
 		scales: {
@@ -55,15 +145,15 @@ export default function RadiationChart({ title, city, type }) {
 		},
 	};
 
-	const getDatasets = (data) => {
+	const getDatasets = (data, dates) => {
 		var datasets = [];
 		for (let i = 0; i < data.length; i++) {
 			if (data[i].length > 0) {
 				const dataset = {
-					label: 'Radiation',
+					label: dates[i].name,
 					data: data[i].map((data) => data[type]),
-					backgroundColor: '#000000',
-					borderColor: '#000000',
+					backgroundColor: getTodayColor(dates[i].name),
+					borderColor: getTodayColor(dates[i].name),
 					cubicInterpolationMode: 'monotone',
 					pointStyle: 'circle',
 					borderWidth: 1,
@@ -74,6 +164,51 @@ export default function RadiationChart({ title, city, type }) {
 			}
 		}
 		return datasets;
+	};
+
+	const getTodayColor = (name) => {
+		var color;
+		if (name === 'Today') {
+			color = '#000000';
+		} else {
+			color = '#F6BD2B';
+		}
+		return color;
+	};
+
+	const getSeasonalDatasets = (data, seasons) => {
+		var datasets = [];
+		for (let i = 0; i < data.length; i++) {
+			if (data[i].length > 0) {
+				const dataset = {
+					label: seasons[i].name,
+					data: data[i].map((data) => data[type]),
+					backgroundColor: getColor(seasons[i].name),
+					borderColor: getColor(seasons[i].name),
+					cubicInterpolationMode: 'monotone',
+					pointStyle: 'circle',
+					borderWidth: 1,
+					pointRadius: 2,
+					pointHoverRadius: 5,
+				};
+				datasets.push(dataset);
+			}
+		}
+		return datasets;
+	};
+
+	const getColor = (season) => {
+		var color;
+		if (season === 'Winter') {
+			color = '#1aa3ff';
+		} else if (season === 'Spring') {
+			color = '#00e600';
+		} else if (season === 'Summer') {
+			color = '#ffd11a';
+		} else {
+			color = '#b37700';
+		}
+		return color;
 	};
 
 	const getLabels = (data) => {
@@ -87,99 +222,189 @@ export default function RadiationChart({ title, city, type }) {
 	return (
 		<Box
 			sx={{
-				width: '25vh',
-				height: '25vh',
-				'@media (min-width:300px)': {
-					width: '30vh',
-					height: '30vh',
-				},
-				'@media (min-width:400px)': {
-					width: '35vh',
-					height: '35vh',
-				},
-				'@media (min-width:570px)': {
-					width: '40vh',
-					height: '40vh',
-				},
+				flexGrow: 1,
+				bgcolor: 'background.paper',
+				display: 'flex',
+				maxWidth: '46vh',
 			}}
-			m={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
 		>
-			<Grid container justify='center' rowSpacing={1}>
-				<Grid
-					item
-					xxs={12}
-					xs={12}
-					ml={2}
-					sx={{
-						display: 'flex',
-						alignItems: 'center',
-					}}
-					justifyContent='center'
+			<AppBar position='static' color='white'>
+				<Tabs
+					value={value}
+					onChange={handleChange}
+					textColor='secondary'
+					indicatorColor='secondary'
 				>
-					<Typography variant='titleDepartment' color='secondary.main'>
-						{title}
-					</Typography>
-				</Grid>
-				<Grid
-					item
-					xxs={12}
-					xs={12}
-					sx={{
-						display: 'flex',
-						alignItems: 'center',
-					}}
-					justifyContent='center'
-				>
-					<Box
+					<Tab
+						label='24 Hrs'
 						sx={{
-							width: '23vh',
-							height: '18vh',
-							'@media (min-width:300px)': {
-								width: '28vh',
-								height: '22vh',
-							},
-							'@media (min-width:400px)': {
-								width: '33vh',
-								height: '26vh',
-							},
-							'@media (min-width:570px)': {
-								width: '38vh',
-								height: '32vh',
-							},
+							textTransform: 'none',
 						}}
-					>
-						{loadedData ? (
-							<Line data={chartData} options={options}></Line>
-						) : null}
-					</Box>
-				</Grid>
-				<Grid
-					item
-					xxs={6}
-					xs={6}
-					sx={{
-						display: 'flex',
-					}}
-					justifyContent='center'
-				>
-					<Typography variant='body3' color='blacky.main'>
-						X: Time (HH:MM)
-					</Typography>
-				</Grid>
-				<Grid
-					item
-					xxs={6}
-					xs={6}
-					sx={{
-						display: 'flex',
-					}}
-					justifyContent='center'
-				>
-					<Typography variant='body3' color='blacky.main'>
-						Y: Radiation (W/m2)
-					</Typography>
-				</Grid>
-			</Grid>
+					/>
+					<Tab
+						label='Seasonal'
+						sx={{
+							textTransform: 'none',
+						}}
+					/>
+				</Tabs>
+				<TabPanel value={value} index={0}>
+					<Grid container rowSpacing={1}>
+						<Grid
+							item
+							xxs={12}
+							xs={12}
+							mt={2}
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+							}}
+							justifyContent='center'
+						>
+							<Typography variant='titleDepartment' color='primary.700'>
+								24 Hrs {title}
+							</Typography>
+						</Grid>
+						<Grid
+							item
+							xxs={12}
+							xs={12}
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+							}}
+							justifyContent='center'
+						>
+							<Box
+								sx={{
+									width: '26vh',
+									height: '18vh',
+									'@media (min-width:300px)': {
+										width: '31vh',
+										height: '22vh',
+									},
+									'@media (min-width:400px)': {
+										width: '36vh',
+										height: '26vh',
+									},
+									'@media (min-width:570px)': {
+										width: '41vh',
+										height: '32vh',
+									},
+								}}
+							>
+								{loadedData ? (
+									<Line data={todayData} options={options}></Line>
+								) : null}
+							</Box>
+						</Grid>
+						<Grid
+							item
+							xxs={6}
+							xs={6}
+							sx={{
+								display: 'flex',
+							}}
+							justifyContent='center'
+						>
+							<Typography variant='body3' color='blacky.main'>
+								X: Time (HH:MM)
+							</Typography>
+						</Grid>
+						<Grid
+							item
+							xxs={6}
+							xs={6}
+							sx={{
+								display: 'flex',
+							}}
+							justifyContent='center'
+						>
+							<Typography variant='body3' color='blacky.main'>
+								Y: Radiation (W/m2)
+							</Typography>
+						</Grid>
+					</Grid>
+				</TabPanel>
+				<TabPanel value={value} index={1}>
+					<Grid container rowSpacing={1}>
+						<Grid
+							item
+							xxs={12}
+							xs={12}
+							mt={2}
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+							}}
+							justifyContent='center'
+						>
+							<Typography variant='titleDepartment' color='primary.700'>
+								Optimal {title} by Seasons
+							</Typography>
+						</Grid>
+						<Grid
+							item
+							xxs={12}
+							xs={12}
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+							}}
+							justifyContent='center'
+						>
+							<Box
+								sx={{
+									width: '26vh',
+									height: '18vh',
+									'@media (min-width:300px)': {
+										width: '31vh',
+										height: '22vh',
+									},
+									'@media (min-width:400px)': {
+										width: '36vh',
+										height: '26vh',
+									},
+									'@media (min-width:570px)': {
+										width: '41vh',
+										height: '32vh',
+									},
+								}}
+							>
+								{loadedSeasonalData ? (
+									<Line data={seasonalData} options={options}></Line>
+								) : null}
+							</Box>
+						</Grid>
+						<Grid
+							item
+							xxs={6}
+							xs={6}
+							sx={{
+								display: 'flex',
+							}}
+							justifyContent='center'
+						>
+							<Typography variant='body3' color='blacky.main'>
+								X: Time (HH:MM)
+							</Typography>
+						</Grid>
+						<Grid
+							item
+							xxs={6}
+							xs={6}
+							sx={{
+								display: 'flex',
+							}}
+							justifyContent='center'
+						>
+							<Typography variant='body3' color='blacky.main'>
+								Y: Radiation (W/m2)
+							</Typography>
+						</Grid>
+					</Grid>
+				</TabPanel>
+			</AppBar>
 		</Box>
 	);
 }

@@ -48,16 +48,6 @@ export default function ShowSpecs({ city }) {
 		>
 			<AppBar position='static' color='white'>
 				<Grid container>
-					<Grid
-						item
-						xxs={12}
-						xs={12}
-						sx={{
-							display: 'flex',
-							alignItems: 'center',
-						}}
-						justifyContent='center'
-					></Grid>
 					<Tabs
 						value={value}
 						onChange={handleChange}
