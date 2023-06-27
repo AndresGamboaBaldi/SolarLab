@@ -291,26 +291,30 @@ export default function TeacherExperiments() {
 							justifyContent={{ s: 'left', sm: 'flex-end' }}
 						>
 							{experiment && Object.keys(experiment).length > 0 ? (
-								<Button
-									variant='contained'
-									sx={{
-										textTransform: 'none',
-										bgcolor: 'primary.700',
-										ml: { xxs: 0, xs: 0, s: 0, sm: 0, md: 0, lg: 2 },
-									}}
-									onClick={() => setOpenExperimentsList(true)}
-								>
-									<Typography color='white.main' variant='buttonsExperiments'>
-										View Student Experiments
-									</Typography>
+								<Box>
 									<ExperimentsListDialog
 										open={openExperimentsList}
-										handleClose={() => setOpenExperimentsList(false)}
+										handleClose={() => {
+											setOpenExperimentsList(false);
+										}}
 										email={selectedStudentEmail}
 										setExperiment={setExperiment}
 										courseId={selectedCourse}
 									/>
-								</Button>
+									<Button
+										variant='contained'
+										sx={{
+											textTransform: 'none',
+											bgcolor: 'primary.700',
+											ml: { xxs: 0, xs: 0, s: 0, sm: 0, md: 0, lg: 2 },
+										}}
+										onClick={() => setOpenExperimentsList(true)}
+									>
+										<Typography color='white.main' variant='buttonsExperiments'>
+											View Student Experiments
+										</Typography>
+									</Button>
+								</Box>
 							) : (
 								<Button
 									variant='contained'

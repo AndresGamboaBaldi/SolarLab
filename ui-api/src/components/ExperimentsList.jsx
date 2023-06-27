@@ -300,7 +300,9 @@ export default function ExperimentList({
 							textTransform: 'none',
 							borderColor: 'primary.700',
 						}}
-						onClick={handleClose}
+						onClick={() => {
+							handleClose();
+						}}
 					>
 						<Typography
 							mx={{ xxs: 0, xs: 0, sm: 1 }}
