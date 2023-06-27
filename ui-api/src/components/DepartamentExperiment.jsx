@@ -18,6 +18,8 @@ import CameraPlayer from '../components/CameraPlayer';
 import HelpIcon from '@mui/icons-material/Help';
 import InfoIcon from '@mui/icons-material/Info';
 import ShowSpecs from './ShowSpecs';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
 
 export default function DepartamentExperiment({
 	name,
@@ -208,9 +210,9 @@ export default function DepartamentExperiment({
 						>
 							<Grid
 								item
-								mb={2}
 								sx={{ display: 'flex' }}
 								justifyContent='center'
+								mb={1}
 							>
 								<Box
 									sx={{
@@ -222,6 +224,7 @@ export default function DepartamentExperiment({
 									<CameraPlayer name={name}></CameraPlayer>
 								</Box>
 							</Grid>
+
 							<Grid
 								item
 								textAlign='center'
@@ -246,6 +249,20 @@ export default function DepartamentExperiment({
 									{'  '}
 									{angle}°
 								</Typography>
+								<IconButton
+									href='http://192.168.3.250/cgi-bin/mjpg/video.cgi?channel=1'
+									target='_blank'
+									sx={{
+										py: 0,
+										color: 'info.main',
+									}}
+								>
+									<ZoomInIcon
+										sx={{
+											fontSize: { xxs: '16px', xs: '20px', sm: '30px' },
+										}}
+									/>
+								</IconButton>
 							</Grid>
 							{isPrivate ? (
 								<Box>
