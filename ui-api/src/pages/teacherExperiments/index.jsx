@@ -156,7 +156,7 @@ export default function TeacherExperiments() {
 			</div>
 			<Box
 				mt={{ xxs: 10, xs: 10, s: 10, sm: 12 }}
-				px={{ xxs: 2, xs: 2, s: 3, sm: 3 }}
+				px={{ xxs: 2, xs: 2, s: 4, sm: 6 }}
 			>
 				<Box
 					my={{ xxs: 2, xs: 3, s: 3, sm: 3 }}

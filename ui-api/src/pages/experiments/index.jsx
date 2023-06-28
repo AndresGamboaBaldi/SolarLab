@@ -190,8 +190,8 @@ export default function Experiments() {
 				</Box>
 			</div>
 			<Box
-				mt={{ xxs: 8, xs: 8, s: 8, sm: 10 }}
-				px={{ xxs: 2, xs: 2, s: 3, sm: 4 }}
+				mt={{ xxs: 10, xs: 10, s: 10, sm: 12 }}
+				px={{ xxs: 2, xs: 2, s: 4, sm: 6 }}
 			>
 				<Grid container>
 					<Grid
@@ -264,7 +264,6 @@ export default function Experiments() {
 								alignItems: 'center',
 							}}
 							justifyContent={'flex-end'}
-							mt={2}
 							mb={{ xxs: 2, xs: 3, s: 3, sm: 3 }}
 						>
 							<Button

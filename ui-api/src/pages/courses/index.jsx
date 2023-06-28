@@ -283,11 +283,11 @@ export default function Courses() {
 			</div>
 			<Box
 				mt={{ xxs: 10, xs: 10, s: 10, sm: 12 }}
-				px={{ xxs: 2, xs: 2, s: 3, sm: 3 }}
+				px={{ xxs: 2, xs: 2, s: 4, sm: 6 }}
 			>
 				<Box
 					my={{ xxs: 2, xs: 3, s: 3, sm: 3 }}
-					mx={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
+					mx={{ xxs: 1, xs: 1, s: 1, sm: 2 }}
 					sx={{
 						height: '100%',
 						width: 'auto',
@@ -362,8 +362,8 @@ export default function Courses() {
 					</Grid>
 				</Box>
 				<Box
-					mx={{ xxs: 2, xs: 3, s: 3, sm: 4 }}
-					mb={{ xxs: 2, xs: 3, s: 4, sm: 6 }}
+					my={{ xxs: 2, xs: 3, s: 3, sm: 3 }}
+					mx={{ xxs: 1, xs: 1, s: 1, sm: 2 }}
 					sx={{
 						height: '100%',
 						width: 'auto',
