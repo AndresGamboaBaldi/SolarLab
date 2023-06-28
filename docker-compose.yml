@@ -2,6 +2,7 @@ version: "3.9"
 services:
   broker:
     image: eclipse-mosquitto
+    container_name: "SolarLab_Broker"
     ports:
       - 1883:1883
     volumes:
@@ -9,9 +10,11 @@ services:
     restart: always
   database:
     image: mysql
+    container_name: "SolarLab_Database"
     ports:
       - 3307:3306
     restart: always
+    command: --local-infile=ON
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: solar_lab_db

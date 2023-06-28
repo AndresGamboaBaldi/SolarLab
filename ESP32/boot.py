@@ -15,8 +15,8 @@ gc.collect()
 
 #MQTT 
 #mqtt_server = '192.168.46.161'
-#mqtt_server = '192.168.124.82'
-mqtt_server = '192.168.100.7'
+mqtt_server = '10.1.2.108'
+#mqtt_server = '192.168.100.7'
 client_id = ubinascii.hexlify(machine.unique_id())
 port = 1883
 client = MQTTClient(client_id, mqtt_server, port)
@@ -26,11 +26,11 @@ topic_sub = b'solarlab/esp32/cbba'
 topic_pub = b'solarlab/server'
 
 #Wifi
-ssid = 'FLI GAMBOA BALDI'
-password = 'Andres14213009'
+#ssid = 'FLI GAMBOA BALDI'
+#password = 'Andres14213009'
 
-#ssid = 'UPB'
-#password = ''
+ssid = 'UPB'
+password = ''
 
 station = network.WLAN(network.STA_IF)
 station.active(True)
@@ -40,6 +40,8 @@ station.connect(ssid, password)
 
 while station.isconnected() == False:
     pass
+
+print(station.ifconfig()[0])
 
 
 

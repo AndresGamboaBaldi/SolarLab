@@ -5,9 +5,12 @@ const globalForMqtt = global;
 import socket from './socket';
 
 const connectMqtt = () => {
-	const client = mqtt.connect(`mqtt://${process.env.REACT_APP_HOST}`, {
-		clientId: 'SolarLab',
-	});
+	const client = mqtt.connect(
+		`mqtt://${process.env.SERVICES_HOST}:${process.env.MQTT_PORT}`,
+		{
+			clientId: 'SolarLab',
+		}
+	);
 	client.on('connect', function () {
 		mqttClient.subscribe('solarlab/server');
 	});

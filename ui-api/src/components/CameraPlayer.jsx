@@ -21,7 +21,7 @@ export default function StreamPlayer({ name }) {
 			const { JSMpeg } = require('../scripts/jsmpeg.min.js');
 			player = new JSMpeg.Player(
 				//envvariable
-				`ws://192.168.124.82:9999`,
+				`ws://192.168.124.82:8888`,
 				{
 					canvas: streamRef.current,
 				}
@@ -30,7 +30,7 @@ export default function StreamPlayer({ name }) {
 			const { JSMpeg } = require('../scripts/jsmpeg.min.js');
 			player = new JSMpeg.Player(
 				//envvariable
-				`ws://192.168.124.82:7777`,
+				`ws://192.168.124.82:8888`,
 				{
 					canvas: streamRef.current,
 				}

@@ -74,7 +74,6 @@ def get_datalogger_data():
       # Convert the integer to a 32-bit float (little-endian byte order)
       float_data = struct.unpack('<f', struct.pack('<i', combined_data))[0]
       converted_data.append(float_data)
-  
     return converted_data
   except Exception as e:
     print(e)
