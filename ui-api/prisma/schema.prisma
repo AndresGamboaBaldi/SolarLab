@@ -92,18 +92,16 @@ model TestRecord {
   departmentlabId String?
 }
 
-model Radiation {
-  id        Int    @id @default(autoincrement())
-  date      String
-  time      String
-  radiation Float
-  city      String
-}
-
-model UVARadiation {
-  id           Int    @id @default(autoincrement())
-  date         String
-  time         String
-  uvaRadiation Float
-  city         String
+model Datalogger {
+  id                    Int      @id @default(autoincrement())
+  datetime              DateTime
+  solarRadiationCMP     Float
+  solarRadiationCMPAvg  Float
+  uvaRadiationLP        Float
+  uvaRadiationLPAvg     Float
+  batteryVoltage        Float
+  dataloggerTemperature Float
+  voltage               Float?
+  current               Float?
+  solarRadiationCS320   Float?
 }
