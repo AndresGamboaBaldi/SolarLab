@@ -130,20 +130,20 @@ def sub_cb(topic, msg):
           if(not movingDown):
             moveDown()
             movingDown = True
-        sleep(1)
+        sleep(0.5)    
         dataloggerData = get_datalogger_data()
         currentAngle = dataloggerData[2] 
         sendData(dataloggerData, [])
         print("Current: ", str(currentAngle))
         if(abs(int(currentAngle) - int(previousAngle))<1):
           notMovingCount +=1
-          if(notMovingCount>3):
+          if(notMovingCount>10):
             print("Error Moving Panel") 
             break
         else: 
           notMovingCount=0
-      print("Moved To: ", str(currentAngle)) 
       turnOff()
+      print("Moved To: ", str(currentAngle)) 
     if topic == topic_sub and action == "START":
       #TODO: TEST
       testing_values = [{"voltage": 1,
@@ -203,13 +203,14 @@ except OSError as e:
   restart_and_reconnect()
 
 while True:
-  #try:
+  try:
     client.check_msg()
     sendData(get_datalogger_data(), [])
     sleep(1)
 
     
-  #except OSError as e:
-   # restart_and_reconnect()
+  except OSError as e:
+    print(e)
+    restart_and_reconnect()
 
 

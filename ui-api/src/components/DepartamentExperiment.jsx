@@ -267,7 +267,17 @@ export default function DepartamentExperiment({
 							{isPrivate ? (
 								<Box>
 									<Grid item sx={{ display: 'flex' }} justifyContent='center'>
-										<Box width='70%'>
+										<Typography
+											variant='titleDepartment'
+											color='primary.700'
+											sx={{
+												verticalAlign: 'sub',
+											}}
+											mr={2}
+										>
+											Move to:
+										</Typography>
+										<Box width='50%'>
 											{syncPanels ? (
 												<Slider
 													size='medium'
