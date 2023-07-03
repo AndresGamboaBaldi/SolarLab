@@ -26,3 +26,4 @@ services:
     restart: always
     volumes:
       - ../../../assistant/:/node/Data
+    depends_on: -database

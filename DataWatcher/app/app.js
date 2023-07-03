@@ -3,8 +3,8 @@ const fs = require("fs");
 var mysql = require("mysql2");
 
 var connection = mysql.createConnection({
-  host: "research.upb.edu",
-  port: "63307",
+  host: "10.1.2.108",
+  port: "3307",
   user: "root",
   password: "root",
   database: "solar_lab_db",
