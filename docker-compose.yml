@@ -20,3 +20,9 @@ services:
       MYSQL_DATABASE: solar_lab_db
     volumes:
       - ./Database/data:/var/lib/mysql
+  datawatcher:
+    image: datawatcher
+    container_name: "SolarLab_DataWatcher"
+    restart: always
+    volumes:
+      - ../../../assistant/:/node/Data
