@@ -20,7 +20,7 @@ const query =
   `(@datetime,record,solarRadiationCMP,solarRadiationCMPAvg, uvaRadiationLP, uvaRadiationLPAvg, batteryVoltage, dataloggerTemperature, voltage, current, solarRadiationCS320) ` +
   `SET datetime = STR_TO_DATE(@datetime,'%Y-%m-%d %H:%i:%s')`;
 
-const path = "./Data/Radiacion_Min5.dat";
+const path = "./Data/Datalogger_Min5.dat";
 
 connection.connect(function (err) {
   if (err) throw err;

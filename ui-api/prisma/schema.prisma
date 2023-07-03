@@ -93,16 +93,15 @@ model TestRecord {
 }
 
 model Datalogger {
-  id                    Int      @id @default(autoincrement())
-  datetime              DateTime
-  record                Int
-  solarRadiationCMP     Float?
-  solarRadiationCMPAvg  Float?
-  uvaRadiationLP        Float?
-  uvaRadiationLPAvg     Float?
-  batteryVoltage        Float?
-  dataloggerTemperature Float?
-  voltage               Float?
-  current               Float?
-  solarRadiationCS320   Float?
+  id                   Int      @id @default(autoincrement())
+  datetime             DateTime
+  record               Int
+  solarRadiationCMP    Float?
+  solarRadiationCMPAvg Float?
+  uvaRadiationLP       Float?
+  uvaRadiationLPAvg    Float?
+  batteryVoltage       Float?
+  voltage              Float?
+  current              Float?
+  solarRadiationCS320  Float?
 }
