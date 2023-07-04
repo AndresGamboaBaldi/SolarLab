@@ -17,7 +17,7 @@ const query =
   `ENCLOSED BY ? ` +
   `LINES TERMINATED BY ? ` +
   `IGNORE ? ROWS ` +
-  `(@datetime,record,solarRadiationCMP,solarRadiationCMPAvg, uvaRadiationLP, uvaRadiationLPAvg, batteryVoltage, dataloggerTemperature, voltage, current, solarRadiationCS320) ` +
+  `(@datetime,record,solarRadiationCMP,solarRadiationCMPAvg, uvaRadiationLP, uvaRadiationLPAvg, batteryVoltage, voltage, current, solarRadiationCS320) ` +
   `SET datetime = STR_TO_DATE(@datetime,'%Y-%m-%d %H:%i:%s')`;
 
 const path = "./Data/Datalogger_Min5.dat";
@@ -39,7 +39,7 @@ fs.watchFile(
       "SELECT COUNT(*) FROM Datalogger",
       function (err, result, fields) {
         if (err) throw err;
-        if (result[0]["COUNT(*)"] <= 0) {
+        if (result[0]["COUNT(*)"]<=265948) {
           connection.query(
             {
               sql: query,
@@ -55,7 +55,7 @@ fs.watchFile(
             }
           );
         } else {
-          var ignoredRows = 4 + result[0]["COUNT(*)"];
+          var ignoredRows = 4 + result[0]["COUNT(*)"] - 265948 ; //265948 previous file data
           connection.query(
             {
               sql: query,

@@ -20,6 +20,12 @@ services:
       MYSQL_DATABASE: solar_lab_db
     volumes:
       - ./Database/data:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 --password=$$MYSQL_ROOT_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 50
   datawatcher:
     image: datawatcher
     container_name: "SolarLab_DataWatcher"
@@ -27,4 +33,5 @@ services:
     volumes:
       - ../../../assistant/:/node/Data
     depends_on:
-      - database
+      database: 
+        condition: service_healthy
