@@ -147,6 +147,24 @@ export default function ShowSpecs({ city }) {
 						<TabPanel value={value} index={1}>
 							<Grid container>
 								<Grid item xxs={12} xs={12} mt={2}>
+									<Grid
+										item
+										xxs={12}
+										xs={12}
+										sx={{
+											display: 'flex',
+											alignItems: 'center',
+										}}
+										justifyContent='center'
+									>
+										<Typography
+											variant='titleDepartment'
+											color='primary.700'
+											component={'span'}
+										>
+											Specifications
+										</Typography>
+									</Grid>
 									<Typography
 										variant='titleDepartment'
 										color='blacky.main'
@@ -157,25 +175,6 @@ export default function ShowSpecs({ city }) {
 									</Typography>
 									<Typography variant='dataDepartment' color='blacky.main'>
 										Photovoltaic Module I-75/12
-									</Typography>
-								</Grid>
-
-								<Grid
-									item
-									xxs={12}
-									xs={12}
-									sx={{
-										display: 'flex',
-										alignItems: 'center',
-									}}
-									justifyContent='center'
-								>
-									<Typography
-										variant='titleDepartment'
-										color='primary.700'
-										component={'span'}
-									>
-										Specifications
 									</Typography>
 								</Grid>
 
@@ -267,40 +266,11 @@ export default function ShowSpecs({ city }) {
 						</TabPanel>
 						<TabPanel value={value} index={2}>
 							<Grid container>
-								<Grid item xxs={12} xs={12} mt={2}>
-									<Typography
-										variant='titleDepartment'
-										color='blacky.main'
-										mr={1}
-									>
-										Model:
-									</Typography>
-									<Typography variant='dataDepartment' color='blacky.main'>
-										LP UVA 02
-									</Typography>
-								</Grid>
 								<Grid
 									item
 									xxs={12}
 									xs={12}
-									sx={{
-										display: 'flex',
-										alignItems: 'center',
-									}}
-									justifyContent='center'
-									my={1}
-								>
-									<Image
-										src='/lpUVA.jpg'
-										alt='Upb Logo White'
-										width={144}
-										height={144}
-									/>
-								</Grid>
-								<Grid
-									item
-									xxs={12}
-									xs={12}
+									mt={2}
 									sx={{
 										display: 'flex',
 										alignItems: 'center',
@@ -322,6 +292,19 @@ export default function ShowSpecs({ city }) {
 										color='blacky.main'
 										mr={1}
 									>
+										Model:
+									</Typography>
+									<Typography variant='dataDepartment' color='blacky.main'>
+										LP UVA 02
+									</Typography>
+								</Grid>
+
+								<Grid item xxs={12} xs={12}>
+									<Typography
+										variant='titleDepartment'
+										color='blacky.main'
+										mr={1}
+									>
 										Sensitivity:
 									</Typography>
 									<Typography variant='dataDepartment' color='blacky.main'>
@@ -332,7 +315,24 @@ export default function ShowSpecs({ city }) {
 									item
 									xxs={12}
 									xs={12}
-									mt={1}
+									sx={{
+										display: 'flex',
+										alignItems: 'center',
+									}}
+									justifyContent='center'
+									my={2}
+								>
+									<Image
+										src='/lpUVA.jpg'
+										alt='Upb Logo White'
+										width={144}
+										height={144}
+									/>
+								</Grid>
+								<Grid
+									item
+									xxs={12}
+									xs={12}
 									sx={{
 										display: 'flex',
 									}}
@@ -356,36 +356,6 @@ export default function ShowSpecs({ city }) {
 						</TabPanel>
 						<TabPanel value={value} index={3}>
 							<Grid container>
-								<Grid item xxs={12} xs={12} mt={2}>
-									<Typography
-										variant='titleDepartment'
-										color='blacky.main'
-										mr={1}
-									>
-										Model:
-									</Typography>
-									<Typography variant='dataDepartment' color='blacky.main'>
-										Pyranometer CMP6
-									</Typography>
-								</Grid>
-								<Grid
-									item
-									xxs={12}
-									xs={12}
-									sx={{
-										display: 'flex',
-										alignItems: 'center',
-									}}
-									justifyContent='center'
-									my={1}
-								>
-									<Image
-										src='/CMP6.jpg'
-										alt='Upb Logo White'
-										width={144}
-										height={144}
-									/>
-								</Grid>
 								<Grid
 									item
 									xxs={12}
@@ -405,6 +375,18 @@ export default function ShowSpecs({ city }) {
 										Specifications
 									</Typography>
 								</Grid>
+								<Grid item xxs={12} xs={12}>
+									<Typography
+										variant='titleDepartment'
+										color='blacky.main'
+										mr={1}
+									>
+										Model:
+									</Typography>
+									<Typography variant='dataDepartment' color='blacky.main'>
+										Pyranometer CMP6
+									</Typography>
+								</Grid>
 
 								<Grid item xxs={12} xs={12}>
 									<Typography
@@ -422,7 +404,24 @@ export default function ShowSpecs({ city }) {
 									item
 									xxs={12}
 									xs={12}
-									mt={1}
+									sx={{
+										display: 'flex',
+										alignItems: 'center',
+									}}
+									justifyContent='center'
+									my={2}
+								>
+									<Image
+										src='/CMP6.jpg'
+										alt='Upb Logo White'
+										width={144}
+										height={144}
+									/>
+								</Grid>
+								<Grid
+									item
+									xxs={12}
+									xs={12}
 									sx={{
 										display: 'flex',
 									}}
