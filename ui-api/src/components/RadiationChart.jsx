@@ -43,18 +43,23 @@ export default function RadiationChart({ title, city, type }) {
 
 	const loadTodayData = async () => {
 		let data = [];
-		const todayDate = new Date()
+		const todayDate = new Date('06/12/2023')
 			.toLocaleString(navigator.language)
 			.split(',')[0]
 			.replace(/\b0/g, '');
 		const optimalDate = getOptimalDate(todayDate);
-
 		const dates = [
-			{ name: 'Today', date: '6/5/2023' },
-			{ name: 'Optimal', date: optimalDate },
+			{
+				name: 'Today',
+				date: new Date(todayDate).toISOString().split('T')[0],
+			},
+			{
+				name: 'Optimal',
+				date: optimalDate,
+			},
 		];
 		for (const date of dates) {
-			const request = await fetch(`/api/${type}/read`, {
+			const request = await fetch(`/api/datalogger/readfiltered`, {
 				headers: {
 					'Content-Type': 'application/json',
 				},
@@ -66,6 +71,7 @@ export default function RadiationChart({ title, city, type }) {
 				data.push(response.data);
 			}
 		}
+		console.log(data);
 		setTodayData({
 			labels: getLabels(data),
 			datasets: getDatasets(data, dates),
@@ -76,13 +82,25 @@ export default function RadiationChart({ title, city, type }) {
 	const loadSeasonalData = async () => {
 		let data = [];
 		const seasons = [
-			{ name: 'Spring', date: '11/30/2022' },
-			{ name: 'Summer', date: '2/28/2023' },
-			{ name: 'Autumn', date: '5/21/2023' },
-			{ name: 'Winter', date: '6/9/2023' },
+			{
+				name: 'Spring',
+				date: new Date('11/30/2022').toISOString().split('T')[0],
+			},
+			{
+				name: 'Summer',
+				date: new Date('02/28/2023').toISOString().split('T')[0],
+			},
+			{
+				name: 'Autumn',
+				date: new Date('05/21/2023').toISOString().split('T')[0],
+			},
+			{
+				name: 'Winter',
+				date: new Date('06/09/2023').toISOString().split('T')[0],
+			},
 		];
 		for (const season of seasons) {
-			const request = await fetch(`/api/${type}/read`, {
+			const request = await fetch(`/api/datalogger/readfiltered`, {
 				headers: {
 					'Content-Type': 'application/json',
 				},
@@ -106,19 +124,19 @@ export default function RadiationChart({ title, city, type }) {
 			dayjs(todayDate).isAfter('3/20/2023') &&
 			dayjs(todayDate).isBefore('6/21/2023')
 		) {
-			return '5/21/2023';
+			return new Date('5/21/2023').toISOString().split('T')[0];
 		} else if (
 			dayjs(todayDate).isAfter('6/20/2023') &&
 			dayjs(todayDate).isBefore('9/21/2023')
 		) {
-			return '6/9/2023';
+			return new Date('6/9/2023').toISOString().split('T')[0];
 		} else if (
 			dayjs(todayDate).isAfter('9/20/2023') &&
 			dayjs(todayDate).isBefore('12/21/2023')
 		) {
-			return '11/30/2022';
+			return new Date('11/30/2022').toISOString().split('T')[0];
 		} else {
-			return '2/28/2023';
+			return new Date('2/28/2023').toISOString().split('T')[0];
 		}
 	};
 
@@ -213,7 +231,12 @@ export default function RadiationChart({ title, city, type }) {
 
 	const getLabels = (data) => {
 		if (data[0].length > 0) {
-			return data[0].map((data) => data.time);
+			return data[1].map(
+				(data) =>
+					data.datetime.split(' ')[1].split('.')[0].split(':')[0] + //to just display HH:00
+					':' +
+					data.datetime.split(' ')[1].split('.')[0].split(':')[1]
+			);
 		} else {
 			return [];
 		}

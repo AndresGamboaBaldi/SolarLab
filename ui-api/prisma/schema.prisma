@@ -93,8 +93,8 @@ model TestRecord {
 }
 
 model Datalogger {
-  id                   Int      @id @default(autoincrement())
-  datetime             DateTime
+  id                   Int    @id @default(autoincrement())
+  datetime             String
   record               Int
   solarRadiationCMP    Float?
   solarRadiationCMPAvg Float?

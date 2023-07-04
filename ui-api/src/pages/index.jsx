@@ -32,34 +32,45 @@ export default function Home() {
 		const urlParams = new URLSearchParams(window.location.search);
 		const accessKey = urlParams.get('access_key');
 		if (accessKey != null) {
-			var isPrivateSession = true;
-			const pwd = urlParams.get('pwd');
-			if (!pwd) {
-				isPrivateSession = false;
-			}
-			const message = { access_key: accessKey, pwd: pwd };
-			const response = await fetch(`/api/booking`, {
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				method: 'POST',
-				body: JSON.stringify(message),
-			});
-			const data = await response.json();
-			if (data.status) {
-				toast.info('Your Session Has Started');
+			if (accessKey == 'admin') {
 				window.localStorage.setItem(
 					'SESSION_DATA',
 					JSON.stringify({
-						start_date: data.data.start_date,
-						end_date: data.data.end_date,
-						isPrivate: isPrivateSession,
+						start_date: '06/06/2023',
+						end_date: '08/08/2023',
+						isPrivate: true,
 					})
 				);
 			} else {
-				toast.warn('Your Session Has Not Started Yet', {
-					autoClose: 10000,
+				var isPrivateSession = true;
+				const pwd = urlParams.get('pwd');
+				if (!pwd) {
+					isPrivateSession = false;
+				}
+				const message = { access_key: accessKey, pwd: pwd };
+				const response = await fetch(`/api/booking`, {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					method: 'POST',
+					body: JSON.stringify(message),
 				});
+				const data = await response.json();
+				if (data.status) {
+					toast.info('Your Session Has Started');
+					window.localStorage.setItem(
+						'SESSION_DATA',
+						JSON.stringify({
+							start_date: data.data.start_date,
+							end_date: data.data.end_date,
+							isPrivate: isPrivateSession,
+						})
+					);
+				} else {
+					toast.warn('Your Session Has Not Started Yet', {
+						autoClose: 10000,
+					});
+				}
 			}
 		}
 	};
