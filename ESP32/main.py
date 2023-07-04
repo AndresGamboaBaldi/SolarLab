@@ -130,12 +130,12 @@ def sub_cb(topic, msg):
           if(not movingDown):
             moveDown()
             movingDown = True
-        sleep(0.5)    
+        sleep(0.3)    
         dataloggerData = get_datalogger_data()
         currentAngle = dataloggerData[2] 
         sendData(dataloggerData, [])
         print("Current: ", str(currentAngle))
-        if(abs(int(currentAngle) - int(previousAngle))<1):
+        if(abs(int(currentAngle) - int(previousAngle))<6):
           notMovingCount +=1
           if(notMovingCount>10):
             print("Error Moving Panel") 
