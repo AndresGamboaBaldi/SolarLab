@@ -121,8 +121,26 @@ export default function ShowSpecs({ city }) {
 										mr={1}
 										component={'span'}
 									>
-										Used Angle:
+										Used Current Angle:
 									</Typography>
+								</Grid>
+								<Grid
+									item
+									xxs={12}
+									xs={12}
+									sx={{
+										display: 'flex',
+										alignItems: 'center',
+									}}
+									justifyContent='center'
+									my={1}
+								>
+									<Image
+										src='/angle.png'
+										alt='Angle Info'
+										width={312}
+										height={344}
+									/>
 								</Grid>
 							</Grid>
 						</TabPanel>

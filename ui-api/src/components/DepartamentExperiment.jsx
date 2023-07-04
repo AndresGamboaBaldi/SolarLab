@@ -273,7 +273,7 @@ export default function DepartamentExperiment({
 											sx={{
 												verticalAlign: 'sub',
 											}}
-											mr={2}
+											mr={3}
 										>
 											Move to:
 										</Typography>

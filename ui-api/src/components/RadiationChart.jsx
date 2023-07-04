@@ -71,7 +71,6 @@ export default function RadiationChart({ title, city, type }) {
 				data.push(response.data);
 			}
 		}
-		console.log(data);
 		setTodayData({
 			labels: getLabels(data),
 			datasets: getDatasets(data, dates),
