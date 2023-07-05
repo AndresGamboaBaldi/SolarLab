@@ -174,7 +174,7 @@ export default function RadiationChart({ title, city, type }) {
 					cubicInterpolationMode: 'monotone',
 					pointStyle: 'circle',
 					borderWidth: 1,
-					pointRadius: 2,
+					pointRadius: 1,
 					pointHoverRadius: 5,
 				};
 				datasets.push(dataset);
@@ -205,7 +205,7 @@ export default function RadiationChart({ title, city, type }) {
 					cubicInterpolationMode: 'monotone',
 					pointStyle: 'circle',
 					borderWidth: 1,
-					pointRadius: 2,
+					pointRadius: 1,
 					pointHoverRadius: 5,
 				};
 				datasets.push(dataset);

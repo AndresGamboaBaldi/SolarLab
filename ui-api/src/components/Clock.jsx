@@ -21,6 +21,7 @@ export default function Clock() {
 				hour12: false,
 			});
 			setTime(datetime);
+			console.log('timer');
 		}, 30000);
 
 		return () => clearTimeout(timer);

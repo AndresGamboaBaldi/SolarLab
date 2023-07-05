@@ -120,7 +120,7 @@ export default function TeacherExperiments() {
 		setExperiment(undefined);
 		setSelectedCourse(event.target.value);
 		teacherCourses.forEach((course) => {
-			if (course.name === event.target.value) {
+			if (course.id === event.target.value) {
 				setCourseStudents(course.students);
 			}
 		});
@@ -130,8 +130,18 @@ export default function TeacherExperiments() {
 		setSelectedStudentName(event.target.value);
 		courseStudents.forEach((student) => {
 			if (student.user.name == event.target.value) {
+				console.log(student.experiments);
+				console.log(selectedCourse);
 				setSelectedStudentEmail(student.userEmail);
-				setExperiment(student.experiments[0]);
+				if (
+					student.experiments.some(
+						(experiment) => experiment.courseId == selectedCourse
+					)
+				) {
+					setExperiment(student.experiments[0]);
+				} else {
+					setExperiment(undefined);
+				}
 			}
 		});
 	};
