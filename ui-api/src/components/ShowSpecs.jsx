@@ -118,7 +118,6 @@ export default function ShowSpecs({ city }) {
 									<Typography
 										variant='titleDepartment'
 										color='blacky.main'
-										mr={1}
 										component={'span'}
 									>
 										Used Current Angle:
@@ -138,8 +137,8 @@ export default function ShowSpecs({ city }) {
 									<Image
 										src='/angle.png'
 										alt='Angle Info'
-										width={312}
-										height={344}
+										width={264}
+										height={320}
 									/>
 								</Grid>
 							</Grid>

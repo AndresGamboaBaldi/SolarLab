@@ -43,7 +43,7 @@ export default function RadiationChart({ title, city, type }) {
 
 	const loadTodayData = async () => {
 		let data = [];
-		const todayDate = new Date('06/12/2023')
+		const todayDate = new Date()
 			.toLocaleString(navigator.language)
 			.split(',')[0]
 			.replace(/\b0/g, '');

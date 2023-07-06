@@ -130,8 +130,6 @@ export default function TeacherExperiments() {
 		setSelectedStudentName(event.target.value);
 		courseStudents.forEach((student) => {
 			if (student.user.name == event.target.value) {
-				console.log(student.experiments);
-				console.log(selectedCourse);
 				setSelectedStudentEmail(student.userEmail);
 				if (
 					student.experiments.some(
